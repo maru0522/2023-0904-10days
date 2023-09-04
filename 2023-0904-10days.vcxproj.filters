@@ -42,6 +42,9 @@
     <ClCompile Include="Others\Keyboard.cpp">
       <Filter>Others</Filter>
     </ClCompile>
+    <ClCompile Include="Others\XPad.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\Player.h">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="Others\Keyboard.h">
       <Filter>Others</Filter>
+    </ClInclude>
+    <ClInclude Include="Others\XPad.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
