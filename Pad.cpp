@@ -65,11 +65,11 @@ bool PadLeft() // スティック左倒す
 	return pad.X <= -down && oldpad.X <= -down;
 }
 
-int PadHorizontal()
+Vector2 PadStick()
 {
-	if (PadRight()) return 1; // スティック右倒す → 1
-	if (PadLeft()) return -1; // スティック左倒す → -1
-	return 0; // それ以外 → 0
+	float x = (float)pad.X / 1000.f;
+	float y = (float)pad.Y / 1000.f;
+	return Vector2(x,y);
 }
 
 void ControlUpdate()
