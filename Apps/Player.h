@@ -4,11 +4,14 @@
 class Player
 {
 public:
+    // ’è”
+    float kMoveSpeed_{3.f};
+
     // ŠÖ”
     Player(void) = default;
     ~Player(void) = default;
 
-    void Update(void) {}
+    void Update(void);
     void Draw(void);
 
 private:

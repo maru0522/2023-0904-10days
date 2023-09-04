@@ -1,4 +1,4 @@
 #include "Keyboard.h"
 
-char Keyboard::keys_[256]{};
-char Keyboard::prekeys_[256]{};
+char Keyboard::sKeys_[256]{};
+char Keyboard::sKeysPre_[256]{};
