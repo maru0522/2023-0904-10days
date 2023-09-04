@@ -142,7 +142,6 @@
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Others\Keyboard.cpp" />
     <ClCompile Include="Others\Util.cpp" />
-    <ClCompile Include="Others\XPad.cpp" />
     <ClCompile Include="Base\SceneFactory.cpp" />
     <ClCompile Include="Base\TitleScene.cpp" />
     <ClCompile Include="Pad.cpp" />
