@@ -145,6 +145,7 @@
     <ClCompile Include="Others\XPad.cpp" />
     <ClCompile Include="Base\SceneFactory.cpp" />
     <ClCompile Include="Base\TitleScene.cpp" />
+    <ClCompile Include="Pad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\Player.h" />
@@ -158,7 +159,7 @@
     <ClInclude Include="Others\FileSystem.h" />
     <ClInclude Include="Others\Keyboard.h" />
     <ClInclude Include="Others\Util.h" />
-    <ClInclude Include="Others\XPad.h" />
+    <ClInclude Include="Pad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
