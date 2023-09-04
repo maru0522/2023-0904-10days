@@ -1,7 +1,11 @@
 #include "DxLib.h"
 
+#include <memory>
+#include "Player.h"
+#include "Keyboard.h"
+
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "xx2x_xx_ナマエ: タイトル";
+const char TITLE[] = "お団子侍プロトタイプ";
 
 // ウィンドウ横幅
 const int WIN_WIDTH = 600;
@@ -40,28 +44,24 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	// ゲームループで使う変数の宣言
-
-
-	// 最新のキーボード情報用
-	char keys[256] = {0};
-
-	// 1ループ(フレーム)前のキーボード情報
-	char oldkeys[256] = {0};
+    std::unique_ptr<Player> player = std::make_unique<Player>();
+    player->SetPos({ 0,0 });
+    player->SetRot({ 0,0 });
+    player->SetRad({ 10,0 });
 
 	// ゲームループ
 	while (true) {
-		// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
-		// 最新のキーボード情報を取得
-		GetHitKeyStateAll(keys);
+        Keyboard::Update();
 
 		// 画面クリア
 		ClearDrawScreen();
 		//---------  ここからプログラムを記述  ----------//
 
 		// 更新処理
-
+        player->Update();
 
 		// 描画処理
+        player->Draw();
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面

@@ -39,6 +39,9 @@
     <ClCompile Include="Others\Util.cpp">
       <Filter>Others</Filter>
     </ClCompile>
+    <ClCompile Include="Others\Keyboard.cpp">
+      <Filter>Others</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\Player.h">
@@ -54,6 +57,9 @@
       <Filter>Others</Filter>
     </ClInclude>
     <ClInclude Include="Others\Util.h">
+      <Filter>Others</Filter>
+    </ClInclude>
+    <ClInclude Include="Others\Keyboard.h">
       <Filter>Others</Filter>
     </ClInclude>
   </ItemGroup>

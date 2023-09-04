@@ -5,6 +5,14 @@
 #include <typeinfo>
 
 namespace Util {
+    enum Color
+    {
+        WHITE = 0xffffff,
+        BLACK = 0x000000,
+        RED = 0xff0000,
+        BLUE = 0x0000ff,
+        GREEN = 0x00ff00,
+    };
 
     namespace Convert {
         std::string ToString(const std::wstring& wStr);
