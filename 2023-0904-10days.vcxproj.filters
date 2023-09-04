@@ -22,6 +22,12 @@
     <Filter Include="Others">
       <UniqueIdentifier>{78330784-7f01-4234-9e1a-8735059c21bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{29b816a5-f105-4122-be03-969fb01b03c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\Scene">
+      <UniqueIdentifier>{9c8e7d34-95b1-42b8-bb20-17e3527340f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,8 +48,23 @@
     <ClCompile Include="Others\Keyboard.cpp">
       <Filter>Others</Filter>
     </ClCompile>
+    <ClCompile Include="Base\SceneManager.cpp">
+      <Filter>Base\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\IScene.cpp">
+      <Filter>Base\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\SceneFactory.cpp">
+      <Filter>Base\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\DemoScene.cpp">
+      <Filter>Base\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="Others\XPad.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Others</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\TitleScene.cpp">
+      <Filter>Base\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,8 +86,23 @@
     <ClInclude Include="Others\Keyboard.h">
       <Filter>Others</Filter>
     </ClInclude>
+    <ClInclude Include="Base\SceneManager.h">
+      <Filter>Base\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\IScene.h">
+      <Filter>Base\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\SceneFactory.h">
+      <Filter>Base\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\DemoScene.h">
+      <Filter>Base\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="Others\XPad.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Others</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\TitleScene.h">
+      <Filter>Base\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>c:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(SolutionDir)Others\;$(SolutionDir)Math\;$(SolutionDir)Apps\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base\;c:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(SolutionDir)Others\;$(SolutionDir)Math\;$(SolutionDir)Apps\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -122,7 +122,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>c:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(SolutionDir)Others\;$(SolutionDir)Math\;$(SolutionDir)Apps\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base\;c:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(SolutionDir)Others\;$(SolutionDir)Math\;$(SolutionDir)Apps\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -134,15 +134,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Apps\Player.cpp" />
+    <ClCompile Include="Base\IScene.cpp" />
+    <ClCompile Include="Base\SceneManager.cpp" />
+    <ClCompile Include="Base\DemoScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Others\Keyboard.cpp" />
     <ClCompile Include="Others\Util.cpp" />
     <ClCompile Include="Others\XPad.cpp" />
+    <ClCompile Include="Base\SceneFactory.cpp" />
+    <ClCompile Include="Base\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\Player.h" />
+    <ClInclude Include="Base\DemoScene.h" />
+    <ClInclude Include="Base\IScene.h" />
+    <ClInclude Include="Base\SceneFactory.h" />
+    <ClInclude Include="Base\SceneManager.h" />
+    <ClInclude Include="Base\TitleScene.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Others\FileSystem.h" />

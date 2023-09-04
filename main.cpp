@@ -1,8 +1,8 @@
 #include "DxLib.h"
 
 #include <memory>
-#include "Player.h"
 #include "Keyboard.h"
+#include "SceneManager.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "お団子侍プロトタイプ";
@@ -44,10 +44,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	// ゲームループで使う変数の宣言
-    std::unique_ptr<Player> player = std::make_unique<Player>();
-    player->SetPos({ 0,0 });
-    player->SetRot({ 0,0 });
-    player->SetRad({ 10,0 });
+    std::unique_ptr<SceneManager> sceneM = std::make_unique<SceneManager>();
+    sceneM->Initialize();
 
 	// ゲームループ
 	while (true) {
@@ -58,10 +56,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからプログラムを記述  ----------//
 
 		// 更新処理
-        player->Update();
+        sceneM->Update();
 
 		// 描画処理
-        player->Draw();
+        sceneM->Draw();
+
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
