@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Apps\Enemy.cpp" />
     <ClCompile Include="Apps\Player.cpp" />
     <ClCompile Include="Base\IScene.cpp" />
     <ClCompile Include="Base\SceneManager.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Pad.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Apps\Enemy.h" />
     <ClInclude Include="Apps\Player.h" />
     <ClInclude Include="Base\DemoScene.h" />
     <ClInclude Include="Base\IScene.h" />

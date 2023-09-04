@@ -1,7 +1,7 @@
 #pragma once
 #include "Vector2.h"
 
-class Player
+class Player final
 {
 public:
     // ’è”

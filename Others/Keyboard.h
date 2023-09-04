@@ -2,7 +2,7 @@
 #include <DxLib.h>
 #include <cstdint>
 
-class Keyboard
+class Keyboard final
 {
 public:
     static void Update(void) {
