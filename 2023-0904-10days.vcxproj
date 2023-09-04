@@ -139,6 +139,7 @@
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Others\Keyboard.cpp" />
     <ClCompile Include="Others\Util.cpp" />
+    <ClCompile Include="Pad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\Player.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Others\FileSystem.h" />
     <ClInclude Include="Others\Keyboard.h" />
     <ClInclude Include="Others\Util.h" />
+    <ClInclude Include="Pad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
