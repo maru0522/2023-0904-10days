@@ -73,9 +73,4 @@ namespace Util {
         int32_t startTime_{ 0 }; // 計測開始時間
         float endTime_{ 0.f }; // 到達目標時間
     };
-
-    namespace Log {
-        void PrintOutputWindow(const std::string& str);
-        void PrintExternalText(const std::string& str, const std::experimental::filesystem::path& logTextPath = std::experimental::filesystem::current_path());
-    }
 }

@@ -3,17 +3,12 @@
 #include <random>
 #include <numbers>
 #include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix4.h"
-#include "Transform.h"
-#include "Quaternion.h"
 
 static std::random_device sSeed_gen;
 static std::mt19937 sEngine(sSeed_gen());
 
 namespace Math {
-    constexpr float kPI = std::numbers::pi_v<float>;
+    constexpr float kPI = 3.141592f;
 
     namespace Function {
         inline constexpr float ToRadian(float fDegrees) { return fDegrees * Math::kPI / 180.0f; }
@@ -87,16 +82,6 @@ namespace Math {
         inline T Cotangent(T arg_v) {
             return 1 / std::tan(arg_v);
         }
-
-        // 球面座標系をデカルト座標系に変換する   r:動径r, theta:緯度θ, phi:経度φ
-        Vector3 ToCartesian(float r, float theta, float phi);
-        //Vector3 ToSphericalCoordinate(const Vector3& rectAngularCoordiante);
-
-        // アフィン変換
-        Matrix4 AffinTrans(const Transform& transform);
-        Matrix4 AffinTrans(const Transform& transform, const Axis3& axes);
-        Matrix4 AffinTrans(const Vector3& pos, const Vector3& scale, const Vector3& rotEular);
-        Matrix4 AffinTrans(const Vector3& pos, const Vector3& scale, const Axis3& axes);
     }
 
     namespace Ease {

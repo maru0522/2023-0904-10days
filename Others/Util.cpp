@@ -37,36 +37,6 @@ void Util::Timer::Start(float endTime)
     endTime_ = endTime;
 }
 
-void Util::Log::PrintOutputWindow(const std::string& str)
-{
-    std::string mergeStr{ "PrintLog : " + str + "\n"};
-    std::wstring toWStr{ mergeStr.begin(), mergeStr.end() };
-
-    OutputDebugString(toWStr.c_str());
-}
-
-void Util::Log::PrintExternalText(const std::string& str, const std::experimental::filesystem::path& logTextPath)
-{
-    const std::string fileName{ "mLogs.txt" };
-    std::ifstream ifs{ logTextPath };
-    std::ofstream ofs{};
-
-    if (ifs.is_open()) { // ログテキストを開けた場合
-        ofs.open(fileName, std::ios::app); // ログテキスト展開
-        std::string writeString{ Timer::GetNowDateTime() }; // 現在の日時を文字列型で取得
-        ofs << writeString << " - " << str << std::endl;
-        ofs.close();
-    }
-    else { // ログテキストを開けなかった場合
-        ofs.open(fileName, std::ios::out); // ログテキスト生成
-        std::string createDate{ Timer::GetNowDateTime() }; // 作成日時を文字列型で取得
-        ofs << "This text log was created on " << createDate << std::endl;
-        std::string writeString{ Timer::GetNowDateTime() }; // 現在の日時を文字列型で取得
-        ofs << writeString << " - " << str << std::endl;
-        ofs.close();
-    }
-}
-
 std::string Util::Convert::ToString(const std::wstring& wStr)
 {
     int32_t necessarySize{ WideCharToMultiByte(CP_UTF8, 0, &wStr[0], (int32_t)wStr.size(), NULL, 0, NULL, NULL) };
