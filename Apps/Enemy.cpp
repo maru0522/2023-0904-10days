@@ -7,7 +7,7 @@
 Enemy::Enemy(Player* playerPtr, Stage* stagePtr) : IEntity(stagePtr), playerPtr_(playerPtr)
 {
     // ‘Ò‹@ƒtƒŒ[ƒ€‚ª¶¬‚É‚Î‚ç‚¯‚é‚æ‚¤‚É
-    frameCount_wait_ = Math::Function::Random<int32_t>(5, 95);
+    frameCount_wait_ = Math::Function::Random<int32_t>(5, kMoveInterval_ - 5);
 }
 
 void Enemy::Update(void)
