@@ -53,7 +53,20 @@ void Player::Update(void)
 void Player::Draw(void)
 {
     // ï`âÊ
-    DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
+
+    // ñ≥ìGéûä‘íÜÇ»ÇÁ
+    if (frameCount_invincible_ != 0)
+    {
+        DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::YELLOW, true, 1);
+        DrawFormatString(1000, 20, Util::Color::YELLOW, "ñ≥ìGèÛë‘");
+        DrawFormatString(1000, 40, Util::Color::YELLOW, "frame: %d", kMaxInvincibleFrame_ - frameCount_invincible_);
+    }
+    else
+    {
+        DrawFormatString(1000, 20, Util::Color::WHITE, "í èÌèÛë‘");
+        DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
+    }
+
 }
 
 void Player::OnCollision(void)

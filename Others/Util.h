@@ -12,6 +12,7 @@ namespace Util {
         RED = 0xff0000,
         BLUE = 0x0000ff,
         GREEN = 0x00ff00,
+        YELLOW = 0xffff00,
     };
 
     namespace Convert {
