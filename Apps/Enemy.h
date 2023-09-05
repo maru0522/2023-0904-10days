@@ -35,7 +35,7 @@ public:
     void SetPos(const Vector2& pos) { position_ = pos; }
     void SetRot(const Vector2& rot) { rotation_ = rot; }
     void SetRad(const Vector2& rad) { radius_ = rad; }
-    void SetIsMowDown_(bool isMowDown) { isMowDown_ = isMowDown; }
+    void SetIsMowDown(bool isMowDown) { isMowDown_ = isMowDown; }
 
     // getter
     const Vector2& GetPos(void) { return position_; }

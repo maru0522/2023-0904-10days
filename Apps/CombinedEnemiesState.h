@@ -13,9 +13,6 @@ class ICombinedEnemiesState
 {
 protected:
 	float timer_ = 0;
-	static float radiusTmp_;
-	static Vector2 centorPosTmp_;
-	static Vector2 directionTmp_;
 	float timerMax_ = 30;
 	//
 	CombinedEnemies* enemies_ = nullptr;

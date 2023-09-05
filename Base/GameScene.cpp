@@ -50,6 +50,8 @@ void GameScene::Initialize(void)
     enemy5->SetRot({ 0,0 });
     enemy5->SetRad({ 10,0 });
 
+    EnemyManager::GetInstance().Initialize(player_.get());
+
     EnemyManager::GetInstance().AddEnemy(std::move(enemy1));
     EnemyManager::GetInstance().AddEnemy(std::move(enemy2));
     EnemyManager::GetInstance().AddEnemy(std::move(enemy3));

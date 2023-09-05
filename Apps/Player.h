@@ -37,5 +37,10 @@ private:
     Vector2 vec_move_;
     State state_;
 
+    Vector2 pos4Line_;
+
     PlayerMowAttack attack_;
+
+public:
+    const Vector2& GetDirectionVec() { return pos4Line_; }
 };

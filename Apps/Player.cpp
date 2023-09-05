@@ -38,13 +38,14 @@ void Player::Update(void)
     };
 
     (this->*FuncTbl[(size_t)state_])();
+
+    pos4Line_ = position_ + vec_move_ * 30;
 }
 
 void Player::Draw(void)
 {
     // •`‰æ
-    Vector2 pos4Line = position_ + vec_move_ * 30;
-    DrawLineAA(position_.x, position_.y, pos4Line.x, pos4Line.y, Color::WHITE, 3);
+    DrawLineAA(position_.x, position_.y, pos4Line_.x, pos4Line_.y, Color::WHITE, 3);
 
     // –³“GŽžŠÔ’†‚È‚ç
     if (frameCount_invincible_ != 0)

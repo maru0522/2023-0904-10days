@@ -115,6 +115,9 @@ void Enemy::OnCollision(void)
         // ptrをキャストして復元
         PlayerMowAttack* paPtr = static_cast<PlayerMowAttack*>(other_);
 
+        //薙ぎ払われたフラグオン
+        isMowDown_ = true;
+
         // 攻撃猶予中なら
         if (paPtr->GetFrameCountAttack())
         {
