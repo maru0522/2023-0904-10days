@@ -23,6 +23,50 @@ Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr)
 
 void Player::Update(void)
 {
+    // –³“GŠÔ’†‚È‚ç
+    if (frameCount_invincible_ != 0)
+    {
+        // –³“GŠÔ‚ÌƒtƒŒ[ƒ€ƒJƒEƒ“ƒg‚ğ‰ÁZ
+        Math::Function::LoopIncrement<int32_t>(frameCount_invincible_, 0, kMaxInvincibleFrame_);
+    }
+
+    void (Player:: * FuncTbl[])() =
+    {
+        &Player::MoveUpdate,
+        &Player::MowAttackUpdate,
+    };
+
+    (this->*FuncTbl[(size_t)state_])();
+
+    pos4Line_ = position_ + vec_move_ * 30;
+}
+
+void Player::Draw(void)
+{
+    // •`‰æ
+    DrawLineAA(position_.x, position_.y, pos4Line_.x, pos4Line_.y, Color::WHITE, 3);
+
+    // –³“GŠÔ’†‚È‚ç
+    if (frameCount_invincible_ != 0)
+    {
+        DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::YELLOW, true, 1);
+        DrawFormatString(1000, 20, Util::Color::YELLOW, "–³“Gó‘Ô");
+        DrawFormatString(1000, 40, Util::Color::YELLOW, "frame: %d", kMaxInvincibleFrame_ - frameCount_invincible_);
+    }
+    else
+    {
+        DrawFormatString(1000, 20, Util::Color::WHITE, "’Êíó‘Ô");
+        DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
+    }
+
+    if (state_ == State::ATTACK_MOW)
+    {
+        attack_.Draw();
+    }
+}
+
+void Player::MoveUpdate(void)
+{
     // “ü—Í
     Vector2 input{};
     input += PadStick();

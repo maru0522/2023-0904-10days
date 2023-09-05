@@ -21,41 +21,68 @@ void EnemyManager::MowDownUpdate()
 {
 	//薙ぎ払われた敵がいるか
 	bool isMowDowned = false;
+	uint32_t count = 0;
 
 	for (auto& enemy : enemies_)
 	{
 		if (enemy->GetIsMowDown())
 		{
-			true;
-			break;
+			count++;
+			//二体以上なら
+			if (count >= 2)
+			{
+				isMowDowned = true;
+			}
 		}
 	}
 
-	//インスタンス生成
-	std::unique_ptr<CombinedEnemies>combinedEnemies = std::make_unique<CombinedEnemies>();
-	//取得用の配列
-	std::vector<std::unique_ptr<Enemy>>enemiesL;
-
-	for (auto& enemy : enemies_)
+	if (isMowDowned)
 	{
-		if (enemy->GetIsMowDown())
-		{
-			//くっついた敵の配列に追加する
-			enemiesL.push_back(std::move(enemy));
-		}
-	}
-	//初期化
-	combinedEnemies->Initialize(player_, { 0,-1.0f }, std::move(enemiesL));
+		//インスタンス生成
+		std::unique_ptr<CombinedEnemies>combinedEnemies = std::make_unique<CombinedEnemies>();
+		//取得用の配列
+		std::vector<std::unique_ptr<Enemy>>enemiesL;
 
-	//くっついた敵の塊を管理する配列に追加
-	combinedEnemiesArray_.push_back(std::move(combinedEnemies));
+		for (auto itr = enemies_.begin(); itr != enemies_.end(); itr++)
+		{
+			if (itr->get()->GetIsMowDown())
+			{
+				//追加したのでオフ
+				itr->get()->SetIsMowDown(false);
+				//くっついた敵の配列に追加する
+				enemiesL.push_back(std::move(*itr));
+				//元の配列から削除
+				enemies_.erase(itr);
+
+				//エラー回避
+				if (enemies_.size())
+				{
+					itr = enemies_.begin();
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		//初期化
+		combinedEnemies->Initialize(player_, player_->GetDirectionVec(), std::move(enemiesL));
+
+		//くっついた敵の塊を管理する配列に追加
+		combinedEnemiesArray_.push_back(std::move(combinedEnemies));
+	}
 }
 
 void EnemyManager::Update()
 {
+	//くっつく敵がいるかの更新処理
+	MowDownUpdate();
+
 	for (auto& enemy : enemies_)
 	{
 		enemy->Update();
+		//１フレーム終わったらオフ
+		enemy->SetIsMowDown(false);
 	}
 
 	for (auto& combinedEnemies : combinedEnemiesArray_)

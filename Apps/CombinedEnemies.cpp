@@ -6,12 +6,19 @@
 
 void CombinedEnemies::ChangeState(const std::string& name)
 {
+	std::string nameL = name;
+
 	state_.reset();
-	state_ = ICombinedEnemiesState::GetState(name);
+	state_ = ICombinedEnemiesState::GetState(nameL);
 	state_->SetCombinedEnemies(this);
 	state_->Initialize();
 }
 
+
+CombinedEnemies::~CombinedEnemies()
+{
+	state_.reset();
+}
 
 //-------------------------------------------------
 void CombinedEnemies::Initialize(Player* player, const Vector2& direciton, std::vector<std::unique_ptr<Enemy>>enemies)
@@ -26,10 +33,10 @@ void CombinedEnemies::Initialize(Player* player, const Vector2& direciton, std::
 	}
 
 	//
-	distance_ = (player_->GetPos() - player_->GetPos() + direciton * radius_).Length();
+	distance_ = (player_->GetPos() - player_->GetPos() + direciton.Normalize() * radius_ * ((float)enemiesNum_ / 2.0f)).Length();
 
 	//’†‰›ˆÊ’uŒvŽZ
-	CalcCentorPos(player_->GetPos(), direciton);
+	CalcCentorPos(player_->GetPos(), direciton.Normalize());
 
 	//ƒXƒe[ƒg
 	ChangeState("WAIT");
@@ -50,7 +57,7 @@ void CombinedEnemies::EnemiesPosUpdate()
 	//‘Î‰ž‚µ‚½ˆÊ’u‚É”z’u
 	for (auto& enemy : enemies_)
 	{
-		enemy->SetPos(centorPos_ + direction_ * (centorIndex - (float)count));
+		enemy->SetPos(centorPos_ + direction_ * (centorIndex - (float)count) * (radius_ / (float)enemiesNum_));
 
 		count++;
 	}
@@ -59,10 +66,6 @@ void CombinedEnemies::EnemiesPosUpdate()
 void CombinedEnemies::Update()
 {
 	state_->Update();
-
-	//player‚Ü‚Å‚Ì‹——£‚ðŒvŽZ
-	direction_ = player_->GetPos() - centorPos_;
-
 	//
 	EnemiesPosUpdate();
 }
@@ -79,10 +82,16 @@ void CombinedEnemies::Draw()
 void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 {
 	//“G‚Ì’·‚³‚ð‰ÁŽZ‚µ‚Ä‚¢‚­
-	radius_ += enemy->GetRad().Length();
+	radius_ += enemy->GetRad().Length() * 2.0f;
 	//“o˜^
 	enemies_.push_back(std::move(enemy));
 	//“G‚Ì”‚ð‰ÁŽZ
 	enemiesNum_++;
+}
+
+void CombinedEnemies::DirectionUpdate()
+{
+	//player‚Ü‚Å‚Ì‹——£‚ðŒvŽZ
+	direction_ = (player_->GetPos() - centorPos_).Normalize();
 }
 

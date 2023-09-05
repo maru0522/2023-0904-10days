@@ -107,4 +107,29 @@ void Enemy::OnCollision(void)
             position_ = pushBacked_pos;
         }
     }
+
+    // 接触対象の名称が player_attack
+    if (other_->GetId() == "player_attack")
+    {
+        // ptrをキャストして復元
+        PlayerMowAttack* paPtr = static_cast<PlayerMowAttack*>(other_);
+
+        //薙ぎ払われたフラグオン
+        isMowDown_ = true;
+
+        // 攻撃猶予中なら
+        if (paPtr->GetFrameCountAttack())
+        {
+            // 吹き飛ばされた後の座標 = 座標 + (正規化された吹き飛ぶ方向 * 速度)　※吹き飛ぶ方向 = プレイヤーの移動方向
+            Vector2 blownAway_pos = position_ + paPtr->GetVecMove() * paPtr->GetKBlewDist();
+
+            // ノックバック後の座標 (+ 半径)が、ステージの内側なら座標反映
+            if (blownAway_pos.x - radius_.x > stagePtr_->GetLT().x && blownAway_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
+                blownAway_pos.x + radius_.x < stagePtr_->GetRB().x && blownAway_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+            {
+                // 反映
+                position_ = blownAway_pos;
+            }
+        }
+    }
 }

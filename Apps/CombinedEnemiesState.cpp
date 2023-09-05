@@ -2,11 +2,6 @@
 #include "CombinedEnemies.h"
 
 
-float   ICombinedEnemiesState::radiusTmp_;
-Vector2 ICombinedEnemiesState::centorPosTmp_;
-Vector2 ICombinedEnemiesState::directionTmp_;
-
-
 float lerp(float a, float b, float t)
 {
 	return a + t * (b - a);
@@ -33,16 +28,16 @@ std::unique_ptr<ICombinedEnemiesState> ICombinedEnemiesState::GetState(const std
 		state = std::make_unique<CombinedEnemiesStateStretch>();
 	}
 
-	return state;
+	return std::move(state);
 }
 
 //-------------------------------------------------------------------------------------
 //共通
 void ICombinedEnemiesState::Initialize()
 {
-	radiusTmp_ = enemies_->GetRadius();
-	centorPosTmp_ = enemies_->GetCentorPos();
-	directionTmp_ = enemies_->GetDireciton();
+	enemies_->SetCentorPosTmp();
+	enemies_->SetDirectionTmp();
+	enemies_->SetRadiusTmp();
 }
 
 void ICombinedEnemiesState::TimerUpdate(std::function<void(float)> f)
@@ -71,6 +66,9 @@ void CombinedEnemiesStateMoveWait::Initialize()
 
 void CombinedEnemiesStateMoveWait::Update()
 {
+	//向き更新
+	enemies_->DirectionUpdate();
+
 	TimerUpdate();
 }
 
@@ -79,7 +77,8 @@ void CombinedEnemiesStateMoveWait::Update()
 //縮み中
 void CombinedEnemiesStateShrink::Initialize()
 {
-	nextStateName_ = "STRETCH_WAIT";
+	nextStateName_ = "WAIT_STRETCH";
+	timerMax_ = 10;
 	//基にするパラメータを保存
 	ICombinedEnemiesState::Initialize();
 }
@@ -87,7 +86,7 @@ void CombinedEnemiesStateShrink::Initialize()
 void CombinedEnemiesStateShrink::Update()
 {
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetRadius(lerp(radiusTmp_, 0, t));
+		enemies_->SetRadius(lerp(enemies_->GetRadiusTmp(), 0, t));
 	};
 
 	TimerUpdate(f);
@@ -117,15 +116,20 @@ void CombinedEnemiesStateWaitStretch::Update()
 void CombinedEnemiesStateStretch::Initialize()
 {
 	nextStateName_ = "WAIT";
+	timerMax_ = 10;
 }
 
 void CombinedEnemiesStateStretch::Update()
 {
+	Vector2 centorPT = enemies_->GetCentorPosTmp();
+	Vector2 directionT = enemies_->GetDirectionTmp();
+	float radiusT = enemies_->GetRadiusTmp();
+
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetRadius(lerp(0, radiusTmp_, t));
+		enemies_->SetRadius(lerp(0, enemies_->GetRadiusTmp(), t));
 		//半径分向いてる方向に進む
-		enemies_->SetCentorPos({ lerp(centorPosTmp_.x, centorPosTmp_.x + directionTmp_.x * radiusTmp_, t),
-			lerp(centorPosTmp_.y, centorPosTmp_.y + directionTmp_.y * radiusTmp_, t) });
+		enemies_->SetCentorPos({ lerp(centorPT.x, centorPT.x + directionT.x * radiusT * 2.0f, t),
+			lerp(centorPT.y, centorPT.y + directionT.y * radiusT * 2.0f, t) });
 	};
 
 	TimerUpdate(f);

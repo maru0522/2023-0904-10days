@@ -32,9 +32,15 @@ private:
 	int32_t frameCountMove_; // 移動用フレームカウント
 	//ステート
 	std::unique_ptr<ICombinedEnemiesState>state_ = nullptr;
+	//
+	float radiusTmp_;
+	Vector2 centorPosTmp_;
+	Vector2 directionTmp_;
 
 
 public:
+	~CombinedEnemies();
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -47,11 +53,12 @@ public:
 
 public:
 	void AddEnemy(std::unique_ptr<Enemy>enemy);
+	//向く方向の更新
+	void DirectionUpdate();
 
 private:
 	void EnemiesPosUpdate();
 	void CalcCentorPos(const Vector2& targetPos, const Vector2& direciton);
-	void WaitUpdate();
 
 public:
 	const Vector2& GetCentorPos() { return centorPos_; }
@@ -61,8 +68,15 @@ public:
 	float GetRadius() { return radius_; }
 	void SetRadius(float radius) { radius_ = radius; }
 
+	void SetRadiusTmp() { radiusTmp_ = radius_; }
+	void SetCentorPosTmp() { centorPosTmp_ = centorPos_; }
+	void SetDirectionTmp() { directionTmp_ = direction_; }
+
+	float GetRadiusTmp() { return radiusTmp_; }
+	const Vector2& GetCentorPosTmp() { return centorPosTmp_; }
+	const Vector2& GetDirectionTmp() { return directionTmp_; }
+
 public:
 	void ChangeState(const std::string& name);
-
 };
 
