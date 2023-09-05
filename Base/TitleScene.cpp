@@ -20,7 +20,7 @@ void TitleScene::Update(void)
 
     // debag—pkey-R‚ÅØ‘Ö
 #ifdef _DEBUG
-    if (KEYS::IsTrigger(KEY_INPUT_R))
+    if (KEYS::IsTrigger(KEY_INPUT_SPACE))
     {
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
     }
