@@ -137,6 +137,7 @@
     <ClCompile Include="Apps\Enemy.cpp" />
     <ClCompile Include="Apps\IEntity.cpp" />
     <ClCompile Include="Apps\Player.cpp" />
+    <ClCompile Include="Apps\PlayerAttack.cpp" />
     <ClCompile Include="Apps\Stage.cpp" />
     <ClCompile Include="Base\GameScene.cpp" />
     <ClCompile Include="Base\IScene.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
+    <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Others\Keyboard.cpp" />
     <ClCompile Include="Others\Util.cpp" />
     <ClCompile Include="Base\SceneFactory.cpp" />
@@ -157,6 +159,7 @@
     <ClInclude Include="Apps\Enemy.h" />
     <ClInclude Include="Apps\IEntity.h" />
     <ClInclude Include="Apps\Player.h" />
+    <ClInclude Include="Apps\PlayerAttack.h" />
     <ClInclude Include="Apps\Stage.h" />
     <ClInclude Include="Base\DemoScene.h" />
     <ClInclude Include="Base\GameScene.h" />
@@ -167,6 +170,7 @@
     <ClInclude Include="Base\TitleScene.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Vector2.h" />
+    <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Others\FileSystem.h" />
     <ClInclude Include="Others\Keyboard.h" />
     <ClInclude Include="Others\Util.h" />

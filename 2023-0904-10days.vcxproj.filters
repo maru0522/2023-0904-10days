@@ -19,6 +19,8 @@
     <ClCompile Include="Apps\Stage.cpp" />
     <ClCompile Include="Apps\IEntity.cpp" />
     <ClCompile Include="Apps\CollisionManger.cpp" />
+    <ClCompile Include="Apps\PlayerAttack.cpp" />
+    <ClCompile Include="Math\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\Enemy.h" />
@@ -39,5 +41,7 @@
     <ClInclude Include="Apps\Stage.h" />
     <ClInclude Include="Apps\IEntity.h" />
     <ClInclude Include="Apps\CollisionManger.h" />
+    <ClInclude Include="Apps\PlayerAttack.h" />
+    <ClInclude Include="Math\Vector3.h" />
   </ItemGroup>
 </Project>
