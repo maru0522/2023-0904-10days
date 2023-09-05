@@ -11,7 +11,7 @@ PlayerMowAttack::PlayerMowAttack(CollisionManger* colMPtr) : IEntity(nullptr)
     // Œ`óİ’è
     shape_ = Shape::SQUARE;
     // –¼Ìİ’è
-    id_ = "player_attack";
+    id_ = "player_mowAttack";
 
     radius_ = kRadius_;
 }

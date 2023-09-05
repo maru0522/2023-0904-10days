@@ -108,7 +108,7 @@ void Enemy::OnCollision(void)
     }
 
     // ÚG‘ÎÛ‚Ì–¼Ì‚ª player_attack
-    if (other_->GetId() == "player_attack")
+    if (other_->GetId() == "player_mowAttack")
     {
         // ptr‚ğƒLƒƒƒXƒg‚µ‚Ä•œŒ³
         PlayerMowAttack* paPtr = static_cast<PlayerMowAttack*>(other_);

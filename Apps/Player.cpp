@@ -103,7 +103,7 @@ void Player::MoveUpdate(void)
             vec2_right = { vec3_right.x,vec3_right.y } :
             vec2_right = { -vec3_right.x,-vec3_right.y };
 
-        attack_.Attack(vec_move_, position_ + vec2_right * kAttackCenterDist_);
+        attack_.Attack(vec_move_, position_ + vec2_right * kMowAttackCenterDist_);
         state_ = State::ATTACK_MOW;
     }
 #ifdef _DEBUG
@@ -121,7 +121,7 @@ void Player::MoveUpdate(void)
             vec2_right = { vec3_right.x,vec3_right.y } :
             vec2_right = { -vec3_right.x,-vec3_right.y };
 
-        attack_.Attack(vec_move_, position_ + vec2_right * kAttackCenterDist_);
+        attack_.Attack(vec_move_, position_ + vec2_right * kMowAttackCenterDist_);
         state_ = State::ATTACK_MOW;
     }
 #endif // _DEBUG

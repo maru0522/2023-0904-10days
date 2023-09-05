@@ -29,31 +29,75 @@ void SceneManager::Initialize(SceneFactory::Usage firstScene)
 
 void SceneManager::Update(void)
 {
-    // 次シーンの予約がある
-    if (nextScene_) {
-        // 待機フレーム指定がない && 現在シーンがnullptrではない
-        if (waitFrame_ == 0 && currentScene_) {
-            currentScene_->Finalize();
-            currentScene_.reset();
+    // スローモーションなし
+    if (frameCount_slowMotion_ == 0)
+    {
+        // 次シーンの予約がある
+        if (nextScene_) {
+            // 待機フレーム指定がない && 現在シーンがnullptrではない
+            if (waitFrame_ == 0 && currentScene_) {
+                currentScene_->Finalize();
+                currentScene_.reset();
+            }
+
+            // シーン移行
+            currentScene_ = std::move(nextScene_); // 管理権限移譲
+            nextScene_.reset();                    // 次シーンをnullptrにする
+            currentScene_->Initialize();           // 現在シーンを初期化
         }
 
-        // シーン移行
-        currentScene_ = std::move(nextScene_); // 管理権限移譲
-        nextScene_.reset();                    // 次シーンをnullptrにする
-        currentScene_->Initialize();           // 現在シーンを初期化
+        // 現在シーンUpdate()
+        currentScene_->Update();
+
+
+        // 待機フレームを減少させる
+        waitFrame_--;
+        // 待機フレームは0以下にならない
+        waitFrame_ = (std::max)(waitFrame_, 0);
     }
+    else // スローモーションあり
+    {
+        // 規定値で割ったときの余りが0の時のみ、各種Update()を回す。
+        if (frameCount_slowMotion_ % kSlowFrameRatio_ == 0)
+        {
+            // 次シーンの予約がある
+            if (nextScene_) {
+                // 待機フレーム指定がない && 現在シーンがnullptrではない
+                if (waitFrame_ == 0 && currentScene_) {
+                    currentScene_->Finalize();
+                    currentScene_.reset();
+                }
 
-    // 現在シーンUpdate()
-    currentScene_->Update();
+                // シーン移行
+                currentScene_ = std::move(nextScene_); // 管理権限移譲
+                nextScene_.reset();                    // 次シーンをnullptrにする
+                currentScene_->Initialize();           // 現在シーンを初期化
+            }
+
+            // 現在シーンUpdate()
+            currentScene_->Update();
 
 
-    // 待機フレームを減少させる
-    waitFrame_--;
-    // 待機フレームは0以下にならない
-    waitFrame_ = (std::max)(waitFrame_, 0);
+            // 待機フレームを減少させる
+            waitFrame_--;
+            // 待機フレームは0以下にならない
+            waitFrame_ = (std::max)(waitFrame_, 0);
+        }
+        frameCount_slowMotion_++;
+    }
 }
 
 void SceneManager::Draw(void)
 {
     currentScene_->Draw();
+}
+
+void SceneManager::StartSlowMotion(void)
+{
+    frameCount_slowMotion_++;
+}
+
+void SceneManager::EndSlowMotion(void)
+{
+    frameCount_slowMotion_ = 0;
 }
