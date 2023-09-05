@@ -143,6 +143,8 @@
     <ClCompile Include="Base\ResultScene.cpp" />
     <ClCompile Include="Base\SceneManager.cpp" />
     <ClCompile Include="Base\DemoScene.cpp" />
+    <ClCompile Include="CombinedEnemies.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
@@ -165,6 +167,8 @@
     <ClInclude Include="Base\SceneFactory.h" />
     <ClInclude Include="Base\SceneManager.h" />
     <ClInclude Include="Base\TitleScene.h" />
+    <ClInclude Include="CombinedEnemies.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Others\FileSystem.h" />
