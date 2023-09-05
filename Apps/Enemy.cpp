@@ -5,6 +5,8 @@
 #include "MathUtil.h"
 #include "PlayerAttack.h"
 
+const float Enemy::kMoveSpeed_ = 30.0f;
+
 Enemy::Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr) : IEntity(stagePtr), playerPtr_(playerPtr)
 {
     // 衝突マネージャへの登録
