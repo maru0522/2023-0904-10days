@@ -134,7 +134,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Apps\CollisionManger.cpp" />
+    <ClCompile Include="Apps\CombinedEnemies.cpp" />
+    <ClCompile Include="Apps\CombinedEnemiesState.cpp" />
     <ClCompile Include="Apps\Enemy.cpp" />
+    <ClCompile Include="Apps\EnemyManager.cpp" />
     <ClCompile Include="Apps\IEntity.cpp" />
     <ClCompile Include="Apps\Player.cpp" />
     <ClCompile Include="Apps\Stage.cpp" />
@@ -143,8 +146,6 @@
     <ClCompile Include="Base\ResultScene.cpp" />
     <ClCompile Include="Base\SceneManager.cpp" />
     <ClCompile Include="Base\DemoScene.cpp" />
-    <ClCompile Include="CombinedEnemies.cpp" />
-    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
@@ -156,7 +157,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\CollisionManger.h" />
+    <ClInclude Include="Apps\CombinedEnemies.h" />
+    <ClInclude Include="Apps\CombinedEnemiesState.h" />
     <ClInclude Include="Apps\Enemy.h" />
+    <ClInclude Include="Apps\EnemyManager.h" />
     <ClInclude Include="Apps\IEntity.h" />
     <ClInclude Include="Apps\Player.h" />
     <ClInclude Include="Apps\Stage.h" />
@@ -167,8 +171,6 @@
     <ClInclude Include="Base\SceneFactory.h" />
     <ClInclude Include="Base\SceneManager.h" />
     <ClInclude Include="Base\TitleScene.h" />
-    <ClInclude Include="CombinedEnemies.h" />
-    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Others\FileSystem.h" />
