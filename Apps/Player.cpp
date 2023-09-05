@@ -8,7 +8,7 @@
 
 using namespace Util;
 
-Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr),attack_(colMPtr)
+Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), attack_(colMPtr)
 {
     // 衝突マネージャへの登録
     colMPtr->Register(this);
@@ -43,6 +43,8 @@ void Player::Update(void)
 void Player::Draw(void)
 {
     // 描画
+    Vector2 pos4Line = position_ + vec_move_ * 30;
+    DrawLineAA(position_.x, position_.y, pos4Line.x, pos4Line.y, Color::WHITE, 3);
 
     // 無敵時間中なら
     if (frameCount_invincible_ != 0)
@@ -74,7 +76,7 @@ void Player::MoveUpdate(void)
 #endif // _DEBUG
 
     // 移動方向ベクトルを記録
-    vec_move_ = input;
+    vec_move_ = input.Normalize();
 
     // 移動後の座標 = 座標 + (正規化された入力値 * 速度)
     Vector2 moved_pos = position_ + input.Normalize() * kMoveSpeed_;
@@ -88,8 +90,8 @@ void Player::MoveUpdate(void)
     }
 
     // pad-RでAttack状態に遷移
-    if(PadTriggerLorR()) 
-    { 
+    if (PadTriggerLorR())
+    {
         // 移動方向をvec3に置換しただけ
         Vector3 vec_move = { vec_move_.x,vec_move_.y,0.f };
         // 右方向を出す
@@ -101,13 +103,13 @@ void Player::MoveUpdate(void)
             vec2_right = { vec3_right.x,vec3_right.y } :
             vec2_right = { -vec3_right.x,-vec3_right.y };
 
-        attack_.Attack(vec_move_,position_ + vec2_right * kAttackCenterDist_);
-        state_ = State::ATTACK; 
+        attack_.Attack(vec_move_, position_ + vec2_right * kAttackCenterDist_);
+        state_ = State::ATTACK;
     }
 #ifdef _DEBUG
     // key-SPACEでAttack状態に遷移
-    if (KEYS::IsTrigger(KEY_INPUT_SPACE)) 
-    { 
+    if (KEYS::IsTrigger(KEY_INPUT_SPACE))
+    {
         // 移動方向をvec3に置換しただけ
         Vector3 vec_move = { vec_move_.x,vec_move_.y,0.f };
         // 右方向を出す
