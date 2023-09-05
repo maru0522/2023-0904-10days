@@ -27,6 +27,7 @@ private:
     int32_t frameCount_wait_; // 待機用フレームカウント
     int32_t frameCount_move_; // 移動用フレームカウント
 
+    bool isAlive_{ true }; // 生きてるか
     //薙ぎ払われたか
     bool isMowDown_ = false;
 
@@ -42,5 +43,6 @@ public:
     const Vector2& GetRot(void) { return rotation_; }
     const Vector2& GetRad(void) { return radius_; }
     bool GetIsMowDown() { return isMowDown_; }
+    bool GetIsAlive(void) { return isAlive_; }
 };
 

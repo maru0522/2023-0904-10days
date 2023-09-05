@@ -5,10 +5,12 @@
 #include "Pad.h"
 #include "MathUtil.h"
 #include "Vector3.h"
+#include "Enemy.h"
+#include "SceneManager.h"
 
 using namespace Util;
 
-Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), attack_(colMPtr)
+Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), skewer_(colMPtr)
 {
     // 衝突マネージャへの登録
     colMPtr->Register(this);
@@ -35,6 +37,7 @@ void Player::Update(void)
     {
         &Player::MoveUpdate,
         &Player::MowAttackUpdate,
+        &Player::SkewerAttackUpdate,
     };
 
     (this->*FuncTbl[(size_t)state_])();
@@ -61,7 +64,19 @@ void Player::Draw(void)
 
     if (state_ == State::ATTACK_MOW)
     {
-        attack_.Draw();
+        mow_.Draw();
+    }
+
+    // skewerの為にボタン長押ししてるなら
+    if (frameCount_4Skewer_ > 0)
+    {
+        DrawFormatString(1000, 60, Util::Color::GREEN, "溜め状態");
+        DrawFormatString(1000, 80, Util::Color::GREEN, "frame: %d/%d", frameCount_4Skewer_, kChargeFrame4Skewer_);
+    }
+
+    if (state_ == State::ATTACK_SKEWER)
+    {
+        skewer_.Draw();
     }
 }
 
@@ -82,28 +97,62 @@ void Player::MoveUpdate(void)
         vec_move_ = input.Normalize();
     }
 
-    // 移動後の座標 = 座標 + (正規化された入力値 * 速度)
-    Vector2 moved_pos = position_ + input.Normalize() * kMoveSpeed_;
-
-    // 移動後の座標 (+ 半径)が、ステージの内側なら移動できる
-    if (moved_pos.x - radius_.x > stagePtr_->GetLT().x && moved_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
-        moved_pos.x + radius_.x < stagePtr_->GetRB().x && moved_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+    //　pad-Aを押していない時は移動できる。（串刺しの為に溜めてる時は動けない）
+    if (!PadDownA())
     {
-        // 座標を移動後の値に
-        position_ = moved_pos;
+        // 移動後の座標 = 座標 + (正規化された入力値 * 速度)
+        Vector2 moved_pos = position_ + input.Normalize() * kMoveSpeed_;
+
+        // 移動後の座標 (+ 半径)が、ステージの内側なら移動できる
+        if (moved_pos.x - radius_.x > stagePtr_->GetLT().x && moved_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
+            moved_pos.x + radius_.x < stagePtr_->GetRB().x && moved_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+        {
+            // 座標を移動後の値に
+            position_ = moved_pos;
+        }
     }
 
-    // pad-RでAttack状態に遷移
+
+    // pad-RでAttack_MOW状態に遷移
     if (PadTriggerLorR())
     {
-        attack_.Attack(vec_move_, position_);
+        mow_.Attack(vec_move_, position_);
         state_ = State::ATTACK_MOW;
     }
+    // pad-A長押しでATTACK_SKEWER状態に遷移
+    if (PadDownA())
+    {
+        // ATTACK_SKEWER状態に入るための溜め計測フレームを加算
+        //frameCount_4Skewer_++;
+        frameCount_4Skewer_+= 5; // スローモーション回避のため力技だけど5フレーム分ずつカウントします。
+
+        // ↑仕様上押してからスローモーション開始になるので、最初のフレーム分カウントが +n されてしまうのを簡単に回避する方法思いつきません。
+
+        // スローモーション開始
+        SceneManager::GetInstance()->StartSlowMotion();
+    }
+    else
+    {
+        // 規定フレーム以上触れてたら遷移
+        if (frameCount_4Skewer_ >= kChargeFrame4Skewer_)
+        {
+            // 遷移して初期化
+            skewer_.Attack();
+            state_ = State::ATTACK_SKEWER;
+            frameCount_4Skewer_ = 0;
+        }
+        // 離した瞬間に初期化
+        frameCount_4Skewer_ = 0;
+
+        // スローモーション解除
+        SceneManager::GetInstance()->EndSlowMotion();
+    }
+
 #ifdef _DEBUG
-    // key-SPACEでAttack状態に遷移
+    // key-SPACEでAttack_MOW状態に遷移
     if (KEYS::IsTrigger(KEY_INPUT_SPACE))
     {
-        attack_.Attack(vec_move_, position_);
+        mow_.Attack(vec_move_, position_);
         state_ = State::ATTACK_MOW;
     }
 #endif // _DEBUG
@@ -111,11 +160,39 @@ void Player::MoveUpdate(void)
 
 void Player::MowAttackUpdate(void)
 {
-    if (attack_.GetFrameCountAttack() == 0)
+    if (mow_.GetFrameCountAttack() == 0)
     {
         state_ = State::MOVE;
     }
-    attack_.Update();
+    mow_.Update();
+}
+
+void Player::SkewerAttackUpdate(void)
+{
+    // isSkewerがfalseならMOVE状態へ遷移
+    if (skewer_.GetIsSkewer() == false)
+    {
+        state_ = State::MOVE;
+    }
+
+    // 串刺し1フレーム後の座標 = 座標 + (正規化されたプレイヤーの向き * 速度)
+    Vector2 skewered_pos = position_ + vec_move_ * skewer_.GetKMoveSpeed();
+
+    // 串刺し1フレーム後の座標 (+ 半径)が、ステージの内側なら座標反映
+    if (skewered_pos.x - radius_.x > stagePtr_->GetLT().x && skewered_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
+        skewered_pos.x + radius_.x < stagePtr_->GetRB().x && skewered_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+    {
+        // 反映
+        position_ = skewered_pos;
+    }
+    else // 串刺し1フレーム後の座標 (+ 半径)が、ステージ外なら串刺し状態終了
+    {
+        skewer_.End(); // isSkewerをfalseにする。
+    }
+
+    // 串刺し1フレーム後の座標 + (正規化されたプレイヤーの向き * 規定距離)
+    skewer_.SetPos(skewered_pos + vec_move_ * kSkewerAttackCenterDist_);
+    skewer_.Update();
 }
 
 void Player::OnCollision(void)
@@ -123,6 +200,12 @@ void Player::OnCollision(void)
     // 接触対象の名称が enemy
     if (other_->GetId() == "enemy")
     {
+        // キャストしてenemyとして取得
+        Enemy* enemyPtr = static_cast<Enemy*>(other_);
+
+        // 敵死んでんなら押し戻し要らん
+        if (enemyPtr->GetIsAlive() == false) return;
+
         // 敵から自分までの方向ベクトル
         Vector2 vec_enemy2player = (position_ - other_->GetPos()).Normalize();
 

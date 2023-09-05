@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include <DxLib.h>
 
 SceneManager::~SceneManager(void)
 {
@@ -60,6 +61,7 @@ void SceneManager::Update(void)
         // 規定値で割ったときの余りが0の時のみ、各種Update()を回す。
         if (frameCount_slowMotion_ % kSlowFrameRatio_ == 0)
         {
+            frameCount_slowMotion_++;
             // 次シーンの予約がある
             if (nextScene_) {
                 // 待機フレーム指定がない && 現在シーンがnullptrではない
@@ -83,13 +85,22 @@ void SceneManager::Update(void)
             // 待機フレームは0以下にならない
             waitFrame_ = (std::max)(waitFrame_, 0);
         }
-        frameCount_slowMotion_++;
+        else
+        {
+            frameCount_slowMotion_++;
+        }
+
+        // frameCount_slowMotion_を2つに分けて、必ずインクリメントされるようにしているのは、if文の後につけている場合、無限ループしてしまう可能性があるため。
+        // より具体的には、if文内のUpdate()内でEndSlowMotion()が呼ばれた後に、if文後のインクリメントが実行され、frameCount_slowMotion_が
+        // 常に0にならず無限ループする状態。
     }
 }
 
 void SceneManager::Draw(void)
 {
     currentScene_->Draw();
+    DrawFormatString(0, 100, Util::Color::WHITE, frameCount_slowMotion_ == 0 ? "no slow" : "slow");
+    DrawFormatString(0, 120, Util::Color::WHITE, "slow: %d", frameCount_slowMotion_);
 }
 
 void SceneManager::StartSlowMotion(void)
