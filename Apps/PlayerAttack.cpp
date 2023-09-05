@@ -2,6 +2,7 @@
 #include <DxLib.h>
 #include "Util.h"
 #include "MathUtil.h"
+#include "Vector3.h"
 
 PlayerMowAttack::PlayerMowAttack(CollisionManger* colMPtr) : IEntity(nullptr)
 {
@@ -9,7 +10,7 @@ PlayerMowAttack::PlayerMowAttack(CollisionManger* colMPtr) : IEntity(nullptr)
     colMPtr->Register(this);
 
     // Œ`óİ’è
-    shape_ = Shape::SQUARE;
+    shape_ = Shape::CIRCLE;
     // –¼Ìİ’è
     id_ = "player_mowAttack";
 
@@ -50,5 +51,7 @@ void PlayerMowAttack::Update(void)
 void PlayerMowAttack::Draw(void)
 {
     // UŒ‚”ÍˆÍ‚ğ‰Â‹‰»B
-    DrawBox((int32_t)(position_.x - radius_.x), (int32_t)(position_.y - radius_.y), (int32_t)(position_.x + radius_.x), (int32_t)(position_.y + radius_.y), Util::Color::BLUE, true);
+    //DrawBox((int32_t)(position_.x - radius_.x), (int32_t)(position_.y - radius_.y), (int32_t)(position_.x + radius_.x), (int32_t)(position_.y + radius_.y), Util::Color::BLUE, true);
+    DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::BLUE, true, 1);
+    DrawFormatString((int32_t)position_.x - 5, (int32_t)position_.y - 70, Util::Color::YELLOW, state_dir_ == Direction::RIGHT ? "‰E" : "¶");
 }

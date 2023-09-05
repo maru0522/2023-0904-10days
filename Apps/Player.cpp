@@ -75,8 +75,12 @@ void Player::MoveUpdate(void)
     input.y += KEYS::IsDown(KEY_INPUT_S) - KEYS::IsDown(KEY_INPUT_W);
 #endif // _DEBUG
 
-    // 移動方向ベクトルを記録
-    vec_move_ = input.Normalize();
+    // 入力があった時のみ、ベクトルを記録
+    if (input.IsNonZero())
+    {
+        // 移動方向ベクトルを記録
+        vec_move_ = input.Normalize();
+    }
 
     // 移動後の座標 = 座標 + (正規化された入力値 * 速度)
     Vector2 moved_pos = position_ + input.Normalize() * kMoveSpeed_;
@@ -92,36 +96,14 @@ void Player::MoveUpdate(void)
     // pad-RでAttack状態に遷移
     if (PadTriggerLorR())
     {
-        // 移動方向をvec3に置換しただけ
-        Vector3 vec_move = { vec_move_.x,vec_move_.y,0.f };
-        // 右方向を出す
-        Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec_move); // 認識があってれば、xとyにしか値が入らないはず
-        // vec2の入れ物に移す。
-        Vector2 vec2_right{};
-        // 位置が右か左かで方向を反転
-        attack_.GetDirection() == PlayerMowAttack::Direction::RIGHT ?
-            vec2_right = { vec3_right.x,vec3_right.y } :
-            vec2_right = { -vec3_right.x,-vec3_right.y };
-
-        attack_.Attack(vec_move_, position_ + vec2_right * kMowAttackCenterDist_);
+        attack_.Attack(vec_move_, position_);
         state_ = State::ATTACK_MOW;
     }
 #ifdef _DEBUG
     // key-SPACEでAttack状態に遷移
     if (KEYS::IsTrigger(KEY_INPUT_SPACE))
     {
-        // 移動方向をvec3に置換しただけ
-        Vector3 vec_move = { vec_move_.x,vec_move_.y,0.f };
-        // 右方向を出す
-        Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec_move); // 認識があってれば、xとyにしか値が入らないはず
-        // vec2の入れ物に移す。
-        Vector2 vec2_right{};
-        // 位置が右か左かで方向を反転
-        attack_.GetDirection() == PlayerMowAttack::Direction::RIGHT ?
-            vec2_right = { vec3_right.x,vec3_right.y } :
-            vec2_right = { -vec3_right.x,-vec3_right.y };
-
-        attack_.Attack(vec_move_, position_ + vec2_right * kMowAttackCenterDist_);
+        attack_.Attack(vec_move_, position_);
         state_ = State::ATTACK_MOW;
     }
 #endif // _DEBUG

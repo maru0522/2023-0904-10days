@@ -11,7 +11,7 @@ public:
     const float kKnockbackDist_{ 30.f }; // ノックバック距離
     const int32_t kMaxInvincibleFrame_{ 120 }; // 無敵時間(フレーム)
     const float kPushBackDist_{ 2.f }; // 押し戻す距離
-    const float kMowAttackCenterDist_{ 10.f }; // 薙ぎ払い攻撃の範囲の中心がプレイヤーの中心からどれだけ離れてるか
+    //const float kMowAttackCenterDist_{ 10.f }; // 薙ぎ払い攻撃の範囲の中心がプレイヤーの中心からどれだけ離れてるか
 
     // 定義
     enum class State

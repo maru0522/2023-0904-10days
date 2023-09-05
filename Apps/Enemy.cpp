@@ -116,17 +116,37 @@ void Enemy::OnCollision(void)
         PlayerMowAttack* paPtr = static_cast<PlayerMowAttack*>(other_);
 
         // 攻撃猶予中なら
-        if (paPtr->GetFrameCountAttack())
+        if (paPtr->GetFrameCountAttack()) //** 現状下記の条件式だと、範囲内に中心点はいないけど、半径は触れているみたいな状態が考慮されていない。やり方もわからない。
         {
-            // 吹き飛ばされた後の座標 = 座標 + (正規化された吹き飛ぶ方向 * 速度)　※吹き飛ぶ方向 = プレイヤーの移動方向
-            Vector2 blownAway_pos = position_ + paPtr->GetVecMove() * paPtr->GetKBlewDist();
-
-            // ノックバック後の座標 (+ 半径)が、ステージの内側なら座標反映
-            if (blownAway_pos.x - radius_.x > stagePtr_->GetLT().x && blownAway_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
-                blownAway_pos.x + radius_.x < stagePtr_->GetRB().x && blownAway_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+            // 敵が左右どちらにいるのか。0より大きくて右 && 攻撃範囲が右側
+            if ((position_ - paPtr->GetPos()).Normalize().Cross(paPtr->GetVecMove()) > 0.f &&
+                paPtr->GetDirection() == PlayerMowAttack::Direction::RIGHT)
             {
-                // 反映
-                position_ = blownAway_pos;
+                // 吹き飛ばされた後の座標 = 座標 + (正規化された吹き飛ぶ方向 * 速度)　※吹き飛ぶ方向 = プレイヤーの移動方向
+                Vector2 blownAway_pos = position_ + paPtr->GetVecMove() * paPtr->GetKBlewDist();
+
+                // ノックバック後の座標 (+ 半径)が、ステージの内側なら座標反映
+                if (blownAway_pos.x - radius_.x > stagePtr_->GetLT().x && blownAway_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
+                    blownAway_pos.x + radius_.x < stagePtr_->GetRB().x && blownAway_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+                {
+                    // 反映
+                    position_ = blownAway_pos;
+                }
+            }
+            // 敵が左右どちらにいるのか。0より小さくて左 && 攻撃範囲が左側
+            else if ((position_ - paPtr->GetPos()).Normalize().Cross(paPtr->GetVecMove()) < 0.f &&
+                paPtr->GetDirection() == PlayerMowAttack::Direction::LEFT)
+            {
+                // 吹き飛ばされた後の座標 = 座標 + (正規化された吹き飛ぶ方向 * 速度)　※吹き飛ぶ方向 = プレイヤーの移動方向
+                Vector2 blownAway_pos = position_ + paPtr->GetVecMove() * paPtr->GetKBlewDist();
+
+                // ノックバック後の座標 (+ 半径)が、ステージの内側なら座標反映
+                if (blownAway_pos.x - radius_.x > stagePtr_->GetLT().x && blownAway_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
+                    blownAway_pos.x + radius_.x < stagePtr_->GetRB().x && blownAway_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+                {
+                    // 反映
+                    position_ = blownAway_pos;
+                }
             }
         }
     }
