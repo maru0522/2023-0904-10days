@@ -15,8 +15,16 @@ void Enemy::Update(void)
         // 敵(自身)からプレイヤーまでの方向ベクトル
         Vector2 vec_enemy2player = (playerPtr_->GetPos() - position_).Normalize();
 
-        // 座標に加算
-        position_ += vec_enemy2player * kMoveSpeed_;
+        // 移動後の座標 = 座標 + (正規化された入力値 * 速度)
+        Vector2 moved_pos = position_ + vec_enemy2player * kMoveSpeed_;
+
+        // 移動後の座標 (+ 半径)が、ステージの内側なら移動できる
+        if (moved_pos.x - radius_.x > stagePtr_->GetLT().x && moved_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
+            moved_pos.x + radius_.x < stagePtr_->GetRB().x && moved_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+        {
+            // 座標を移動後の値に
+            position_ = moved_pos;
+        }
     }
 }
 

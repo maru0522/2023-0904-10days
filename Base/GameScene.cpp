@@ -6,6 +6,9 @@
 
 void GameScene::Initialize(void)
 {
+    // (0,0) ~ (1280,720) ‚æ‚è‚¿‚å‚¢“à‘¤
+    stage_->Initialize({ 10,10 }, { 1270,710 });
+
     player_->SetPos({ 300,300 });
     player_->SetRot({ 0,0 });
     player_->SetRad({ 10,0 });
@@ -19,6 +22,8 @@ void GameScene::Initialize(void)
 
 void GameScene::Update(void)
 {
+    stage_->Update();
+
     player_->Update();
     enemy_->Update();
 
@@ -35,6 +40,8 @@ void GameScene::Update(void)
 
 void GameScene::Draw(void)
 {
+    stage_->Draw();
+
     player_->Draw();
     enemy_->Draw();
 

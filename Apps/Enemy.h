@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Player.h"
 #include <cstdint>
+#include "Stage.h"
 
 class Enemy final
 {
@@ -11,7 +12,7 @@ public:
     int32_t kMoveInterval_{ 5 }; // “G‚ª“®‚­‚Ü‚Å‚ÌŠÔŠu(ƒtƒŒ[ƒ€’PˆÊ)
 
     // ŠÖ”
-    Enemy(Player* playerPtr) : playerPtr_(playerPtr) {};
+    Enemy(Player* playerPtr, Stage* stagePtr) : playerPtr_(playerPtr), stagePtr_(stagePtr) {};
     ~Enemy(void) = default;
 
     void Update(void);
@@ -20,6 +21,7 @@ public:
 private:
     // •Ï”
     Player* playerPtr_;
+    Stage* stagePtr_;
 
     Vector2 position_; // ’†S“_
     Vector2 rotation_; // ‰ñ“]Šp(rad)

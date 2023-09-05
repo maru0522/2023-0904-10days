@@ -16,6 +16,7 @@
     <ClCompile Include="Others\Pad.cpp" />
     <ClCompile Include="Base\GameScene.cpp" />
     <ClCompile Include="Base\ResultScene.cpp" />
+    <ClCompile Include="Apps\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\Enemy.h" />
@@ -33,5 +34,6 @@
     <ClInclude Include="Others\Pad.h" />
     <ClInclude Include="Base\GameScene.h" />
     <ClInclude Include="Base\ResultScene.h" />
+    <ClInclude Include="Apps\Stage.h" />
   </ItemGroup>
 </Project>

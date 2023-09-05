@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include "Stage.h"
 
 class Player final
 {
@@ -8,7 +9,7 @@ public:
     float kMoveSpeed_{3.f};
 
     // ŠÖ”
-    Player(void) = default;
+    Player(Stage* stagePtr) :stagePtr_(stagePtr) {}
     ~Player(void) = default;
 
     void Update(void);
@@ -19,6 +20,8 @@ private:
     Vector2 position_; // ’†S“_
     Vector2 rotation_; // ‰ñ“]Šp(rad)
     Vector2 radius_;   // ”¼Œa(xy)¦‰~Œ`‚Ìê‡Ax’l‚Ì‚İ‚ğQÆ‚·‚é
+
+    Stage* stagePtr_;
 
 public:
     // setter
