@@ -13,7 +13,7 @@ public:
 
     // ŠÖ”
     Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr);
-    ~Enemy(void) override = default;
+    ~Enemy(void) override;
 
     void Update(void) override;
     void Draw(void) override;

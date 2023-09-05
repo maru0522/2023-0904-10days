@@ -23,6 +23,11 @@ Enemy::Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr) : IEn
     frameCount_wait_ = Math::Function::Random<int32_t>(5, kMoveInterval_ - 5);
 }
 
+Enemy::~Enemy(void)
+{
+    onCollision_ = nullptr;
+}
+
 void Enemy::Update(void)
 {
     // ¶‚«‚Ä‚é‚È‚ç
