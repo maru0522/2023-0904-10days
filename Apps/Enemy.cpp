@@ -129,6 +129,9 @@ void Enemy::OnCollision(void)
         // ptrをキャストして復元
         PlayerMowAttack* paPtr = static_cast<PlayerMowAttack*>(other_);
 
+        //薙ぎ払われたフラグオン
+        isMowDown_ = true;
+
         // 攻撃猶予中なら
         if (paPtr->GetFrameCountAttack()) //** 現状下記の条件式だと、範囲内に中心点はいないけど、半径は触れているみたいな状態が考慮されていない。やり方もわからない。
         {
