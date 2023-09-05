@@ -1,6 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "IEntity.h"
+#include <DxLib.h>
 
 class Enemy final : public IEntity
 {
@@ -9,7 +10,8 @@ public:
     static const float kMoveSpeed_; // ‘¬“x
     static const int32_t kMoveTimes_{ 5 }; // ‰½‰ñ‚É•ª‚¯‚ÄˆÚ“®‚·‚é‚©(uŠÔˆÚ“®‚ÉŒ©‚¦‚é‚Ì‚ğ”ğ‚¯‚é‚½‚ßj
     static const int32_t kMoveInterval_{ 100 }; // “G‚ª“®‚­‚Ü‚Å‚ÌŠÔŠu(ƒtƒŒ[ƒ€’PˆÊ)
-    float kPushBackDist_{ 2.f }; // ‰Ÿ‚µ–ß‚·‹——£
+    const float kPushBackDist_{ 2.f }; // ‰Ÿ‚µ–ß‚·‹——£
+    const float kPngScale_{ 0.07f }; // ‰æ‘œ‚ÌŠg‘å—¦
 
     // ŠÖ”
     Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr);
@@ -31,17 +33,14 @@ private:
     //“ã‚¬•¥‚í‚ê‚½‚©
     bool isMowDown_ = false;
 
+    // resource
+    int32_t png_enemy_ = LoadGraph("Resources/enemy.png");
+
 public:
     // setter
-    void SetPos(const Vector2& pos) { position_ = pos; }
-    void SetRot(const Vector2& rot) { rotation_ = rot; }
-    void SetRad(const Vector2& rad) { radius_ = rad; }
     void SetIsMowDown(bool isMowDown) { isMowDown_ = isMowDown; }
 
     // getter
-    const Vector2& GetPos(void) { return position_; }
-    const Vector2& GetRot(void) { return rotation_; }
-    const Vector2& GetRad(void) { return radius_; }
     bool GetIsMowDown() { return isMowDown_; }
     bool GetIsAlive(void) { return isAlive_; }
 };

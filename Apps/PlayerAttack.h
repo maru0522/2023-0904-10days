@@ -1,6 +1,7 @@
 #pragma once
 #include "IEntity.h"
 #include "CollisionManger.h"
+#include <DxLib.h>
 
 class PlayerMowAttack :
     public IEntity
@@ -8,8 +9,9 @@ class PlayerMowAttack :
 public:
     // ’è”
     const int32_t kMaxAttackFrame_{ 10 }; // UŒ‚”ÍˆÍ‚Ì—LŒøŠÔ(ƒtƒŒ[ƒ€)
-    const float kBlewDist_{ 50.f }; // ‚«”ò‚Î‚·‹——£
+    const float kBlewDist_{ 80.f }; // ‚«”ò‚Î‚·‹——£
     const Vector2 kRadius_{ 50,0 }; // UŒ‚”ÍˆÍ ¦Œ»İ”»’è‚ª‰~‚È‚Ì‚Åyg‚¢‚Ü‚¹‚ñ
+    const float kPngScale_{ 0.06f }; // ‰æ‘œ‚ÌŠg‘å—¦
 
     // ’è‹`
     enum class Direction
@@ -22,7 +24,7 @@ public:
     PlayerMowAttack(CollisionManger* colMPtr);
     ~PlayerMowAttack(void) override = default;
 
-    void Attack(const Vector2& vec_move, const Vector2& attackRangeCenter);
+    void Attack(const Vector2& vec_move, const Vector2& attackRangeCenter,float rot);
     void Update(void) override;
     void Draw(void) override;
 
@@ -32,6 +34,9 @@ private:
     int32_t frameCount_attack_; // UŒ‚”ÍˆÍ‚Ì”»’è—P—\(ƒtƒŒ[ƒ€)
     Vector2 vec_playerMove_;
     Direction state_dir_;
+
+    // resource
+    int32_t png_mowAttack_ = LoadGraph("Resources/attack_area.png");
 
 public:
     // setter

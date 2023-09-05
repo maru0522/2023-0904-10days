@@ -72,14 +72,20 @@ void Enemy::Draw(void)
         if (frameCount_move_ == 0)
         {
             // ìGÇÃêFÇÕê‘êFÇ…
-            DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::RED, true, 1);
+            //DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::RED, true, 1);
+            SetDrawBright(255, 50, 50);
+            DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, 0.f, png_enemy_,true);
+            SetDrawBright(255, 255, 255);
         }
 
         // êLÇ—èÛë‘Ç»ÇÁ
         if (frameCount_wait_ >= kMoveInterval_)
         {
             // ìGÇÃêFÇÕóŒêFÇ…
-            DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::GREEN, true, 1);
+            //DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::GREEN, true, 1);
+            SetDrawBright(50, 255, 50);
+            DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, 0.f, png_enemy_, true);
+            SetDrawBright(255, 255, 255);
         }
     }
 }
@@ -172,5 +178,4 @@ void Enemy::OnCollision(void)
             }
         }
     }
-
 }

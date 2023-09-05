@@ -8,7 +8,7 @@ class PlayerSkewerAttack :
 public:
     // ’è”
     const Vector2 kRadius_{ 20.f,20.f }; // UŒ‚”ÍˆÍ
-    const float kMoveSpeed_{ 10.f }; // ‘¬“x
+    const float kMoveSpeed_{ 20.f }; // ‘¬“x
 
     // ŠÖ”
     PlayerSkewerAttack(CollisionManger* colMPtr);

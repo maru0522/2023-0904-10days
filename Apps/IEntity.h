@@ -31,7 +31,7 @@ protected:
     Stage* stagePtr_;
 
     Vector2 position_; // ’†S“_
-    Vector2 rotation_; // ‰ñ“]Šp(rad)
+    float rotation_; // ‰ñ“]Šp(rad)
     Vector2 radius_;   // ”¼Œa(xy)¦‰~Œ`‚Ìê‡Ax’l‚Ì‚İ‚ğQÆ‚·‚é
 
     Shape shape_;
@@ -42,14 +42,14 @@ protected:
 public:
     // setter
     void SetPos(const Vector2& pos) { position_ = pos; }
-    void SetRot(const Vector2& rot) { rotation_ = rot; }
+    void SetRot(float rot) { rotation_ = rot; }
     void SetRad(const Vector2& rad) { radius_ = rad; }
     void SetOther(IEntity* other) { other_ = other; }
     void SetOnCollision(const std::function<void(void)> callback_onCollision) { onCollision_ = callback_onCollision; }
 
     // getter
     const Vector2& GetPos(void) { return position_; }
-    const Vector2& GetRot(void) { return rotation_; }
+    float GetRot(void) { return rotation_; }
     const Vector2& GetRad(void) { return radius_; }
     const std::string& GetId(void) { return id_; }
     IEntity* GetOther(void) { return other_; }

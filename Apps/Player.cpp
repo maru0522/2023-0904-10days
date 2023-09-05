@@ -43,6 +43,9 @@ void Player::Update(void)
     (this->*FuncTbl[(size_t)state_])();
 
     pos4Line_ = position_ + vec_move_ * 30;
+
+    rotation_ = std::acos(Vector2(0, -1).Dot(vec_move_));
+    isRight_ = Vector2(0, -1).Cross(vec_move_.Normalize()) > 0.f;
 }
 
 void Player::Draw(void)
@@ -53,14 +56,26 @@ void Player::Draw(void)
     // ñ≥ìGéûä‘íÜÇ»ÇÁ
     if (frameCount_invincible_ != 0)
     {
-        DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::YELLOW, true, 1);
+        //DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::YELLOW, true, 1);
+
+        // playerÇÃï`âÊ
+        SetDrawBright(255, 255, 80); // ïœêFó ÉJÉX
+        isRight_ ?
+            DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true, false) :
+            DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, -rotation_, png_player_, true);
+        SetDrawBright(255, 255, 255);
         DrawFormatString(1000, 20, Util::Color::YELLOW, "ñ≥ìGèÛë‘");
         DrawFormatString(1000, 40, Util::Color::YELLOW, "frame: %d", kMaxInvincibleFrame_ - frameCount_invincible_);
     }
     else
     {
         DrawFormatString(1000, 20, Util::Color::WHITE, "í èÌèÛë‘");
-        DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
+        //DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
+
+        // playerÇÃï`âÊ
+        isRight_ ?
+            DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true, false) :
+            DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, -rotation_, png_player_, true);
     }
 
     if (state_ == State::ATTACK_MOW)
@@ -117,7 +132,7 @@ void Player::MoveUpdate(void)
     // pad-RÇ≈Attack_MOWèÛë‘Ç…ëJà⁄
     if (PadTriggerLorR())
     {
-        mow_.Attack(vec_move_, position_);
+        mow_.Attack(vec_move_, position_,rotation_);
         state_ = State::ATTACK_MOW;
     }
     // pad-Aí∑âüÇµÇ≈ATTACK_SKEWERèÛë‘Ç…ëJà⁄
@@ -153,7 +168,7 @@ void Player::MoveUpdate(void)
     // key-SPACEÇ≈Attack_MOWèÛë‘Ç…ëJà⁄
     if (KEYS::IsTrigger(KEY_INPUT_SPACE))
     {
-        mow_.Attack(vec_move_, position_);
+        mow_.Attack(vec_move_, position_,rotation_);
         state_ = State::ATTACK_MOW;
     }
 #endif // _DEBUG

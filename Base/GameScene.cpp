@@ -12,7 +12,7 @@ void GameScene::Initialize(void)
     stage_->Initialize({ 10,10 }, { 1270,710 });
 
     player_->SetPos({ 300,300 });
-    player_->SetRot({ 0,0 });
+    player_->SetRot(0);
     player_->SetRad({ 10,0 });
 
     float x = Math::Function::Random<float>(100, 1100);
@@ -23,31 +23,31 @@ void GameScene::Initialize(void)
     std::unique_ptr<Enemy>enemy4 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
     std::unique_ptr<Enemy>enemy5 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
     enemy1->SetPos({ x,y });
-    enemy1->SetRot({ 0,0 });
+    enemy1->SetRot(0);
     enemy1->SetRad({ 10,0 });
 
     x = Math::Function::Random<float>(100, 1100);
     y = Math::Function::Random<float>(100, 600);
     enemy2->SetPos({ x,y });
-    enemy2->SetRot({ 0,0 });
+    enemy2->SetRot(0);
     enemy2->SetRad({ 10,0 });
 
     x = Math::Function::Random<float>(100, 1100);
     y = Math::Function::Random<float>(100, 600);
     enemy3->SetPos({ x,y });
-    enemy3->SetRot({ 0,0 });
+    enemy3->SetRot(0);
     enemy3->SetRad({ 10,0 });
 
     x = Math::Function::Random<float>(100, 1100);
     y = Math::Function::Random<float>(100, 600);
     enemy4->SetPos({ x,y });
-    enemy4->SetRot({ 0,0 });
+    enemy4->SetRot(0);
     enemy4->SetRad({ 10,0 });
 
     x = Math::Function::Random<float>(100, 1100);
     y = Math::Function::Random<float>(100, 600);
     enemy5->SetPos({ x,y });
-    enemy5->SetRot({ 0,0 });
+    enemy5->SetRot(0);
     enemy5->SetRad({ 10,0 });
 
     EnemyManager::GetInstance().Initialize(player_.get());

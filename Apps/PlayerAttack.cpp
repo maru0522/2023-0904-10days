@@ -17,10 +17,13 @@ PlayerMowAttack::PlayerMowAttack(CollisionManger* colMPtr) : IEntity(nullptr)
     radius_ = kRadius_;
 }
 
-void PlayerMowAttack::Attack(const Vector2& vec_move, const Vector2& attackRangeCenter)
+void PlayerMowAttack::Attack(const Vector2& vec_move, const Vector2& attackRangeCenter,float rot)
 {
     // playerの進行方向を取得
     vec_playerMove_ = vec_move;
+
+    // 回転角を取得
+    rotation_ = rot;
 
     // 中心地点を取得（毎回、プレイヤーの右位置か左位置か変わるので、取得しなおす必要がある）
     position_ = attackRangeCenter;
@@ -54,4 +57,9 @@ void PlayerMowAttack::Draw(void)
     //DrawBox((int32_t)(position_.x - radius_.x), (int32_t)(position_.y - radius_.y), (int32_t)(position_.x + radius_.x), (int32_t)(position_.y + radius_.y), Util::Color::BLUE, true);
     DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::BLUE, true, 1);
     //DrawFormatString((int32_t)position_.x - 5, (int32_t)position_.y - 70, Util::Color::YELLOW, state_dir_ == Direction::RIGHT ? "右" : "左");
+
+    //// 攻撃の描画
+    //state_dir_ == Direction::RIGHT ?
+    //    DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_mowAttack_, true) :
+    //    DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, -rotation_, png_mowAttack_, true);
 }

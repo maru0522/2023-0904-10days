@@ -3,6 +3,7 @@
 #include "CollisionManger.h"
 #include "PlayerAttack.h"
 #include "PlayerSkewerAttack.h"
+#include <DxLib.h>
 
 class Player final : public IEntity
 {
@@ -16,6 +17,7 @@ public:
     const int32_t kChargeFrame4Skewer_{ 60 }; // 串刺し攻撃の為に、何フレームボタンを押し続けなければならないか
     const float kSkewerAttackCenterDist_{ 35.f }; // 串刺し攻撃の範囲の中心がプレイヤーの中心からどれだけ離れてるか ※仕様上、目標+5frameにする必要がある。
     const int32_t kSlowMotionFrameUntilStart_{ 0 }; // スローモーションが始まるまでのフレーム
+    const float kPngScale_{ 0.07f }; // 画像の拡大
 
     // 定義
     enum class State
@@ -48,6 +50,10 @@ private:
 
     PlayerMowAttack mow_;
     PlayerSkewerAttack skewer_;
+
+    // resources
+    bool isRight_{};
+    int32_t png_player_ = LoadGraph("Resources/player.png");
 
 public:
     const Vector2& GetDirectionVec() { return pos4Line_; }
