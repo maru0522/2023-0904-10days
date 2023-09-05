@@ -24,12 +24,17 @@ void TitleScene::Update(void)
     {
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
     }
+    if (KEYS::IsTrigger(KEY_INPUT_R))
+    {
+        CheckConnectPad();
+    }
 #endif // _DEBUG
 }
 
 void TitleScene::Draw(void)
 {
     DrawFormatString(0, 380, Util::Color::RED, "Scene: TITLE");
-    DrawFormatString(0, 0, Util::Color::RED, "press pad-A or Space");
-    DrawFormatString(0, 20, Util::Color::WHITE, GetPadConnect() ? "pad connected" : "pad isnt connected");
+    DrawFormatString(0, 0, Util::Color::RED, "press pad-A or key-SPACE");
+    DrawFormatString(0, 20, Util::Color::RED, "key-RÇ≈padê⁄ë±çƒämîF");
+    DrawFormatString(0, 40, Util::Color::WHITE, GetPadConnect() ? "pad connected" : "pad isnt connected");
 }
