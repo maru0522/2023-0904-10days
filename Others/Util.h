@@ -70,11 +70,11 @@ namespace Util {
         // ŠÖ”
         void Start(float endTime = 1.0f);
 
-        inline void SetEndTime(float endTime) { endTime_ = endTime; }
+        void SetEndTime(float endTime) { endTime_ = endTime; }
 
-        inline const float GetEndTime(void) { return endTime_; }
-        inline const bool GetIsEnd(void) { return endTime_ < ((GetNowCount<milliseconds>() - startTime_) / 1000.0f); } // endTime < elapsedTime
-        inline const float GetElapsedTime(void) { return float{ (GetNowCount<milliseconds>() - startTime_) / 1000.0f }; }
+        const float GetEndTime(void) { return endTime_; }
+        const bool GetIsEnd(void) { return endTime_ < ((GetNowCount<milliseconds>() - startTime_) / 1000.0f); } // endTime < elapsedTime
+        const float GetElapsedTime(void) { return float{ (GetNowCount<milliseconds>() - startTime_) / 1000.0f }; }
 
     private:
         // •Ï”

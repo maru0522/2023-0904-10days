@@ -8,9 +8,15 @@ SceneManager::~SceneManager(void)
     }
 }
 
-void SceneManager::RequestChangeScene(std::unique_ptr<IScene>& nextScene, int32_t waitFrame)
+SceneManager* SceneManager::GetInstance(void)
 {
-    nextScene_ = std::move(nextScene);
+    static SceneManager sceneM;
+    return &sceneM;
+}
+
+void SceneManager::RequestChangeScene(SceneFactory::Usage nextScene, int32_t waitFrame)
+{
+    nextScene_ = std::move(sceneFactory_->CreateScene(nextScene));
     waitFrame_ = waitFrame;
 }
 

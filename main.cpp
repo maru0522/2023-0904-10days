@@ -3,6 +3,7 @@
 #include <memory>
 #include "Keyboard.h"
 #include "SceneManager.h"
+#include "Pad.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "お団子侍プロトタイプ";
@@ -44,22 +45,23 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	// ゲームループで使う変数の宣言
-    std::unique_ptr<SceneManager> sceneM = std::make_unique<SceneManager>();
-    sceneM->Initialize();
+    SceneManager* sceneMPtr = SceneManager::GetInstance();
+    sceneMPtr->Initialize(SceneFactory::Usage::TITLE);
 
 	// ゲームループ
 	while (true) {
         Keyboard::Update();
+        ControlUpdate();
 
 		// 画面クリア
 		ClearDrawScreen();
 		//---------  ここからプログラムを記述  ----------//
 
 		// 更新処理
-        sceneM->Update();
+        sceneMPtr->Update();
 
 		// 描画処理
-        sceneM->Draw();
+        sceneMPtr->Draw();
 
 
 		//---------  ここまでにプログラムを記述  ---------//

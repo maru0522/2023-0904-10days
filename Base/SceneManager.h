@@ -7,10 +7,9 @@ class SceneManager final
 {
 public:
     // 関数
-    SceneManager(void) : sceneFactory_(std::make_unique<SceneFactory>()) {}
-    ~SceneManager(void);
+    static SceneManager* GetInstance(void);
 
-    void RequestChangeScene(std::unique_ptr<IScene>& nextScene, int32_t waitFrame = 0);
+    void RequestChangeScene(SceneFactory::Usage nextScene, int32_t waitFrame = 0);
 
     void Initialize(SceneFactory::Usage firstScene = SceneFactory::Usage::DEMO);
     void Update(void);
@@ -23,6 +22,10 @@ private:
     std::unique_ptr<IScene> nextScene_{ nullptr };
 
     std::unique_ptr<SceneFactory> sceneFactory_{ nullptr };
-};
 
-// singletonであって然るべきクラスだが、都度staticで呼び出すのがだるいのでしません
+    // singleton
+    SceneManager(void) : sceneFactory_(std::make_unique<SceneFactory>()) {}
+    ~SceneManager(void);
+    SceneManager(const SceneManager&) = delete;
+    SceneManager& operator=(const SceneManager&) = delete;
+};

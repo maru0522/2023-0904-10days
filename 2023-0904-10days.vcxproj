@@ -135,7 +135,9 @@
   <ItemGroup>
     <ClCompile Include="Apps\Enemy.cpp" />
     <ClCompile Include="Apps\Player.cpp" />
+    <ClCompile Include="Base\GameScene.cpp" />
     <ClCompile Include="Base\IScene.cpp" />
+    <ClCompile Include="Base\ResultScene.cpp" />
     <ClCompile Include="Base\SceneManager.cpp" />
     <ClCompile Include="Base\DemoScene.cpp" />
     <ClCompile Include="main.cpp" />
@@ -145,13 +147,15 @@
     <ClCompile Include="Others\Util.cpp" />
     <ClCompile Include="Base\SceneFactory.cpp" />
     <ClCompile Include="Base\TitleScene.cpp" />
-    <ClCompile Include="Pad.cpp" />
+    <ClCompile Include="Others\Pad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\Enemy.h" />
     <ClInclude Include="Apps\Player.h" />
     <ClInclude Include="Base\DemoScene.h" />
+    <ClInclude Include="Base\GameScene.h" />
     <ClInclude Include="Base\IScene.h" />
+    <ClInclude Include="Base\ResultScene.h" />
     <ClInclude Include="Base\SceneFactory.h" />
     <ClInclude Include="Base\SceneManager.h" />
     <ClInclude Include="Base\TitleScene.h" />
@@ -160,7 +164,7 @@
     <ClInclude Include="Others\FileSystem.h" />
     <ClInclude Include="Others\Keyboard.h" />
     <ClInclude Include="Others\Util.h" />
-    <ClInclude Include="Pad.h" />
+    <ClInclude Include="Others\Pad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

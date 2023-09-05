@@ -6,6 +6,8 @@
 // 新規Sceneクラスを作るごとに、こことCreateScene()に追記していくこと
 #include "DemoScene.h"
 #include "TitleScene.h"
+#include "GameScene.h"
+#include "ResultScene.h"
 
 class SceneFactory final
 {
@@ -15,6 +17,8 @@ public:
     {
         DEMO,
         TITLE,
+        GAME,
+        RESULT,
     };
 
     // 関数

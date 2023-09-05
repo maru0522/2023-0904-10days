@@ -1,112 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Apps">
-      <UniqueIdentifier>{db503d73-72d4-4f84-8354-eb59dc2f8ac9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Math">
-      <UniqueIdentifier>{43da9c5b-8864-43de-80dd-4afcee7edfbb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Others">
-      <UniqueIdentifier>{78330784-7f01-4234-9e1a-8735059c21bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Base">
-      <UniqueIdentifier>{29b816a5-f105-4122-be03-969fb01b03c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Base\Scene">
-      <UniqueIdentifier>{9c8e7d34-95b1-42b8-bb20-17e3527340f6}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Apps\Enemy.cpp" />
+    <ClCompile Include="Apps\Player.cpp" />
+    <ClCompile Include="Base\IScene.cpp" />
+    <ClCompile Include="Base\SceneManager.cpp" />
+    <ClCompile Include="Base\DemoScene.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math\MathUtil.cpp" />
+    <ClCompile Include="Math\Vector2.cpp" />
+    <ClCompile Include="Others\Keyboard.cpp" />
+    <ClCompile Include="Others\Util.cpp" />
+    <ClCompile Include="Base\SceneFactory.cpp" />
+    <ClCompile Include="Base\TitleScene.cpp" />
+    <ClCompile Include="Others\Pad.cpp" />
+    <ClCompile Include="Base\GameScene.cpp" />
+    <ClCompile Include="Base\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\Player.cpp">
-      <Filter>Apps</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\MathUtil.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector2.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Others\Util.cpp">
-      <Filter>Others</Filter>
-    </ClCompile>
-    <ClCompile Include="Others\Keyboard.cpp">
-      <Filter>Others</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\SceneManager.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\IScene.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\SceneFactory.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\DemoScene.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Others\XPad.cpp">
-      <Filter>Others</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\TitleScene.cpp">
-      <Filter>Base\Scene</Filter>
-    <ClCompile Include="Pad.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Apps\Player.h">
-      <Filter>Apps</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\MathUtil.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector2.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Others\FileSystem.h">
-      <Filter>Others</Filter>
-    </ClInclude>
-    <ClInclude Include="Others\Util.h">
-      <Filter>Others</Filter>
-    </ClInclude>
-    <ClInclude Include="Others\Keyboard.h">
-      <Filter>Others</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\SceneManager.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\IScene.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\SceneFactory.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\DemoScene.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Others\XPad.h">
-      <Filter>Others</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\TitleScene.h">
-      <Filter>Base\Scene</Filter>
-    <ClInclude Include="Pad.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
+    <ClInclude Include="Apps\Enemy.h" />
+    <ClInclude Include="Apps\Player.h" />
+    <ClInclude Include="Base\DemoScene.h" />
+    <ClInclude Include="Base\IScene.h" />
+    <ClInclude Include="Base\SceneFactory.h" />
+    <ClInclude Include="Base\SceneManager.h" />
+    <ClInclude Include="Base\TitleScene.h" />
+    <ClInclude Include="Math\MathUtil.h" />
+    <ClInclude Include="Math\Vector2.h" />
+    <ClInclude Include="Others\FileSystem.h" />
+    <ClInclude Include="Others\Keyboard.h" />
+    <ClInclude Include="Others\Util.h" />
+    <ClInclude Include="Others\Pad.h" />
+    <ClInclude Include="Base\GameScene.h" />
+    <ClInclude Include="Base\ResultScene.h" />
   </ItemGroup>
 </Project>
