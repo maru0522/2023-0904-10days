@@ -8,7 +8,7 @@ public:
     // 定数
     float kMoveSpeed_{30.f}; // 速度
     int32_t kMoveTimes_{ 5 }; // 何回に分けて移動するか(瞬間移動に見えるのを避けるため）
-    int32_t kMoveInterval_{ 180 }; // 敵が動くまでの間隔(フレーム単位)
+    int32_t kMoveInterval_{ 100 }; // 敵が動くまでの間隔(フレーム単位)
 
     // 関数
     Enemy(Player* playerPtr, Stage* stagePtr);
