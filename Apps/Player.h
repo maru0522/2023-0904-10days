@@ -1,20 +1,26 @@
 #pragma once
 #include "IEntity.h"
+#include "CollisionManger.h"
 
 class Player final : public IEntity
 {
 public:
     // 定数
-    float kMoveSpeed_{3.f};
+    float kMoveSpeed_{ 3.f }; // 速度
+    float kKnockbackDist_{ 30.f }; // ノックバック距離
+    int32_t kMaxInvincibleFrame_{ 120 }; // 無敵時間(フレーム)
+    float kPushBackDist_{ 2.f }; // 押し戻す距離
 
     // 関数
-    Player(Stage* stagePtr) : IEntity(stagePtr) {}
+    Player(CollisionManger* colMPtr, Stage* stagePtr);
     ~Player(void) override = default;
 
     void Update(void);
     void Draw(void);
 
 private:
-    // 変数
-};
+    void OnCollision(void);
 
+    // 変数
+    int32_t frameCount_invincible_;
+};

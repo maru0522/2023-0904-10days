@@ -4,8 +4,18 @@
 #include "Util.h"
 #include "MathUtil.h"
 
-Enemy::Enemy(Player* playerPtr, Stage* stagePtr) : IEntity(stagePtr), playerPtr_(playerPtr)
+Enemy::Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr) : IEntity(stagePtr), playerPtr_(playerPtr)
 {
+    // 衝突マネージャへの登録
+    colMPtr->Register(this);
+
+    // 形状設定
+    shape_ = Shape::CIRCLE;
+    // 名称設定
+    id_ = "enemy";
+    // 衝突callback反映
+    onCollision_ = std::bind(&Enemy::OnCollision, this);
+
     // 待機フレームが生成時にばらけるように
     frameCount_wait_ = Math::Function::Random<int32_t>(5, kMoveInterval_ - 5);
 }
@@ -49,11 +59,50 @@ void Enemy::Draw(void)
         // 敵の色は赤色に
         DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::RED, true, 1);
     }
-    
+
     // 伸び状態なら
     if (frameCount_wait_ >= kMoveInterval_)
     {
         // 敵の色は緑色に
         DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::GREEN, true, 1);
+    }
+}
+
+void Enemy::OnCollision(void)
+{
+    // 接触対象の名称が enemy
+    if (other_->GetId() == "enemy")
+    {
+        // 他の敵から自分までの方向ベクトル
+        Vector2 vec_enemy2enemyself = (position_ - other_->GetPos()).Normalize();
+
+        // 押し戻し後の座標 = 座標 + (正規化された押し戻し方向 * 速度)
+        Vector2 pushBacked_pos = position_ + vec_enemy2enemyself * kPushBackDist_;
+
+        // ノックバック後の座標 (+ 半径)が、ステージの内側なら座標反映
+        if (pushBacked_pos.x - radius_.x > stagePtr_->GetLT().x && pushBacked_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
+            pushBacked_pos.x + radius_.x < stagePtr_->GetRB().x && pushBacked_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+        {
+            // 反映
+            position_ = pushBacked_pos;
+        }
+    }
+
+    // 接触対象の名称が player
+    if (other_->GetId() == "player")
+    {
+        // playerから自分までの方向ベクトル
+        Vector2 vec_player2enemy = (position_ - other_->GetPos()).Normalize();
+
+        // 押し戻し後の座標 = 座標 + (正規化された押し戻し方向 * 速度)
+        Vector2 pushBacked_pos = position_ + vec_player2enemy * kPushBackDist_;
+
+        // ノックバック後の座標 (+ 半径)が、ステージの内側なら座標反映
+        if (pushBacked_pos.x - radius_.x > stagePtr_->GetLT().x && pushBacked_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
+            pushBacked_pos.x + radius_.x < stagePtr_->GetRB().x && pushBacked_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+        {
+            // 反映
+            position_ = pushBacked_pos;
+        }
     }
 }

@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Apps\CollisionManger.cpp" />
     <ClCompile Include="Apps\Enemy.cpp" />
     <ClCompile Include="Apps\IEntity.cpp" />
     <ClCompile Include="Apps\Player.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Others\Pad.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Apps\CollisionManger.h" />
     <ClInclude Include="Apps\Enemy.h" />
     <ClInclude Include="Apps\IEntity.h" />
     <ClInclude Include="Apps\Player.h" />

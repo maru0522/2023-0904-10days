@@ -2,10 +2,19 @@
 #include "Vector2.h"
 #include <cstdint>
 #include "Stage.h"
+#include <string>
+#include <functional>
 
 class IEntity
 {
 public:
+    // íËã`
+    enum class Shape
+    {
+        CIRCLE,
+        SQUARE,
+    };
+
     // ä÷êî
     IEntity(Stage* stagePtr) : stagePtr_(stagePtr) {};
     virtual ~IEntity(void) = default;
@@ -13,6 +22,10 @@ public:
     virtual void Update(void) = 0;
     virtual void Draw(void) = 0;
 
+    void OnCollision(void)
+    {
+        if (onCollision_) { onCollision_(); }
+    }
 protected:
     // ïœêî
     Stage* stagePtr_;
@@ -21,15 +34,26 @@ protected:
     Vector2 rotation_; // âÒì]äp(rad)
     Vector2 radius_;   // îºåa(xy)Å¶â~å`ÇÃèÍçáÅAxílÇÃÇ›ÇéQè∆Ç∑ÇÈ
 
+    Shape shape_;
+    std::string id_;
+    IEntity* other_;
+    std::function<void(void)> onCollision_;
+
 public:
     // setter
     void SetPos(const Vector2& pos) { position_ = pos; }
     void SetRot(const Vector2& rot) { rotation_ = rot; }
     void SetRad(const Vector2& rad) { radius_ = rad; }
+    void SetOther(IEntity* other) { other_ = other; }
+    void SetOnCollision(const std::function<void(void)> callback_onCollision) { onCollision_ = callback_onCollision; }
 
     // getter
     const Vector2& GetPos(void) { return position_; }
     const Vector2& GetRot(void) { return rotation_; }
     const Vector2& GetRad(void) { return radius_; }
+    const std::string& GetId(void) { return id_; }
+    IEntity* GetOther(void) { return other_; }
+    Shape GetShape(void) { return shape_; }
+    const std::function<void(void)>& GetOnCollision(void) { return onCollision_; }
 };
 

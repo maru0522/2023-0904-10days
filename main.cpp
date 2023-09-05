@@ -58,6 +58,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからプログラムを記述  ----------//
 
 		// 更新処理
+        CollisionManger::GetInstance()->Update();
         sceneMPtr->Update();
 
 		// 描画処理
