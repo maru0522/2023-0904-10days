@@ -9,7 +9,7 @@ public:
     // 定数
     const int32_t kMaxAttackFrame_{ 10 }; // 攻撃範囲の有効時間(フレーム)
     const float kBlewDist_{ 50.f }; // 吹き飛ばす距離
-    const Vector2 kRadius_{ 10,10 }; // 攻撃範囲
+    const Vector2 kRadius_{ 50,0 }; // 攻撃範囲 ※現在判定が円なのでy使いません
 
     // 定義
     enum class Direction
