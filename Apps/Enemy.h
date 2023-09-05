@@ -8,11 +8,12 @@ class Enemy final
 {
 public:
     // 定数
-    float kMoveSpeed_{3.f};
-    int32_t kMoveInterval_{ 5 }; // 敵が動くまでの間隔(フレーム単位)
+    float kMoveSpeed_{30.f}; // 速度
+    int32_t kMoveTimes_{ 5 }; // 何回に分けて移動するか(瞬間移動に見えるのを避けるため）
+    int32_t kMoveInterval_{ 180 }; // 敵が動くまでの間隔(フレーム単位)
 
     // 関数
-    Enemy(Player* playerPtr, Stage* stagePtr) : playerPtr_(playerPtr), stagePtr_(stagePtr) {};
+    Enemy(Player* playerPtr, Stage* stagePtr);
     ~Enemy(void) = default;
 
     void Update(void);
@@ -27,7 +28,8 @@ private:
     Vector2 rotation_; // 回転角(rad)
     Vector2 radius_;   // 半径(xy)※円形の場合、x値のみを参照する
 
-    int32_t frameCount_;
+    int32_t frameCount_wait_; // 待機用フレームカウント
+    int32_t frameCount_move_; // 移動用フレームカウント
 
 public:
     // setter

@@ -4,19 +4,32 @@
 #include "Util.h"
 #include "MathUtil.h"
 
+Enemy::Enemy(Player* playerPtr, Stage* stagePtr) : playerPtr_(playerPtr), stagePtr_(stagePtr)
+{
+    // 待機フレームが生成時にばらけるように
+    frameCount_wait_ = Math::Function::Random<int32_t>(5, 95);
+}
+
 void Enemy::Update(void)
 {
-    // frame加算
-    Math::Function::LoopIncrement<int32_t>(frameCount_, 0, kMoveInterval_);
-
-    // frameが規定値以上なら動く
-    if (frameCount_ >= kMoveInterval_)
+    // 移動用フレームが0なら(移動が終わったなら)
+    if (frameCount_move_ == 0)
     {
+        // 待機用frameを加算（縮み状態）
+        Math::Function::LoopIncrement<int32_t>(frameCount_wait_, 0, kMoveInterval_);
+    }
+
+    // 待機用フレームが規定値以上なら（待機が終わったなら）
+    if (frameCount_wait_ >= kMoveInterval_)
+    {
+        // 移動用フレームを加算（伸び状態）※最大フレーム数は移動回数と同じ
+        Math::Function::LoopIncrement<int32_t>(frameCount_move_, 0, kMoveTimes_);
+
         // 敵(自身)からプレイヤーまでの方向ベクトル
         Vector2 vec_enemy2player = (playerPtr_->GetPos() - position_).Normalize();
 
-        // 移動後の座標 = 座標 + (正規化された入力値 * 速度)
-        Vector2 moved_pos = position_ + vec_enemy2player * kMoveSpeed_;
+        // 移動後の座標 = 座標 + (正規化された入力値 * (速度/移動回数))
+        Vector2 moved_pos = position_ + vec_enemy2player * (kMoveSpeed_ / (float)kMoveTimes_);
 
         // 移動後の座標 (+ 半径)が、ステージの内側なら移動できる
         if (moved_pos.x - radius_.x > stagePtr_->GetLT().x && moved_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
@@ -30,5 +43,17 @@ void Enemy::Update(void)
 
 void Enemy::Draw(void)
 {
-    DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::GREEN, true, 1);
+    // 縮み状態なら
+    if (frameCount_move_ == 0)
+    {
+        // 敵の色は赤色に
+        DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::RED, true, 1);
+    }
+    
+    // 伸び状態なら
+    if (frameCount_wait_ >= kMoveInterval_)
+    {
+        // 敵の色は緑色に
+        DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::GREEN, true, 1);
+    }
 }
