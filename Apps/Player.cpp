@@ -8,7 +8,7 @@
 
 using namespace Util;
 
-Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr),attack_(colMPtr)
+Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), attack_(colMPtr)
 {
     // 衝突マネージャへの登録
     colMPtr->Register(this);
@@ -34,7 +34,7 @@ void Player::Update(void)
     void (Player:: * FuncTbl[])() =
     {
         &Player::MoveUpdate,
-        &Player::AttackUpdate,
+        &Player::MowAttackUpdate,
     };
 
     (this->*FuncTbl[(size_t)state_])();
@@ -43,6 +43,8 @@ void Player::Update(void)
 void Player::Draw(void)
 {
     // 描画
+    Vector2 pos4Line = position_ + vec_move_ * 30;
+    DrawLineAA(position_.x, position_.y, pos4Line.x, pos4Line.y, Color::WHITE, 3);
 
     // 無敵時間中なら
     if (frameCount_invincible_ != 0)
@@ -57,7 +59,7 @@ void Player::Draw(void)
         DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
     }
 
-    if (state_ == State::ATTACK)
+    if (state_ == State::ATTACK_MOW)
     {
         attack_.Draw();
     }
@@ -74,7 +76,7 @@ void Player::MoveUpdate(void)
 #endif // _DEBUG
 
     // 移動方向ベクトルを記録
-    vec_move_ = input;
+    vec_move_ = input.Normalize();
 
     // 移動後の座標 = 座標 + (正規化された入力値 * 速度)
     Vector2 moved_pos = position_ + input.Normalize() * kMoveSpeed_;
@@ -88,8 +90,8 @@ void Player::MoveUpdate(void)
     }
 
     // pad-RでAttack状態に遷移
-    if(PadTriggerLorR()) 
-    { 
+    if (PadTriggerLorR())
+    {
         // 移動方向をvec3に置換しただけ
         Vector3 vec_move = { vec_move_.x,vec_move_.y,0.f };
         // 右方向を出す
@@ -97,35 +99,35 @@ void Player::MoveUpdate(void)
         // vec2の入れ物に移す。
         Vector2 vec2_right{};
         // 位置が右か左かで方向を反転
-        attack_.GetDirection() == PlayerAttack::Direction::RIGHT ?
-            vec2_right = { vec3_right.x,vec3_right.y } :
-            vec2_right = { -vec3_right.x,-vec3_right.y };
-
-        attack_.Attack(vec_move_,position_ + vec2_right * kAttackCenterDist_);
-        state_ = State::ATTACK; 
-    }
-#ifdef _DEBUG
-    // key-SPACEでAttack状態に遷移
-    if (KEYS::IsTrigger(KEY_INPUT_SPACE)) 
-    { 
-        // 移動方向をvec3に置換しただけ
-        Vector3 vec_move = { vec_move_.x,vec_move_.y,0.f };
-        // 右方向を出す
-        Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec_move); // 認識があってれば、xとyにしか値が入らないはず
-        // vec2の入れ物に移す。
-        Vector2 vec2_right{};
-        // 位置が右か左かで方向を反転
-        attack_.GetDirection() == PlayerAttack::Direction::RIGHT ?
+        attack_.GetDirection() == PlayerMowAttack::Direction::RIGHT ?
             vec2_right = { vec3_right.x,vec3_right.y } :
             vec2_right = { -vec3_right.x,-vec3_right.y };
 
         attack_.Attack(vec_move_, position_ + vec2_right * kAttackCenterDist_);
-        state_ = State::ATTACK;
+        state_ = State::ATTACK_MOW;
+    }
+#ifdef _DEBUG
+    // key-SPACEでAttack状態に遷移
+    if (KEYS::IsTrigger(KEY_INPUT_SPACE))
+    {
+        // 移動方向をvec3に置換しただけ
+        Vector3 vec_move = { vec_move_.x,vec_move_.y,0.f };
+        // 右方向を出す
+        Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec_move); // 認識があってれば、xとyにしか値が入らないはず
+        // vec2の入れ物に移す。
+        Vector2 vec2_right{};
+        // 位置が右か左かで方向を反転
+        attack_.GetDirection() == PlayerMowAttack::Direction::RIGHT ?
+            vec2_right = { vec3_right.x,vec3_right.y } :
+            vec2_right = { -vec3_right.x,-vec3_right.y };
+
+        attack_.Attack(vec_move_, position_ + vec2_right * kAttackCenterDist_);
+        state_ = State::ATTACK_MOW;
     }
 #endif // _DEBUG
 }
 
-void Player::AttackUpdate(void)
+void Player::MowAttackUpdate(void)
 {
     if (attack_.GetFrameCountAttack() == 0)
     {

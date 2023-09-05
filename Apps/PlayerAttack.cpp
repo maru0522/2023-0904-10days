@@ -3,7 +3,7 @@
 #include "Util.h"
 #include "MathUtil.h"
 
-PlayerAttack::PlayerAttack(CollisionManger* colMPtr) : IEntity(nullptr)
+PlayerMowAttack::PlayerMowAttack(CollisionManger* colMPtr) : IEntity(nullptr)
 {
     // 衝突マネージャへの登録
     colMPtr->Register(this);
@@ -16,7 +16,7 @@ PlayerAttack::PlayerAttack(CollisionManger* colMPtr) : IEntity(nullptr)
     radius_ = kRadius_;
 }
 
-void PlayerAttack::Attack(const Vector2& vec_move, const Vector2& attackRangeCenter)
+void PlayerMowAttack::Attack(const Vector2& vec_move, const Vector2& attackRangeCenter)
 {
     // playerの進行方向を取得
     vec_playerMove_ = vec_move;
@@ -37,7 +37,7 @@ void PlayerAttack::Attack(const Vector2& vec_move, const Vector2& attackRangeCen
         state_dir_ = Direction::RIGHT;
 }
 
-void PlayerAttack::Update(void)
+void PlayerMowAttack::Update(void)
 {
     // 攻撃中なら
     if (frameCount_attack_)
@@ -47,7 +47,7 @@ void PlayerAttack::Update(void)
     }
 }
 
-void PlayerAttack::Draw(void)
+void PlayerMowAttack::Draw(void)
 {
     // 攻撃範囲を可視化。
     DrawBox((int32_t)(position_.x - radius_.x), (int32_t)(position_.y - radius_.y), (int32_t)(position_.x + radius_.x), (int32_t)(position_.y + radius_.y), Util::Color::BLUE, true);
