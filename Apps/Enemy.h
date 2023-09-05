@@ -1,10 +1,8 @@
 #pragma once
-#include "Vector2.h"
 #include "Player.h"
-#include <cstdint>
-#include "Stage.h"
+#include "IEntity.h"
 
-class Enemy final
+class Enemy final : public IEntity
 {
 public:
     // 定数
@@ -14,7 +12,7 @@ public:
 
     // 関数
     Enemy(Player* playerPtr, Stage* stagePtr);
-    ~Enemy(void) = default;
+    ~Enemy(void) override = default;
 
     void Update(void);
     void Draw(void);
@@ -22,11 +20,6 @@ public:
 private:
     // 変数
     Player* playerPtr_;
-    Stage* stagePtr_;
-
-    Vector2 position_; // 中心点
-    Vector2 rotation_; // 回転角(rad)
-    Vector2 radius_;   // 半径(xy)※円形の場合、x値のみを参照する
 
     int32_t frameCount_wait_; // 待機用フレームカウント
     int32_t frameCount_move_; // 移動用フレームカウント

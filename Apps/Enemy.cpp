@@ -4,7 +4,7 @@
 #include "Util.h"
 #include "MathUtil.h"
 
-Enemy::Enemy(Player* playerPtr, Stage* stagePtr) : playerPtr_(playerPtr), stagePtr_(stagePtr)
+Enemy::Enemy(Player* playerPtr, Stage* stagePtr) : IEntity(stagePtr), playerPtr_(playerPtr)
 {
     // ‘Ò‹@ƒtƒŒ[ƒ€‚ª¶¬‚É‚Î‚ç‚¯‚é‚æ‚¤‚É
     frameCount_wait_ = Math::Function::Random<int32_t>(5, 95);

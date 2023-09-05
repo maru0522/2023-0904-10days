@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Apps\Enemy.cpp" />
+    <ClCompile Include="Apps\IEntity.cpp" />
     <ClCompile Include="Apps\Player.cpp" />
     <ClCompile Include="Apps\Stage.cpp" />
     <ClCompile Include="Base\GameScene.cpp" />
@@ -152,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\Enemy.h" />
+    <ClInclude Include="Apps\IEntity.h" />
     <ClInclude Include="Apps\Player.h" />
     <ClInclude Include="Apps\Stage.h" />
     <ClInclude Include="Base\DemoScene.h" />
