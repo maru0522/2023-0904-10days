@@ -111,7 +111,7 @@ void Enemy::OnCollision(void)
     if (other_->GetId() == "player_attack")
     {
         // ptr‚ğƒLƒƒƒXƒg‚µ‚Ä•œŒ³
-        PlayerAttack* paPtr = static_cast<PlayerAttack*>(other_);
+        PlayerMowAttack* paPtr = static_cast<PlayerMowAttack*>(other_);
 
         // UŒ‚—P—\’†‚È‚ç
         if (paPtr->GetFrameCountAttack())

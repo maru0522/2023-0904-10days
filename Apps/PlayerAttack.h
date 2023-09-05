@@ -2,7 +2,7 @@
 #include "IEntity.h"
 #include "CollisionManger.h"
 
-class PlayerAttack :
+class PlayerMowAttack :
     public IEntity
 {
 public:
@@ -19,8 +19,8 @@ public:
     };
 
     // ä÷êî
-    PlayerAttack(CollisionManger* colMPtr);
-    ~PlayerAttack(void) override = default;
+    PlayerMowAttack(CollisionManger* colMPtr);
+    ~PlayerMowAttack(void) override = default;
 
     void Attack(const Vector2& vec_move, const Vector2& attackRangeCenter);
     void Update(void) override;

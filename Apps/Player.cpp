@@ -34,7 +34,7 @@ void Player::Update(void)
     void (Player:: * FuncTbl[])() =
     {
         &Player::MoveUpdate,
-        &Player::AttackUpdate,
+        &Player::MowAttackUpdate,
     };
 
     (this->*FuncTbl[(size_t)state_])();
@@ -59,7 +59,7 @@ void Player::Draw(void)
         DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
     }
 
-    if (state_ == State::ATTACK)
+    if (state_ == State::ATTACK_MOW)
     {
         attack_.Draw();
     }
@@ -99,12 +99,12 @@ void Player::MoveUpdate(void)
         // vec2の入れ物に移す。
         Vector2 vec2_right{};
         // 位置が右か左かで方向を反転
-        attack_.GetDirection() == PlayerAttack::Direction::RIGHT ?
+        attack_.GetDirection() == PlayerMowAttack::Direction::RIGHT ?
             vec2_right = { vec3_right.x,vec3_right.y } :
             vec2_right = { -vec3_right.x,-vec3_right.y };
 
         attack_.Attack(vec_move_, position_ + vec2_right * kAttackCenterDist_);
-        state_ = State::ATTACK;
+        state_ = State::ATTACK_MOW;
     }
 #ifdef _DEBUG
     // key-SPACEでAttack状態に遷移
@@ -117,17 +117,17 @@ void Player::MoveUpdate(void)
         // vec2の入れ物に移す。
         Vector2 vec2_right{};
         // 位置が右か左かで方向を反転
-        attack_.GetDirection() == PlayerAttack::Direction::RIGHT ?
+        attack_.GetDirection() == PlayerMowAttack::Direction::RIGHT ?
             vec2_right = { vec3_right.x,vec3_right.y } :
             vec2_right = { -vec3_right.x,-vec3_right.y };
 
         attack_.Attack(vec_move_, position_ + vec2_right * kAttackCenterDist_);
-        state_ = State::ATTACK;
+        state_ = State::ATTACK_MOW;
     }
 #endif // _DEBUG
 }
 
-void Player::AttackUpdate(void)
+void Player::MowAttackUpdate(void)
 {
     if (attack_.GetFrameCountAttack() == 0)
     {

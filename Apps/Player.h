@@ -17,7 +17,7 @@ public:
     enum class State
     {
         MOVE,
-        ATTACK,
+        ATTACK_MOW,
     };
 
     // ä÷êî
@@ -29,7 +29,7 @@ public:
 
 private:
     void MoveUpdate(void);
-    void AttackUpdate(void);
+    void MowAttackUpdate(void);
     void OnCollision(void);
 
     // ïœêî
@@ -37,5 +37,5 @@ private:
     Vector2 vec_move_;
     State state_;
 
-    PlayerAttack attack_;
+    PlayerMowAttack attack_;
 };
