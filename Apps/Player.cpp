@@ -85,9 +85,7 @@ void Player::Draw(void)
 		//DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
 
 		// player‚Ì•`‰æ
-		isRight_ ?
-			DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true, false) :
-			DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, -rotation_, png_player_, true);
+        DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true);
 	}
 
 	if (state_ == State::ATTACK_MOW)
