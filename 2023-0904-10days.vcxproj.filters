@@ -72,6 +72,8 @@
       <Filter>Apps</Filter>
     </ClCompile>
     <ClCompile Include="Apps\PlayerMowAttackSupport.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Easing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\IScene.h">
@@ -170,5 +172,7 @@
     <Filter Include="Apps\Enemy">
       <UniqueIdentifier>{ffaf1dfe-6f1a-4c29-80ba-564930453dc8}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="Easing.h" />
   </ItemGroup>
 </Project>

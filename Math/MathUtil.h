@@ -9,6 +9,7 @@ static std::mt19937 sEngine(sSeed_gen());
 
 namespace Math {
     constexpr float kPI = 3.141592f;
+    constexpr float kPI2 = kPI * 2.0f;
 
     namespace Function {
         inline constexpr float ToRadian(float fDegrees) { return fDegrees * Math::kPI / 180.0f; }
