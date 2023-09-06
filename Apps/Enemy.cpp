@@ -137,8 +137,11 @@ void Enemy::OnCollision(void)
         // 薙ぎ払われてる最中に他の敵と触れたら
         if (isMowDown_)
         {
+            Enemy* enemyPtr = static_cast<Enemy*>(other_);
+
             // 合体OKフラグオン
             isDocking_ = true;
+            enemyPtr->isDocking_ = true;
             // 関数終了
             return;
         }
