@@ -90,7 +90,6 @@ void Player::Draw(void)
         DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true);
     }
 
-
     // skewer‚Ìˆ×‚Éƒ{ƒ^ƒ“’·‰Ÿ‚µ‚µ‚Ä‚é‚È‚ç
     if (frameCount_4Skewer_ > 0)
     {
@@ -100,7 +99,7 @@ void Player::Draw(void)
         DrawFormatString(1000, 60, Util::Color::GREEN, "—­‚ßó‘Ô");
         DrawFormatString(1000, 80, Util::Color::GREEN, "frame: %d/%d", frameCount_4Skewer_, kChargeFrame4Skewer_);
     }
-    else if(state_ != State::ATTACK_SKEWER)
+    else if(state_ != State::ATTACK_SKEWER) // ‹øh‚µUŒ‚‚Ì‚½‚ß‚É—­‚ß‚Ä‚éŠÔ‚âA‹øh‚µUŒ‚’†‚Í”¼‰~‚ğ•\¦‚µ‚È‚¢
     {
         mow_.Draw();
     }
