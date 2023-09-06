@@ -22,7 +22,7 @@ public:
 
     // ŠÖ”
     PlayerMowAttack(CollisionManger* colMPtr);
-    ~PlayerMowAttack(void) override = default;
+    ~PlayerMowAttack(void) override;
 
     void Attack(const Vector2& vec_move, const Vector2& attackRangeCenter,float rot);
     void Update(void) override;
@@ -31,6 +31,8 @@ public:
 private:
 
     // •Ï”
+    CollisionManger* colMPtr_;
+
     int32_t frameCount_attack_; // UŒ‚”ÍˆÍ‚Ì”»’è—P—\(ƒtƒŒ[ƒ€)
     Vector2 vec_playerMove_;
     Direction state_dir_;

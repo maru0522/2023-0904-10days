@@ -4,7 +4,7 @@
 #include "MathUtil.h"
 #include "Vector3.h"
 
-PlayerMowAttack::PlayerMowAttack(CollisionManger* colMPtr) : IEntity(nullptr)
+PlayerMowAttack::PlayerMowAttack(CollisionManger* colMPtr) : IEntity(nullptr), colMPtr_(colMPtr)
 {
     // Õ“Ëƒ}ƒl[ƒWƒƒ‚Ö‚Ì“o˜^
     colMPtr->Register(this);
@@ -15,6 +15,13 @@ PlayerMowAttack::PlayerMowAttack(CollisionManger* colMPtr) : IEntity(nullptr)
     id_ = "player_mowAttack";
 
     radius_ = kRadius_;
+}
+
+PlayerMowAttack::~PlayerMowAttack(void)
+{
+    // “o˜^‚Ì–•Á
+    onCollision_ = nullptr;
+    colMPtr_->UnRegister(this);
 }
 
 void PlayerMowAttack::Attack(const Vector2& vec_move, const Vector2& attackRangeCenter,float rot)
