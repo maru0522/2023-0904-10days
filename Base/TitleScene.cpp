@@ -35,7 +35,6 @@ void TitleScene::Update(void)
 
 void TitleScene::Draw(void)
 {
-    
     //ƒ^ƒCƒgƒ‹
     DrawGraph(0, 0, titleImageHandle_,true);
 
