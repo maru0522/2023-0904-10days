@@ -37,7 +37,7 @@ private:
 
     // “ã‚¬•¥‚í‚ê‚½‚©
     bool isMowDown_ = false;
-    Vector2 vec_mow_{};
+    Vector2 vec_mow_{}; // ‚Á”ò‚Î‚³‚ê‚é•ûŒü
     // ‚«”ò‚Î‚³‚ê‚é‹——£‚¾‚¯‚¿‚á‚ñ‚ÆˆÚ“®‚µ‚½‚©Œv‘ª‚·‚é•Ï”
     float tortalMowDist{};
 
