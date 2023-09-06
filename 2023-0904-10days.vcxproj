@@ -141,6 +141,7 @@
     <ClCompile Include="Apps\IEntity.cpp" />
     <ClCompile Include="Apps\Player.cpp" />
     <ClCompile Include="Apps\PlayerAttack.cpp" />
+    <ClCompile Include="Apps\PlayerMowAttackSupport.cpp" />
     <ClCompile Include="Apps\PlayerSkewerAttack.cpp" />
     <ClCompile Include="Apps\Stage.cpp" />
     <ClCompile Include="Base\GameScene.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Apps\IEntity.h" />
     <ClInclude Include="Apps\Player.h" />
     <ClInclude Include="Apps\PlayerAttack.h" />
+    <ClInclude Include="Apps\PlayerMowAttackSupport.h" />
     <ClInclude Include="Apps\PlayerSkewerAttack.h" />
     <ClInclude Include="Apps\Stage.h" />
     <ClInclude Include="Base\DemoScene.h" />

@@ -18,15 +18,15 @@ void GameScene::Initialize(void)
     float x = Math::Function::Random<float>(100, 1100);
     float y = Math::Function::Random<float>(100, 600);
     std::unique_ptr<Enemy>enemy1 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
-    std::unique_ptr<Enemy>enemy2 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
-    std::unique_ptr<Enemy>enemy3 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
-    std::unique_ptr<Enemy>enemy4 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
-    std::unique_ptr<Enemy>enemy5 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
+    //std::unique_ptr<Enemy>enemy2 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
+    //std::unique_ptr<Enemy>enemy3 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
+    //std::unique_ptr<Enemy>enemy4 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
+    //std::unique_ptr<Enemy>enemy5 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
     enemy1->SetPos({ x,y });
     enemy1->SetRot(0);
     enemy1->SetRad({ 10,0 });
 
-    x = Math::Function::Random<float>(100, 1100);
+   /* x = Math::Function::Random<float>(100, 1100);
     y = Math::Function::Random<float>(100, 600);
     enemy2->SetPos({ x,y });
     enemy2->SetRot(0);
@@ -48,17 +48,18 @@ void GameScene::Initialize(void)
     y = Math::Function::Random<float>(100, 600);
     enemy5->SetPos({ x,y });
     enemy5->SetRot(0);
-    enemy5->SetRad({ 10,0 });
+    enemy5->SetRad({ 10,0 });*/
 
     EnemyManager::GetInstance().Initialize(player_.get());
 
     EnemyManager::GetInstance().AddEnemy(std::move(enemy1));
-    EnemyManager::GetInstance().AddEnemy(std::move(enemy2));
-    EnemyManager::GetInstance().AddEnemy(std::move(enemy3));
-    EnemyManager::GetInstance().AddEnemy(std::move(enemy4));
-    EnemyManager::GetInstance().AddEnemy(std::move(enemy5));
+    //EnemyManager::GetInstance().AddEnemy(std::move(enemy2));
+    //EnemyManager::GetInstance().AddEnemy(std::move(enemy3));
+    //EnemyManager::GetInstance().AddEnemy(std::move(enemy4));
+    //EnemyManager::GetInstance().AddEnemy(std::move(enemy5));
 
-    timer_.Start(kMaxGameTimer_);
+    //timer_.Start(kMaxGameTimer_);
+    timer_.Start(1000000000);
 }
 
 void GameScene::Update(void)

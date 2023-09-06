@@ -10,7 +10,9 @@
 
 using namespace Util;
 
-Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
+const float Player::kKnockbackDist_{ 200.f };// ノックバック距離 こっち変更するならenemy.hの割合も弄らないと瞬間移動になっちまう
+
+Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), mow_support_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
 {
     // 衝突マネージャへの登録
     colMPtr->Register(this);
@@ -102,9 +104,10 @@ void Player::Draw(void)
     else if(state_ != State::ATTACK_SKEWER) // 串刺し攻撃のために溜めてる間や、串刺し攻撃中は半円を表示しない
     {
         mow_.Draw();
+        mow_support_.Draw();
     }
 
-    if (state_ == State::ATTACK_SKEWER)
+    if (state_ == State::ATTACK_SKEWER) // 串刺し攻撃中、串刺しの描画関数を呼び出す
     {
         skewer_.Draw();
     }
@@ -146,11 +149,15 @@ void Player::MoveUpdate(void)
     // pad-RでAttack_MOW状態に遷移
     if (PadTriggerLorR())
     {
-        mow_.Attack(vec_move_, position_, rotation_);
+        mow_.Attack(vec_move_, position_);
         state_ = State::ATTACK_MOW;
     }
     mow_.SetPos(position_);
     mow_.SetRot(rotation_);
+    // サポートの矩形の中心点 = プレイヤーの座標 + 正面vec * kMowSupportCenterDist_
+    Vector2 center4MowSupport = position_ + vec_move_ * kMowSupportCenterDist_;
+    // サポートの座標設定
+    mow_support_.SetPos(center4MowSupport);
 
     // pad-A長押しでATTACK_SKEWER状態に遷移
     if (PadDownA())
@@ -185,7 +192,7 @@ void Player::MoveUpdate(void)
     // key-SPACEでAttack_MOW状態に遷移
     if (KEYS::IsTrigger(KEY_INPUT_SPACE))
     {
-        mow_.Attack(vec_move_, position_, rotation_);
+        mow_.Attack(vec_move_, position_);
         state_ = State::ATTACK_MOW;
     }
 #endif // _DEBUG
@@ -193,10 +200,17 @@ void Player::MoveUpdate(void)
 
 void Player::MowAttackUpdate(void)
 {
+    //プレイヤーの前方半円分にいる敵を吹き飛ばす仕様
+    // 実現のため、プレイヤーの前方に長方形の当たり判定を出して、かつ円状の当たり判定にも引っかかってるやつを吹っ飛ばす
+
+    // 攻撃判定のフレームが0になったら
     if (mow_.GetFrameCountAttack() == 0)
     {
+        // 状態遷移
         state_ = State::MOVE;
     }
+
+    // 薙ぎ払い攻撃本体のUpdate()
     mow_.Update();
 }
 

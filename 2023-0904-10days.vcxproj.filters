@@ -71,6 +71,7 @@
     <ClCompile Include="Apps\CollisionManger.cpp">
       <Filter>Apps</Filter>
     </ClCompile>
+    <ClCompile Include="Apps\PlayerMowAttackSupport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\IScene.h">
@@ -145,6 +146,7 @@
     <ClInclude Include="Apps\CollisionManger.h">
       <Filter>Apps</Filter>
     </ClInclude>
+    <ClInclude Include="Apps\PlayerMowAttackSupport.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
