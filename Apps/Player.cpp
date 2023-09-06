@@ -65,6 +65,8 @@ void Player::Draw(void)
     // ï`âÊ
     DrawLineAA(position_.x, position_.y, pos4Line_.x, pos4Line_.y, Color::WHITE, 3);
 
+    DrawFormatString(0, 140, 0xffffff, "state ;%d", static_cast<int32_t>(state_));
+
     // ñ≥ìGéûä‘íÜÇ»ÇÁ
     if (frameCount_invincible_ != 0)
     {
@@ -98,14 +100,14 @@ void Player::Draw(void)
         DrawFormatString(1000, 60, Util::Color::GREEN, "ó≠ÇﬂèÛë‘");
         DrawFormatString(1000, 80, Util::Color::GREEN, "frame: %d/%d", frameCount_4Skewer_, kChargeFrame4Skewer_);
     }
+    else if(state_ != State::ATTACK_SKEWER)
+    {
+        mow_.Draw();
+    }
 
     if (state_ == State::ATTACK_SKEWER)
     {
         skewer_.Draw();
-    }
-    else // ã¯éhÇµÇÃéûà»äOÇÕîºâ~ï\é¶
-    {
-        mow_.Draw();
     }
 }
 
