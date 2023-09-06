@@ -7,6 +7,7 @@
 
 void ResultScene::Initialize(void)
 {
+    png_result_ = LoadGraph("Resources/result.png");
 }
 
 void ResultScene::Update(void)
@@ -26,6 +27,9 @@ void ResultScene::Update(void)
 
 void ResultScene::Draw(void)
 {
+    //ƒŠƒUƒ‹ƒg‰æ‘œ
+    DrawGraph(0, 0, png_result_, true);
+
     DrawFormatString(0, 380, Util::Color::RED, "Scene: RESULT");
     DrawFormatString(0, 0, Util::Color::WHITE, "pad-A or key-R[DEBUG]‚Åtitle");
 }
