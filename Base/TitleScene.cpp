@@ -8,6 +8,8 @@
 void TitleScene::Initialize(void)
 {
     CheckConnectPad();
+
+    titleImageHandle_ = LoadGraph("Resources/title.png");
 }
 
 void TitleScene::Update(void)
@@ -33,6 +35,10 @@ void TitleScene::Update(void)
 
 void TitleScene::Draw(void)
 {
+    
+    //タイトル
+    DrawGraph(0, 0, titleImageHandle_,true);
+
     DrawFormatString(0, 380, Util::Color::RED, "Scene: TITLE");
     DrawFormatString(0, 0, Util::Color::RED, "press pad-A or key-SPACE");
     DrawFormatString(0, 20, Util::Color::RED, "key-Rでpad接続再確認");
