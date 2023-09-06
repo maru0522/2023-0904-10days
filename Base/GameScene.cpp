@@ -64,7 +64,8 @@ void GameScene::Initialize(void)
     EnemyManager::GetInstance().AddEnemy(std::move(enemy4));
     EnemyManager::GetInstance().AddEnemy(std::move(enemy5));
 
-    timer_.Start(kMaxGameTimer_);
+    //timer_.Start(kMaxGameTimer_);
+    timer_.Start(1000000000);
 }
 
 void GameScene::Update(void)

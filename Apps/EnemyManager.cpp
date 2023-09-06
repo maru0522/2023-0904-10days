@@ -81,8 +81,6 @@ void EnemyManager::Update()
 	for (auto& enemy : enemies_)
 	{
 		enemy->Update();
-		//１フレーム終わったらオフ
-		enemy->SetIsMowDown(false);
 	}
 
 	for (auto& combinedEnemies : combinedEnemiesArray_)

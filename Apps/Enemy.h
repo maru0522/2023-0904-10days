@@ -10,8 +10,10 @@ public:
     static const float kMoveSpeed_; // 速度
     static const int32_t kMoveTimes_{ 5 }; // 何回に分けて移動するか(瞬間移動に見えるのを避けるため）
     static const int32_t kMoveInterval_{ 100 }; // 敵が動くまでの間隔(フレーム単位)
+    const float kMowRatio_{ 20.f }; // 吹っ飛ばされたとき距離に対して、どのくらいの割合で移動していくか
     const float kPushBackDist_{ 2.f }; // 押し戻す距離
     const float kPngScale_{ 0.07f }; // 画像の拡大率
+    const float KRadius_{ 10.f }; // 半径
 
     // 関数
     Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr);
@@ -31,8 +33,16 @@ private:
     int32_t frameCount_move_; // 移動用フレームカウント
 
     bool isAlive_{ true }; // 生きてるか
-    //薙ぎ払われたか
+    bool isContactMowSupport_{}; // 薙ぎ払いの検知サポートクラスの当たり判定に触れたか
+
+    // 薙ぎ払われたか
     bool isMowDown_ = false;
+    Vector2 vec_mow_{}; // 吹っ飛ばされる方向
+    // 吹き飛ばされる距離だけちゃんと移動したか計測する変数
+    float tortalMowDist{};
+
+    // 薙ぎ払われた最中に合体OKフラグ
+    bool isDocking_{};
 
     // resource
     int32_t png_enemy_ = LoadGraph("Resources/texture/enemy.png");
