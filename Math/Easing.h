@@ -58,10 +58,10 @@ namespace Easing
 		float maxTime_ = 1.0f;		// 何秒かけて移動するか
 
 		//デルタタイム取得用のやつら。変数名ぐちゃぐちゃ
-		static float Time;
+		static double Time;
 		static float NowTime;
 		static float DeltaTime;
-		static float FPSCheckTime;
+		static double FPSCheckTime;
 		static uint32_t FPS;
 		static uint32_t FPSCounter;
 

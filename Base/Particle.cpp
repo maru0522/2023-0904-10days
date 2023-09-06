@@ -1,6 +1,7 @@
 #include "Particle.h"
 #include "MathUtil.h"
 #include "Easing.h"
+#include "DxLib.h"
 
 Emitter::Emitter()
 {
@@ -52,11 +53,14 @@ void Emitter::Update(bool isGravity)
 	}
 }
 
-void Emitter::DrawBox()
+void Emitter::DrawBoxParticle()
 {
 	for (auto& p : particles_)
 	{
-		//ï ÇÃÇ∆Ç±Ç≈DrawBoxçÏÇ¡ÇƒÇ±Ç±Ç≈égÇ§;
+		DrawBox(
+			(uint32_t)(p.pos.x - p.scale.x), (uint32_t)(p.pos.y - p.scale.y),
+			(uint32_t)(p.pos.x + p.scale.x), (uint32_t)(p.pos.y + p.scale.y),
+			0xffffff, true);
 	}
 }
 

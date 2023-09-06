@@ -3,6 +3,13 @@
 #include "MathUtil.h"
 #include <math.h>
 
+double Easing::EaseTimer::Time;
+float Easing::EaseTimer::NowTime;
+float Easing::EaseTimer::DeltaTime;
+double Easing::EaseTimer::FPSCheckTime;
+uint32_t Easing::EaseTimer::FPS;
+uint32_t Easing::EaseTimer::FPSCounter;
+
 float Easing::lerp(float start, float end, float timeRate)
 {
 	float easeVal = timeRate;
