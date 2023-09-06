@@ -21,6 +21,9 @@ public:
     void Finalize(void) override {};
 
 private:
+    uint32_t game_BGM_ = 0;
+    uint32_t sceneChange_SE_ = 0;  //ƒV[ƒ“‘JˆÚ‰¹
+
     // •Ï”
     std::unique_ptr<Stage> stage_{ std::make_unique<Stage>() };
 

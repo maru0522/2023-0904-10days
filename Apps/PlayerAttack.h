@@ -31,7 +31,8 @@ private:
     Vector2 vec_playerMove_;
 
     // resource
-    int32_t png_mowAttack_ = LoadGraph("Resources/attack_area.png");
+    int32_t png_mowAttack_ = LoadGraph("Resources/texture/attack_area.png");
+    uint32_t attack_SE_ = 0;   //çUåÇâπ
 
 public:
     // setter

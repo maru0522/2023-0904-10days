@@ -45,7 +45,7 @@ private:
     bool isDocking_{};
 
     // resource
-    int32_t png_enemy_ = LoadGraph("Resources/enemy.png");
+    int32_t png_enemy_ = LoadGraph("Resources/texture/enemy.png");
 
 public:
     // setter

@@ -8,8 +8,14 @@
 void TitleScene::Initialize(void)
 {
     CheckConnectPad();
-
-    titleImageHandle_ = LoadGraph("Resources/title.png");
+    //画像読み込み
+    titleImageHandle_ = LoadGraph("Resources/texture/title.png");
+    //BGM読み込み、再生
+    title_BGM_ = LoadSoundMem("Resources/sound/title_BGM.mp3");
+    PlaySoundMem(title_BGM_, DX_PLAYTYPE_LOOP);
+    //SE読み込み
+    decision_SE_ = LoadSoundMem("Resources/sound/decision_SE.mp3");
+    sceneChange_SE_ = LoadSoundMem("Resources/sound/sceneChange_SE.mp3");
 }
 
 void TitleScene::Update(void)
@@ -17,6 +23,9 @@ void TitleScene::Update(void)
     // pad-Aで画面切替
     if (PadTriggerA())
     {
+        PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+        //BGMストップ
+        StopSoundMem(title_BGM_);
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
     }
 
@@ -24,10 +33,14 @@ void TitleScene::Update(void)
 #ifdef _DEBUG
     if (KEYS::IsTrigger(KEY_INPUT_SPACE))
     {
+        PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+        //BGMストップ
+        StopSoundMem(title_BGM_);
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
     }
     if (KEYS::IsTrigger(KEY_INPUT_R))
     {
+        PlaySoundMem(decision_SE_, DX_PLAYTYPE_NORMAL);
         CheckConnectPad();
     }
 #endif // _DEBUG
