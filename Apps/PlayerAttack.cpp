@@ -69,5 +69,7 @@ void PlayerMowAttack::Draw(void)
     //// çUåÇÇÃï`âÊ
     state_dir_ == Direction::RIGHT ?
         DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_mowAttack_, true) :
-        DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_mowAttack_, true,true,true);
+        DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_mowAttack_, true);
+
+    //DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_mowAttack_, true);
 }
