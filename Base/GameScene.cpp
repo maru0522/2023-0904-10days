@@ -24,10 +24,10 @@ void GameScene::Initialize(void)
     float x = Math::Function::Random<float>(100, 1100);
     float y = Math::Function::Random<float>(100, 600);
     std::unique_ptr<Enemy>enemy1 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
-    //std::unique_ptr<Enemy>enemy2 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
-    //std::unique_ptr<Enemy>enemy3 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
-    //std::unique_ptr<Enemy>enemy4 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
-    //std::unique_ptr<Enemy>enemy5 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
+    std::unique_ptr<Enemy>enemy2 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
+    std::unique_ptr<Enemy>enemy3 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
+    std::unique_ptr<Enemy>enemy4 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
+    std::unique_ptr<Enemy>enemy5 = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_.get(), stage_.get());
     enemy1->SetPos({ x,y });
     enemy1->SetRot(0);
     enemy1->SetRad({ 10,0 });
