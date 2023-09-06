@@ -25,6 +25,7 @@ private:
 
     // 変数
     Player* playerPtr_;
+    CollisionManger* colMPtr_;
 
     int32_t frameCount_wait_; // 待機用フレームカウント
     int32_t frameCount_move_; // 移動用フレームカウント

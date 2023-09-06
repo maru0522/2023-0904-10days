@@ -10,7 +10,7 @@
 
 using namespace Util;
 
-Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), skewer_(colMPtr)
+Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
 {
 	// Õ“Ëƒ}ƒl[ƒWƒƒ‚Ö‚Ì“o˜^
 	colMPtr->Register(this);
@@ -22,6 +22,13 @@ Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), m
 
 	// Õ“Ëcallback”½‰f
 	onCollision_ = std::bind(&Player::OnCollision, this);
+}
+
+Player::~Player(void)
+{
+    // “o˜^‚Ì–•Á
+    onCollision_ = nullptr;
+    colMPtr_->UnRegister(this);
 }
 
 void Player::Update(void)

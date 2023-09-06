@@ -29,7 +29,7 @@ public:
 
     // ä÷êî
     Player(CollisionManger* colMPtr, Stage* stagePtr);
-    ~Player(void) override = default;
+    ~Player(void) override;
 
     void Update(void) override;
     void Draw(void) override;
@@ -41,6 +41,8 @@ private:
     void OnCollision(void);
 
     // ïœêî
+    CollisionManger* colMPtr_;
+
     int32_t frameCount_invincible_;
     int32_t frameCount_4Skewer_;
     Vector2 vec_move_;
