@@ -4,6 +4,7 @@
 #include "Keyboard.h"
 #include "SceneManager.h"
 #include "Pad.h"
+#include "Easing.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "お団子侍プロトタイプ";
@@ -41,6 +42,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// (ダブルバッファ)描画先グラフィック領域は裏面を指定
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	Easing::EaseTimer::InitDeltaTime();
+
 	// 画像などのリソースデータの変数宣言と読み込み
 
 
@@ -68,6 +71,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
 		ScreenFlip();
+
+		Easing::EaseTimer::UpdateDeltaTime();
 
 		// 20ミリ秒待機(疑似60FPS)
 		WaitTimer(20);
