@@ -5,6 +5,7 @@
 #include "MathUtil.h"
 #include "PlayerAttack.h"
 #include "Vector3.h"
+#include "ParticleManager.h"
 
 const float Enemy::kMoveSpeed_ = 30.0f;
 const float Enemy::kMowRatio_ = 20.0f; // 
@@ -128,11 +129,12 @@ void Enemy::Draw(void)
 
 void Enemy::OnCollision(void)
 {
-	// ÚG‘ÎÛ‚Ì–¼Ì‚ª player_skewerAttack
-	if (other_->GetId() == "player_skewerAttack")
-	{
-		isAlive_ = false;
-	}
+    // ÚG‘ÎÛ‚Ì–¼Ì‚ª player_skewerAttack
+    if (other_->GetId() == "player_skewerAttack")
+    {
+        ParticleManager::GetInstance()->BossHitEnemyEffect(position_);
+        isAlive_ = false;
+    }
 
 	// ÚG‘ÎÛ‚Ì–¼Ì‚ª enemy
 	if (other_->GetId() == "enemy")

@@ -5,13 +5,20 @@ void CheckConnectPad(); // ƒpƒbƒh‚ªÚ‘±‚³‚ê‚Ä‚¢‚é‚©ÄŠm”F (–ˆƒtƒŒ[ƒ€ŒÄ‚Î‚È‚¢‚æ‚
 bool GetPadConnect(); // ƒpƒbƒh‚ªÚ‘±‚³‚ê‚Ä‚¢‚é‚©‚ğ•Ô‚·
 
 bool PadDownA(); // Aƒ{ƒ^ƒ“‰Ÿ‚· ¨ true
-bool PadDownLorR(); // RƒgƒŠƒK[‰Ÿ‚· ¨ true
-
 bool PadTriggerA(); // Aƒ{ƒ^ƒ“‰Ÿ‚·(uŠÔ) ¨ true
-bool PadTriggerLorR(); // RƒgƒŠƒK[‰Ÿ‚·(uŠÔ) ¨ true
-
 bool PadLongA(); // Aƒ{ƒ^ƒ“’·‰Ÿ‚µ ¨ true
+
+bool PadDownLorR(); // RƒgƒŠƒK[‰Ÿ‚· ¨ true
+bool PadTriggerLorR(); // RƒgƒŠƒK[‰Ÿ‚·(uŠÔ) ¨ true
 bool PadLongLorR(); // RƒgƒŠƒK[’·‰Ÿ‚µ ¨ true
+
+bool PadDownRB(void);
+bool PadTriggerRB(void);
+bool PadLongLorRB(void);
+
+bool PadDownLB(void);
+bool PadTriggerLB(void);
+bool PadLongLorLB(void);
 
 bool PadRight(); // ƒXƒeƒBƒbƒN‰E“|‚· ¨ true
 bool PadLeft(); // ƒXƒeƒBƒbƒN¶“|‚· ¨ true

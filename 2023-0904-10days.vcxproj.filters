@@ -1,174 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Base\IScene.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\SceneFactory.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\SceneManager.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\ResultScene.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\TitleScene.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\GameScene.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\DemoScene.cpp">
-      <Filter>Base\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector2.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector3.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\MathUtil.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Others\Keyboard.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Others\Util.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Others\Pad.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\Player.cpp">
-      <Filter>Apps\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\PlayerAttack.cpp">
-      <Filter>Apps\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\PlayerSkewerAttack.cpp">
-      <Filter>Apps\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\Stage.cpp">
-      <Filter>Apps</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\Enemy.cpp">
-      <Filter>Apps\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\EnemyManager.cpp">
-      <Filter>Apps\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\IEntity.cpp">
-      <Filter>Apps</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\CombinedEnemies.cpp">
-      <Filter>Apps\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\CombinedEnemiesState.cpp">
-      <Filter>Apps\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Apps\CollisionManger.cpp">
-      <Filter>Apps</Filter>
-    </ClCompile>
+    <ClCompile Include="Apps\CollisionManger.cpp" />
+    <ClCompile Include="Apps\CombinedEnemies.cpp" />
+    <ClCompile Include="Apps\CombinedEnemiesState.cpp" />
+    <ClCompile Include="Apps\Enemy.cpp" />
+    <ClCompile Include="Apps\EnemyManager.cpp" />
+    <ClCompile Include="Apps\IEntity.cpp" />
+    <ClCompile Include="Apps\Player.cpp" />
+    <ClCompile Include="Apps\PlayerAttack.cpp" />
     <ClCompile Include="Apps\PlayerMowAttackSupport.cpp" />
+    <ClCompile Include="Apps\PlayerSkewerAttack.cpp" />
+    <ClCompile Include="Apps\Stage.cpp" />
+    <ClCompile Include="Base\GameScene.cpp" />
+    <ClCompile Include="Base\IScene.cpp" />
+    <ClCompile Include="Base\ResultScene.cpp" />
+    <ClCompile Include="Base\SceneManager.cpp" />
+    <ClCompile Include="Base\DemoScene.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math\MathUtil.cpp" />
+    <ClCompile Include="Math\Vector2.cpp" />
+    <ClCompile Include="Math\Vector3.cpp" />
+    <ClCompile Include="Others\Keyboard.cpp" />
+    <ClCompile Include="Others\Util.cpp" />
+    <ClCompile Include="Base\SceneFactory.cpp" />
+    <ClCompile Include="Base\TitleScene.cpp" />
+    <ClCompile Include="Others\Pad.cpp" />
+    <ClCompile Include="Math\Easing.cpp" />
+    <ClCompile Include="Base\Particle.cpp" />
+    <ClCompile Include="Base\ParticleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Base\IScene.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\SceneManager.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\SceneFactory.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\ResultScene.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\TitleScene.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\GameScene.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\DemoScene.h">
-      <Filter>Base\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector3.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector2.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\MathUtil.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Others\Keyboard.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Others\Util.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Others\Pad.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Others\FileSystem.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\PlayerSkewerAttack.h">
-      <Filter>Apps\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\Player.h">
-      <Filter>Apps\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\PlayerAttack.h">
-      <Filter>Apps\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\Stage.h">
-      <Filter>Apps</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\EnemyManager.h">
-      <Filter>Apps\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\Enemy.h">
-      <Filter>Apps\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\IEntity.h">
-      <Filter>Apps</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\CombinedEnemiesState.h">
-      <Filter>Apps\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\CombinedEnemies.h">
-      <Filter>Apps\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Apps\CollisionManger.h">
-      <Filter>Apps</Filter>
-    </ClInclude>
+    <ClInclude Include="Apps\CollisionManger.h" />
+    <ClInclude Include="Apps\CombinedEnemies.h" />
+    <ClInclude Include="Apps\CombinedEnemiesState.h" />
+    <ClInclude Include="Apps\Enemy.h" />
+    <ClInclude Include="Apps\EnemyManager.h" />
+    <ClInclude Include="Apps\IEntity.h" />
+    <ClInclude Include="Apps\Player.h" />
+    <ClInclude Include="Apps\PlayerAttack.h" />
     <ClInclude Include="Apps\PlayerMowAttackSupport.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Base">
-      <UniqueIdentifier>{5ada0065-12cd-4225-a884-6c455c94b8fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Base\Scene">
-      <UniqueIdentifier>{c38a7073-ddf2-4477-a513-19a0302fb0cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Math">
-      <UniqueIdentifier>{ffb4c764-a56c-4b95-ac12-0f27c6d8d9d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Other">
-      <UniqueIdentifier>{b1c27b3e-db1b-4642-821f-8a7f219d0b54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Apps">
-      <UniqueIdentifier>{01598a74-58f1-4d01-9ffc-4af83a605f29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Apps\Player">
-      <UniqueIdentifier>{9e230898-1ca1-4845-bbbb-b21729f5d630}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Apps\Enemy">
-      <UniqueIdentifier>{ffaf1dfe-6f1a-4c29-80ba-564930453dc8}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="Apps\PlayerSkewerAttack.h" />
+    <ClInclude Include="Apps\Stage.h" />
+    <ClInclude Include="Base\DemoScene.h" />
+    <ClInclude Include="Base\GameScene.h" />
+    <ClInclude Include="Base\IScene.h" />
+    <ClInclude Include="Base\ResultScene.h" />
+    <ClInclude Include="Base\SceneFactory.h" />
+    <ClInclude Include="Base\SceneManager.h" />
+    <ClInclude Include="Base\TitleScene.h" />
+    <ClInclude Include="Math\MathUtil.h" />
+    <ClInclude Include="Math\Vector2.h" />
+    <ClInclude Include="Math\Vector3.h" />
+    <ClInclude Include="Others\FileSystem.h" />
+    <ClInclude Include="Others\Keyboard.h" />
+    <ClInclude Include="Others\Util.h" />
+    <ClInclude Include="Others\Pad.h" />
+    <ClInclude Include="Math\Easing.h" />
+    <ClInclude Include="Base\Particle.h" />
+    <ClInclude Include="Base\ParticleManager.h" />
   </ItemGroup>
 </Project>

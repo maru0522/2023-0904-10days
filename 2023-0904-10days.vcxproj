@@ -146,10 +146,13 @@
     <ClCompile Include="Apps\Stage.cpp" />
     <ClCompile Include="Base\GameScene.cpp" />
     <ClCompile Include="Base\IScene.cpp" />
+    <ClCompile Include="Base\Particle.cpp" />
+    <ClCompile Include="Base\ParticleManager.cpp" />
     <ClCompile Include="Base\ResultScene.cpp" />
     <ClCompile Include="Base\SceneManager.cpp" />
     <ClCompile Include="Base\DemoScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math\Easing.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
@@ -174,10 +177,13 @@
     <ClInclude Include="Base\DemoScene.h" />
     <ClInclude Include="Base\GameScene.h" />
     <ClInclude Include="Base\IScene.h" />
+    <ClInclude Include="Base\Particle.h" />
+    <ClInclude Include="Base\ParticleManager.h" />
     <ClInclude Include="Base\ResultScene.h" />
     <ClInclude Include="Base\SceneFactory.h" />
     <ClInclude Include="Base\SceneManager.h" />
     <ClInclude Include="Base\TitleScene.h" />
+    <ClInclude Include="Math\Easing.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
