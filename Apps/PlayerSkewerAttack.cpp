@@ -2,7 +2,7 @@
 #include <DxLib.h>
 #include "Util.h"
 
-PlayerSkewerAttack::PlayerSkewerAttack(CollisionManger* colMPtr) : IEntity(nullptr)
+PlayerSkewerAttack::PlayerSkewerAttack(CollisionManger* colMPtr) : IEntity(nullptr), colMPtr_(colMPtr)
 {
     // Õ“Ëƒ}ƒl[ƒWƒƒ‚Ö‚Ì“o˜^
     colMPtr->Register(this);
@@ -13,6 +13,13 @@ PlayerSkewerAttack::PlayerSkewerAttack(CollisionManger* colMPtr) : IEntity(nullp
     id_ = "player_skewerAttack";
 
     radius_ = kRadius_;
+}
+
+PlayerSkewerAttack::~PlayerSkewerAttack(void)
+{
+    // “o˜^‚Ì–•Á
+    onCollision_ = nullptr;
+    colMPtr_->UnRegister(this);
 }
 
 void PlayerSkewerAttack::Attack(void)

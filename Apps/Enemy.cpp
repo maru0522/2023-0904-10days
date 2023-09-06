@@ -7,7 +7,7 @@
 
 const float Enemy::kMoveSpeed_ = 30.0f;
 
-Enemy::Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr) : IEntity(stagePtr), playerPtr_(playerPtr)
+Enemy::Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr) : IEntity(stagePtr), playerPtr_(playerPtr), colMPtr_(colMPtr)
 {
     // Õ“Ëƒ}ƒl[ƒWƒƒ‚Ö‚Ì“o˜^
     colMPtr->Register(this);
@@ -25,7 +25,9 @@ Enemy::Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr) : IEn
 
 Enemy::~Enemy(void)
 {
+    // “o˜^‚Ì–•Á
     onCollision_ = nullptr;
+    colMPtr_->UnRegister(this);
 }
 
 void Enemy::Update(void)

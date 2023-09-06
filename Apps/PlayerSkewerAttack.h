@@ -12,7 +12,7 @@ public:
 
     // ŠÖ”
     PlayerSkewerAttack(CollisionManger* colMPtr);
-    ~PlayerSkewerAttack(void) override = default;
+    ~PlayerSkewerAttack(void) override;
 
     void Attack(void);
     void Update(void) override;
@@ -21,6 +21,8 @@ public:
 
 private:
     // •Ï”
+    CollisionManger* colMPtr_;
+
     bool isSkewer_; // ‹øh‚µUŒ‚’†‚©
 
 public:
