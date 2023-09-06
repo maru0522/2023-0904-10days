@@ -4,6 +4,37 @@
 
 
 
+bool CombinedEnemies::GetIsDockingAnyEnemy()
+{
+	for (auto& enemy : enemies_)
+	{
+		if (enemy->GetIsDocking())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void CombinedEnemies::AllEnemiesDockingEnd()
+{
+	for (auto& enemy : enemies_)
+	{
+		enemy->SetIsDocking(false);
+	}
+
+	ChangeState("WAIT");
+}
+
+void CombinedEnemies::AllEnemiesEndMowDown()
+{
+	for (auto& enemy : enemies_)
+	{
+		enemy->SetIsMowDown(false);
+	}
+}
+
 void CombinedEnemies::ChangeState(const std::string& name)
 {
 	std::string nameL = name;
@@ -21,16 +52,9 @@ CombinedEnemies::~CombinedEnemies()
 }
 
 //-------------------------------------------------
-void CombinedEnemies::Initialize(Player* player, const Vector2& direciton, std::vector<std::unique_ptr<Enemy>>enemies)
+void CombinedEnemies::Initialize(Player* player, const Vector2& direciton)
 {
-	enemies_.clear();
 	player_ = player;
-
-	//“o˜^
-	for (auto& enemy : enemies)
-	{
-		AddEnemy(std::move(enemy));
-	}
 
 	//
 	distance_ = (player_->GetPos() - player_->GetPos() + direciton.Normalize() * radius_ * ((float)enemiesNum_ / 2.0f)).Length();
@@ -44,7 +68,41 @@ void CombinedEnemies::Initialize(Player* player, const Vector2& direciton, std::
 
 void CombinedEnemies::CalcCentorPos(const Vector2& targetPos, const Vector2& direciton)
 {
-	centorPos_ = targetPos + direciton * distance_;
+	//‰¼
+	centorPos_ = enemies_[0]->GetPos();
+}
+
+void CombinedEnemies::AnyEnemyMowDownUpdate()
+{
+	if (isMowDown_)
+	{
+		return;
+	}
+
+	for (auto& enemy : enemies_)
+	{
+		//ˆê‘Ì‚Å‚à“ã‚¬•¥‚í‚ê‚Ä‚½‚ç
+		if (enemy->GetIsMowDown())
+		{
+			mowDownVec_ = enemy->GetMowDownVec();
+			//“ã‚¬•¥‚¤ˆ—
+			MowDown();
+			break;
+		}
+	}
+}
+
+void CombinedEnemies::MowDown()
+{
+	for (auto& enemy : enemies_)
+	{
+		//“G’P‘Ì‚Ì“ã‚¬•¥‚¢ƒtƒ‰ƒO
+		enemy->SetIsMowDown(true);
+	}
+	//“G‘S‘Ì‚Ì“ã‚¬•¥‚¢ƒtƒ‰ƒO
+	isMowDown_ = true;
+	//ƒXƒe[ƒg•ÏX
+	ChangeState("MOW_DOWN");
 }
 
 //--------------------------------------------------
@@ -65,8 +123,11 @@ void CombinedEnemies::EnemiesPosUpdate()
 
 void CombinedEnemies::Update()
 {
+	//“ã‚¬•¥‚¢‚ÌXV
+	AnyEnemyMowDownUpdate();
+
 	state_->Update();
-	//
+	//“Gˆê‘Ìˆê‘Ì‚ÌÀ•WXV
 	EnemiesPosUpdate();
 }
 
@@ -82,13 +143,31 @@ void CombinedEnemies::Draw()
 void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 {
 	//“G‚Ì’·‚³‚ğ‰ÁZ‚µ‚Ä‚¢‚­
-	radius_ += enemy->GetRad().Length() * 2.0f;
+	float addRadius = enemy->GetRad().Length() * 2.0f * (1.0f / (1.0f - Enemy::kPngScale_));
+	radius_ = radiusTmp_ + addRadius;
+	radiusTmp_ = radius_;
 	//“o˜^
 	enemies_.push_back(std::move(enemy));
 	//“G‚Ì”‚ğ‰ÁZ
 	enemiesNum_++;
 }
 
+void CombinedEnemies::AddCombinedEnemies(std::unique_ptr<CombinedEnemies> combinedEneies)
+{
+	//’†ŠÔ’n“_‚ğ’†SÀ•W‚É‚·‚é
+	centorPos_ = centorPos_ + ((combinedEneies->centorPos_ - centorPos_) / 2.0f);
+
+	for (auto& enemy : combinedEneies->enemies_)
+	{
+		AddEnemy(std::move(enemy));
+	}
+
+	SetIsMowDown(false);
+	ChangeState("WAIT");
+}
+
+
+//--------------------------------------------------------------
 void CombinedEnemies::DirectionUpdate()
 {
 	//player‚Ü‚Å‚Ì‹——£‚ğŒvZ

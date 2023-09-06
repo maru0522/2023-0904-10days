@@ -36,6 +36,10 @@ private:
 	float radiusTmp_;
 	Vector2 centorPosTmp_;
 	Vector2 directionTmp_;
+	//薙ぎ払い方向
+	Vector2 mowDownVec_ = {0,0};
+	//薙ぎ払われてるか
+	bool isMowDown_ = false;
 
 
 public:
@@ -47,18 +51,23 @@ public:
 	/// <param name="player_">playerポインタ</param>
 	/// <param name="direciton">プレイヤーから見た敵の方向</param>
 	/// <param name="enemies">くっつく敵の配列</param>
-	void Initialize(Player* player_, const Vector2& direciton, std::vector<std::unique_ptr<Enemy>>enemies);
+	void Initialize(Player* player_, const Vector2& direciton);
 	void Update();
 	void Draw();
 
 public:
 	void AddEnemy(std::unique_ptr<Enemy>enemy);
+	void AddCombinedEnemies(std::unique_ptr<CombinedEnemies>combinedEneies);
 	//向く方向の更新
 	void DirectionUpdate();
 
 private:
 	void EnemiesPosUpdate();
 	void CalcCentorPos(const Vector2& targetPos, const Vector2& direciton);
+	//くっついてる敵のどれか一つでも薙ぎ払われたら
+	void AnyEnemyMowDownUpdate();
+	//薙ぎ払う
+	void MowDown();
 
 public:
 	const Vector2& GetCentorPos() { return centorPos_; }
@@ -68,13 +77,33 @@ public:
 	float GetRadius() { return radius_; }
 	void SetRadius(float radius) { radius_ = radius; }
 
-	void SetRadiusTmp() { radiusTmp_ = radius_; }
+	void SetRadiusTmp() { 
+		radiusTmp_ = radius_; 
+	}
 	void SetCentorPosTmp() { centorPosTmp_ = centorPos_; }
 	void SetDirectionTmp() { directionTmp_ = direction_; }
+	void SetIsMowDown(bool isMowDown) { isMowDown_ = isMowDown; }
 
 	float GetRadiusTmp() { return radiusTmp_; }
 	const Vector2& GetCentorPosTmp() { return centorPosTmp_; }
 	const Vector2& GetDirectionTmp() { return directionTmp_; }
+
+	int32_t GetEnemiesNum() { return enemiesNum_; }
+
+	const Vector2& GetMowDownVec() { return mowDownVec_; }
+	bool GetIsMowDown() { return isMowDown_; }
+
+	//配列の参照
+	std::vector<std::unique_ptr<Enemy>>& GetEnemies() { return enemies_; }
+
+public:
+	//敵全体の中でほかの敵と合体したものがいるか
+	bool GetIsDockingAnyEnemy();
+	//ほかの敵と合体したときにisDockingをfalse
+	void AllEnemiesDockingEnd();
+	//移動し終わり、全部の敵の薙ぎ払いフラグをオフ
+	void AllEnemiesEndMowDown();
+
 
 public:
 	void ChangeState(const std::string& name);

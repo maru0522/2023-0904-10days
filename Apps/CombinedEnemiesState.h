@@ -25,7 +25,7 @@ public:
 public:
 	virtual void Initialize();
 	virtual void Update() = 0;
-	void TimerUpdate(std::function<void(float)> f = NULL);
+	void TimerUpdate(const std::function<void(float)>& f = NULL, const std::function<void()>& endF = NULL);
 
 	void SetCombinedEnemies(CombinedEnemies* enemies) { enemies_ = enemies; }
 
@@ -33,6 +33,17 @@ public:
 	static std::unique_ptr<ICombinedEnemiesState>GetState(const std::string& name);
 };
 
+
+//“ã‚¬•¥‚í‚ê’†
+class CombinedEnemiesStateMoveMowDown : public ICombinedEnemiesState
+{
+private:
+	Vector2 direction_ = { 0,0 };
+
+public:
+	void Initialize()override;
+	void Update()override;
+};
 
 //‘Ò‹@’†
 class CombinedEnemiesStateMoveWait : public ICombinedEnemiesState

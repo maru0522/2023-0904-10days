@@ -10,9 +10,9 @@ public:
     static const float kMoveSpeed_; // 速度
     static const int32_t kMoveTimes_{ 5 }; // 何回に分けて移動するか(瞬間移動に見えるのを避けるため）
     static const int32_t kMoveInterval_{ 100 }; // 敵が動くまでの間隔(フレーム単位)
-    const float kMowRatio_{ 20.f }; // 吹っ飛ばされたとき距離に対して、どのくらいの割合で移動していくか
-    const float kPushBackDist_{ 2.f }; // 押し戻す距離
-    const float kPngScale_{ 0.07f }; // 画像の拡大率
+    static const float kMowRatio_; // 吹っ飛ばされたとき距離に対して、どのくらいの割合で移動していくか
+    static const float kPushBackDist_; // 押し戻す距離
+    static const float kPngScale_; // 画像の拡大率
     const float KRadius_{ 10.f }; // 半径
 
     // 関数
@@ -50,9 +50,16 @@ private:
 public:
     // setter
     void SetIsMowDown(bool isMowDown) { isMowDown_ = isMowDown; }
+    void SetIsDocking(bool isDocking) { isDocking_ = isDocking; }
 
     // getter
     bool GetIsMowDown() { return isMowDown_; }
     bool GetIsAlive(void) { return isAlive_; }
+    bool GetIsDocking() { return isDocking_; }
+    const Vector2& GetMowDownVec() { return vec_mow_; }
+    
+public:
+    //合体したときに外部で呼び出す
+    void Docking();
 };
 

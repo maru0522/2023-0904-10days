@@ -11,6 +11,10 @@ std::unique_ptr<ICombinedEnemiesState> ICombinedEnemiesState::GetState(const std
 {
 	std::unique_ptr<ICombinedEnemiesState>state = nullptr;
 
+	if (name == "MOW_DOWN")
+	{
+		state = std::make_unique<CombinedEnemiesStateMoveMowDown>();
+	}
 	if (name == "WAIT")
 	{
 		state = std::make_unique<CombinedEnemiesStateMoveWait>();
@@ -40,7 +44,7 @@ void ICombinedEnemiesState::Initialize()
 	enemies_->SetRadiusTmp();
 }
 
-void ICombinedEnemiesState::TimerUpdate(std::function<void(float)> f)
+void ICombinedEnemiesState::TimerUpdate(const std::function<void(float)>& f, const std::function<void()>& endF)
 {
 	float t = timer_ / timerMax_;
 
@@ -51,17 +55,55 @@ void ICombinedEnemiesState::TimerUpdate(std::function<void(float)> f)
 
 	if (t >= 1.0f)
 	{
+		if (endF)
+		{
+			endF();
+		}
+
 		enemies_->ChangeState(nextStateName_);
 	}
 
 	timer_++;
 }
 
+//-------------------------------------------------------------------------------------
+//薙ぎ払われ中
+void CombinedEnemiesStateMoveMowDown::Initialize()
+{
+	nextStateName_ = "WAIT";
+	timerMax_ = Enemy::kMowRatio_;
+
+	direction_ = enemies_->GetMowDownVec();
+	//途中でステート変わったとき用
+	enemies_->SetRadius(enemies_->GetRadiusTmp());
+	enemies_->SetCentorPosTmp();
+}
+
+void CombinedEnemiesStateMoveMowDown::Update()
+{
+
+	Vector2 centorPT = enemies_->GetCentorPosTmp();
+
+	std::function<void(float)>f = [=](float t) {
+		enemies_->SetCentorPos({ lerp(centorPT.x, centorPT.x + direction_.x * Player::kKnockbackDist_, t),
+			lerp(centorPT.y, centorPT.y + direction_.y * Player::kKnockbackDist_, t) });
+	};
+
+	std::function<void()>endF = [=]() {
+		enemies_->SetIsMowDown(false);
+		enemies_->AllEnemiesEndMowDown();
+	};
+
+	TimerUpdate(f,endF);
+}
+
+
 //--------------------------------------------------------------------------------------
 //待機中
 void CombinedEnemiesStateMoveWait::Initialize()
 {
 	nextStateName_ = "SHRINK";
+	enemies_->SetIsMowDown(false);
 }
 
 void CombinedEnemiesStateMoveWait::Update()
@@ -78,7 +120,7 @@ void CombinedEnemiesStateMoveWait::Update()
 void CombinedEnemiesStateShrink::Initialize()
 {
 	nextStateName_ = "WAIT_STRETCH";
-	timerMax_ = 10;
+	timerMax_ = (float)10 / (float)enemies_->GetEnemiesNum();
 	//基にするパラメータを保存
 	ICombinedEnemiesState::Initialize();
 }
@@ -116,7 +158,7 @@ void CombinedEnemiesStateWaitStretch::Update()
 void CombinedEnemiesStateStretch::Initialize()
 {
 	nextStateName_ = "WAIT";
-	timerMax_ = 10;
+	timerMax_ = (float)10 / (float)enemies_->GetEnemiesNum();
 }
 
 void CombinedEnemiesStateStretch::Update()
@@ -126,7 +168,7 @@ void CombinedEnemiesStateStretch::Update()
 	float radiusT = enemies_->GetRadiusTmp();
 
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetRadius(lerp(0, enemies_->GetRadiusTmp(), t));
+		enemies_->SetRadius(lerp(0, enemies_->GetRadiusTmp(), min(t, 1.0f)));
 		//半径分向いてる方向に進む
 		enemies_->SetCentorPos({ lerp(centorPT.x, centorPT.x + directionT.x * radiusT * 2.0f, t),
 			lerp(centorPT.y, centorPT.y + directionT.y * radiusT * 2.0f, t) });
