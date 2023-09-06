@@ -56,6 +56,36 @@ bool PadLongLorR() // Rトリガー (長押し)
 		(pad.Z <= -down2 && oldpad.Z <= -down2);
 }
 
+bool PadDownRB(void)
+{
+    return pad.Buttons[9] == push;
+}
+
+bool PadTriggerRB(void)
+{
+    return pad.Buttons[9] == push && oldpad.Buttons[9] == 0;
+}
+
+bool PadLongLorRB(void)
+{
+    return pad.Buttons[9] == push && oldpad.Buttons[9] == push;
+}
+
+bool PadDownLB(void)
+{
+    return pad.Buttons[8] == push;
+}
+
+bool PadTriggerLB(void)
+{
+    return pad.Buttons[8] == push && oldpad.Buttons[8] == 0;
+}
+
+bool PadLongLorLB(void)
+{
+    return pad.Buttons[8] == push && oldpad.Buttons[8] == push;
+}
+
 bool PadRight() // スティック右倒す
 {
 	return pad.X >= down && oldpad.X >= down;
