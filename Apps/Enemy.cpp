@@ -69,7 +69,7 @@ void Enemy::Update(void)
             if (frameCount_move_ == 0)
             {
                 // 待機用frameを加算（縮み状態）
-                //Math::Function::LoopIncrement<int32_t>(frameCount_wait_, 0, kMoveInterval_);
+                Math::Function::LoopIncrement<int32_t>(frameCount_wait_, 0, kMoveInterval_);
             }
 
             // 待機用フレームが規定値以上なら（待機が終わったなら）
