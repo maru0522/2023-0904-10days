@@ -39,6 +39,7 @@ private:
 
     // resource
     int32_t png_mowAttack_ = LoadGraph("Resources/texture/attack_area.png");
+    uint32_t attack_SE_ = 0;   //UŒ‚‰¹
 
 public:
     // setter

@@ -12,12 +12,15 @@ void ResultScene::Initialize(void)
     //BGM読み込み、再生
     result_BGM_ = LoadSoundMem("Resources/sound/result_BGM.mp3");
     PlaySoundMem(result_BGM_, DX_PLAYTYPE_LOOP);
+    //SE読み込み
+    sceneChange_SE_ = LoadSoundMem("Resources/sound/sceneChange_SE.mp3");
 }
 
 void ResultScene::Update(void)
 {
     if (PadTriggerA())
     {
+        PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
         //BGMストップ
         StopSoundMem(result_BGM_);
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::TITLE);
@@ -26,6 +29,7 @@ void ResultScene::Update(void)
 #ifdef _DEBUG
     if (KEYS::IsTrigger(KEY_INPUT_R))
     {
+        PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
         //BGMストップ
         StopSoundMem(result_BGM_);
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::TITLE);
