@@ -55,8 +55,8 @@ private:
 
     // resources
     bool isRight_{};
-    int32_t png_player_ = LoadGraph("Resources/player.png");
-    int32_t png_arrow_ = LoadGraph("Resources/arrow.png");  //–îˆó‰æ‘œ
+    int32_t png_player_ = LoadGraph("Resources/texture/player.png");
+    int32_t png_arrow_ = LoadGraph("Resources/texture/arrow.png");  //–îˆó‰æ‘œ
 
 public:
     const Vector2& GetDirectionVec() { return pos4Line_; }

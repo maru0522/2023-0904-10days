@@ -7,19 +7,27 @@
 
 void ResultScene::Initialize(void)
 {
-    png_result_ = LoadGraph("Resources/result.png");
+    //画像読み込み
+    png_result_ = LoadGraph("Resources/texture/result.png");
+    //BGM読み込み、再生
+    result_BGM_ = LoadSoundMem("Resources/sound/result_BGM.mp3");
+    PlaySoundMem(result_BGM_, DX_PLAYTYPE_LOOP);
 }
 
 void ResultScene::Update(void)
 {
     if (PadTriggerA())
     {
+        //BGMストップ
+        StopSoundMem(result_BGM_);
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::TITLE);
     }
 
 #ifdef _DEBUG
     if (KEYS::IsTrigger(KEY_INPUT_R))
     {
+        //BGMストップ
+        StopSoundMem(result_BGM_);
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::TITLE);
     }
 #endif // _DEBUG

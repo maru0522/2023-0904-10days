@@ -7,6 +7,7 @@ class ResultScene :
 {
 public:
     uint32_t png_result_ = 0;
+    uint32_t result_BGM_ = 0;
 
     // ŠÖ”
     void Initialize(void) override;

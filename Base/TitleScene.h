@@ -8,6 +8,7 @@ class TitleScene :
 private:
     //タイトル画像ハンドル
     uint32_t titleImageHandle_ = 0;
+    uint32_t title_BGM_ = 0;
 
 public:
     // 関数

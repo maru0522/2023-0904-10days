@@ -38,7 +38,7 @@ private:
     Direction state_dir_;
 
     // resource
-    int32_t png_mowAttack_ = LoadGraph("Resources/attack_area.png");
+    int32_t png_mowAttack_ = LoadGraph("Resources/texture/attack_area.png");
 
 public:
     // setter

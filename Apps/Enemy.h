@@ -35,7 +35,7 @@ private:
     bool isMowDown_ = false;
 
     // resource
-    int32_t png_enemy_ = LoadGraph("Resources/enemy.png");
+    int32_t png_enemy_ = LoadGraph("Resources/texture/enemy.png");
 
 public:
     // setter

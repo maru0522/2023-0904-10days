@@ -8,8 +8,11 @@
 void TitleScene::Initialize(void)
 {
     CheckConnectPad();
-
-    titleImageHandle_ = LoadGraph("Resources/title.png");
+    //画像読み込み
+    titleImageHandle_ = LoadGraph("Resources/texture/title.png");
+    //BGM読み込み、再生
+    title_BGM_ = LoadSoundMem("Resources/sound/title_BGM.mp3");
+    PlaySoundMem(title_BGM_, DX_PLAYTYPE_LOOP);
 }
 
 void TitleScene::Update(void)
@@ -24,6 +27,8 @@ void TitleScene::Update(void)
 #ifdef _DEBUG
     if (KEYS::IsTrigger(KEY_INPUT_SPACE))
     {
+        //BGMストップ
+        StopSoundMem(title_BGM_);
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
     }
     if (KEYS::IsTrigger(KEY_INPUT_R))

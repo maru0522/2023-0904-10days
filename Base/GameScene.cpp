@@ -8,6 +8,10 @@
 
 void GameScene::Initialize(void)
 {
+    //BGM読み込み、再生
+    game_BGM_ = LoadSoundMem("Resources/sound/play_BGM.mp3");
+    PlaySoundMem(game_BGM_, DX_PLAYTYPE_LOOP);
+
     // (0,0) ~ (1280,720) よりちょい内側
     stage_->Initialize({ 10,10 }, { 1270,710 });
 
@@ -75,6 +79,8 @@ void GameScene::Update(void)
 
     if (timer_.GetIsEnd())
     {
+        //BGMストップ
+        StopSoundMem(game_BGM_);
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
     }
 }
