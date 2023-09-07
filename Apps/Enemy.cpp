@@ -132,7 +132,10 @@ void Enemy::OnCollision(void)
     // ÚG‘ÎÛ‚Ì–¼Ì‚ª player_skewerAttack
     if (other_->GetId() == "player_skewerAttack")
     {
-        ParticleManager::GetInstance()->BossHitEnemyEffect(position_);
+		if (isAlive_)
+		{
+			ParticleManager::GetInstance()->BossHitEnemyEffect(position_);
+		}
         isAlive_ = false;
     }
 

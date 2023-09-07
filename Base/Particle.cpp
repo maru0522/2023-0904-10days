@@ -57,9 +57,8 @@ void Emitter::DrawBoxParticle()
 {
 	for (auto& p : particles_)
 	{
-		DrawBox(
-			(uint32_t)(p.pos.x - p.scale.x), (uint32_t)(p.pos.y - p.scale.y),
-			(uint32_t)(p.pos.x + p.scale.x), (uint32_t)(p.pos.y + p.scale.y),
+		DrawCircleAA(
+			p.pos.x, p.pos.y,p.scale.x,100,
 			0xffffff, true);
 	}
 }
@@ -112,7 +111,7 @@ void Emitter::Add(uint32_t addNum, float life, float minScale, float maxScale, V
 		p.endScale = { 0,0 };
 		p.color = color;
 		//イージング用のタイマーを設定、開始
-		p.timer.maxTime_ = life;
+		p.timer.maxTime_ = life / 60.0f;
 		p.timer.Start();
 	}
 }
