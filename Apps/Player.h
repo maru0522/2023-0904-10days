@@ -12,7 +12,8 @@ public:
     const float kMoveSpeed_{ 3.f }; // 速度
     const int32_t kMaxInvincibleFrame_{ 120 }; // 無敵時間(フレーム)
     const float kPushBackDist_{ 2.f }; // 押し戻す距離
-    const float kKnockbackDist_{ 80.f }; // 敵に触れられてノックバックする距離
+    const float kKnockbackDist_{ 20.f }; // 敵に触れられてノックバックする距離
+    const int32_t kMaxKnockbackFrame_{ 10 }; // ノクバするとき何フレーム掛けてノクバするか
 
     // 薙ぎ払い
     static const float kMowDist_; // 薙ぎ払いで吹き飛ばす距離
@@ -51,16 +52,20 @@ private:
     // 変数
     CollisionManger* colMPtr_;
 
-    int32_t frameCount_invincible_;
-    int32_t frameCount_4Skewer_;
-    Vector2 vec_move_;
-    State state_;
+    int32_t frameCount_invincible_; // 無敵時間カウントのためのフレームカウンタ
+    int32_t frameCount_4Skewer_; // 串刺しの溜めのフレームカウンタ
+    Vector2 vec_move_; // プレイヤーの向き
+    State state_; // 現在の状態fsm
 
-    Vector2 pos4Line_{};
+    Vector2 pos4Line_{}; // debug用プレイヤーの向き描画の溜めの座標
 
-    PlayerMowAttack mow_;
-    PlayerMowAttackSupport mow_support_;
-    PlayerSkewerAttack skewer_;
+    bool isKnockback_{}; // ノクバされま～す
+    int32_t frameCount_knockback_;
+    Vector2 vec_contactE2P_; // 触れられた敵からプレイヤーへの向き
+
+    PlayerMowAttack mow_; // 薙ぎ払い用クラス
+    PlayerMowAttackSupport mow_support_; // 薙ぎ払いサポート用クラス
+    PlayerSkewerAttack skewer_; // 串刺し用クラス
 
     // resources
     bool isRight_{};

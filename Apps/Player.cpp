@@ -51,14 +51,39 @@ void Player::Update(void)
 
     (this->*FuncTbl[(size_t)state_])();
 
+    // 吹き飛ばされるフラグオンだったら
+    if (isKnockback_)
+    {
+        // イージング用のタイムレート
+        float rate = (std::min)((float)frameCount_knockback_ / kMaxKnockbackFrame_, 1.f);
+
+        // 吹き飛ばされる速さ を イージングで調整
+        const float mowSpeed = (1 - Math::Ease::EaseInSine(rate)) * Player::kKnockbackDist_;
+        // 座標に加算
+        position_ += vec_contactE2P_ * mowSpeed;
+
+        if (rate >= 1.f)
+        {
+            frameCount_knockback_ = 0;
+            isKnockback_ = false;
+            return;
+        }
+
+        // フレームカウント加算
+        Math::Function::LoopIncrement<int32_t>(frameCount_knockback_, 0, kMaxKnockbackFrame_);
+    }
+
+    // デバッグライン用記録
     pos4Line_ = position_ + vec_move_ * 30;
 
+    // 向きから回転角を取得
     rotation_ = std::acos(Vector2(0, -1).Dot(vec_move_));
     //反転しないように
     if (vec_move_.x < 0)
     {
         rotation_ = -rotation_;
     }
+    // 右向き方向を取得
     isRight_ = Vector2(0, -1).Cross(vec_move_.Normalize()) > 0.f;
 }
 
@@ -126,6 +151,7 @@ void Player::Draw(void)
 
     // 串刺し攻撃時の判定座標
     DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)", skewer_.GetPos().x, skewer_.GetPos().y);
+    DrawFormatString(0, 500, Util::Color::WHITE, "pos(%f,%f)", position_.x, position_.y);
 }
 
 void Player::MoveUpdate(void)
@@ -306,22 +332,14 @@ void Player::OnCollision(void)
         if (skewer_.GetIsSkewer()) return;
 
         // 敵から自分までの方向ベクトル
-        Vector2 vec_enemy2player = (position_ - other_->GetPos()).Normalize();
+        vec_contactE2P_ = (position_ - other_->GetPos()).Normalize();
 
         // 無敵時間中でないなら
         if (frameCount_invincible_ == 0)
         {
-            // ノックバック後の座標 = 座標 + (正規化されたノックバック方向 * 速度)
-            Vector2 knockbacked_pos = position_ + vec_enemy2player * kKnockbackDist_; // 敵に触れられてノックバックする距離
-            ;
-
-            // ノックバック後の座標 (+ 半径)が、ステージの内側なら座標反映
-            if (knockbacked_pos.x - radius_.x > stagePtr_->GetLT().x && knockbacked_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
-                knockbacked_pos.x + radius_.x < stagePtr_->GetRB().x && knockbacked_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
-            {
-                // 反映
-                position_ = knockbacked_pos;
-            }
+            // ノクバしま～す
+            isKnockback_ = true;
+            
             // 無敵時間に入る
             frameCount_invincible_++;
 
@@ -335,7 +353,7 @@ void Player::OnCollision(void)
         else // 無敵時間中なら押し戻し
         {
             // 押し戻し後の座標 = 座標 + (正規化された押し戻し方向 * 速度)
-            Vector2 pushBacked_pos = position_ + vec_enemy2player * kPushBackDist_;
+            Vector2 pushBacked_pos = position_ + vec_contactE2P_ * kPushBackDist_;
 
             // ノックバック後の座標 (+ 半径)が、ステージの内側なら座標反映
             if (pushBacked_pos.x - radius_.x > stagePtr_->GetLT().x && pushBacked_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
