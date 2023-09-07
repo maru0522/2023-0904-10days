@@ -4,6 +4,7 @@
 #include "Pad.h"
 #include "SceneManager.h"
 #include "Keyboard.h"
+#include "Score.h"
 
 void TitleScene::Initialize(void)
 {
@@ -16,6 +17,8 @@ void TitleScene::Initialize(void)
     //SEì«Ç›çûÇ›
     decision_SE_ = LoadSoundMem("Resources/sound/decision_SE.mp3");
     sceneChange_SE_ = LoadSoundMem("Resources/sound/sceneChange_SE.mp3");
+
+    Score::LoadScore();
 }
 
 void TitleScene::Update(void)

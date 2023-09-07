@@ -157,6 +157,7 @@
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Others\Keyboard.cpp" />
+    <ClCompile Include="Others\Score.cpp" />
     <ClCompile Include="Others\Util.cpp" />
     <ClCompile Include="Base\SceneFactory.cpp" />
     <ClCompile Include="Base\TitleScene.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Others\FileSystem.h" />
     <ClInclude Include="Others\Keyboard.h" />
+    <ClInclude Include="Others\Score.h" />
     <ClInclude Include="Others\Util.h" />
     <ClInclude Include="Others\Pad.h" />
   </ItemGroup>

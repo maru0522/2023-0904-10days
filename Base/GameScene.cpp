@@ -6,6 +6,7 @@
 #include "MathUtil.h"
 #include "EnemyManager.h"
 #include "ParticleManager.h"
+#include "Score.h"
 
 void GameScene::Initialize(void)
 {
@@ -69,6 +70,8 @@ void GameScene::Initialize(void)
     timer_.Start(1000000000);
 
     ParticleManager::GetInstance()->Init();
+
+    Score::Init();
 }
 
 void GameScene::Update(void)
@@ -85,6 +88,8 @@ void GameScene::Update(void)
 
     if (timer_.GetIsEnd())
     {
+        Score::HighScoreUpdate();
+
         PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
         //BGMストップ
         StopSoundMem(game_BGM_);
@@ -107,4 +112,6 @@ void GameScene::Draw(void)
     DrawFormatString(0, 0, Util::Color::WHITE, "[DEBUG]key-0で終了時間を10秒に変更。既に経過してる場合はGameScene終了");
     DrawFormatString(0, 20, Util::Color::WHITE, "time: %f", timer_.GetElapsedTime());
     //DrawPad();
+
+    Score::Draw();
 }
