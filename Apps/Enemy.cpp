@@ -6,6 +6,7 @@
 #include "PlayerAttack.h"
 #include "Vector3.h"
 #include "ParticleManager.h"
+#include "Score.h"
 #include <cmath>
 
 const float Enemy::kMoveSpeed_ = 30.0f;
@@ -161,6 +162,7 @@ void Enemy::OnCollision(void)
             if (isAlive_)
             {
                 ParticleManager::GetInstance()->BossHitEnemyEffect(position_);
+                Score::Add(5000);
             }
             isAlive_ = false;
         }

@@ -29,6 +29,7 @@
     <ClCompile Include="Math\Easing.cpp" />
     <ClCompile Include="Base\Particle.cpp" />
     <ClCompile Include="Base\ParticleManager.cpp" />
+    <ClCompile Include="Others\Score.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\CollisionManger.h" />
@@ -59,5 +60,6 @@
     <ClInclude Include="Math\Easing.h" />
     <ClInclude Include="Base\Particle.h" />
     <ClInclude Include="Base\ParticleManager.h" />
+    <ClInclude Include="Others\Score.h" />
   </ItemGroup>
 </Project>
