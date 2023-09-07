@@ -320,8 +320,15 @@ void Player::OnCollision(void)
             {
                 // ”½‰f
                 position_ = knockbacked_pos;
-                // –³“GŽžŠÔ‚É“ü‚é
-                frameCount_invincible_++;
+            }
+            // –³“GŽžŠÔ‚É“ü‚é
+            frameCount_invincible_++;
+
+            // ’·‰Ÿ‚µ’†‚É”í’e‚µ‚½ê‡ƒŠƒZƒbƒg(?)
+            if (frameCount_4Skewer_)
+            {
+                frameCount_4Skewer_ = 0;
+                SceneManager::GetInstance()->EndSlowMotion();
             }
         }
         else // –³“GŽžŠÔ’†‚È‚ç‰Ÿ‚µ–ß‚µ
