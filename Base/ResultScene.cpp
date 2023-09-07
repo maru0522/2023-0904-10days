@@ -4,6 +4,7 @@
 #include "Keyboard.h"
 #include "Pad.h"
 #include "SceneManager.h"
+#include "Score.h"
 
 void ResultScene::Initialize(void)
 {
@@ -14,6 +15,8 @@ void ResultScene::Initialize(void)
     PlaySoundMem(result_BGM_, DX_PLAYTYPE_LOOP);
     //SEì«Ç›çûÇ›
     sceneChange_SE_ = LoadSoundMem("Resources/sound/sceneChange_SE.mp3");
+
+    Score::SaveScore();
 }
 
 void ResultScene::Update(void)
@@ -44,4 +47,6 @@ void ResultScene::Draw(void)
 
     DrawFormatString(0, 380, Util::Color::RED, "Scene: RESULT");
     DrawFormatString(0, 0, Util::Color::WHITE, "pad-A or key-R[DEBUG]Ç≈title");
+
+    Score::Draw();
 }

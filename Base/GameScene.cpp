@@ -88,6 +88,8 @@ void GameScene::Update(void)
 
     if (timer_.GetIsEnd())
     {
+        Score::HighScoreUpdate();
+
         PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
         //BGMストップ
         StopSoundMem(game_BGM_);
