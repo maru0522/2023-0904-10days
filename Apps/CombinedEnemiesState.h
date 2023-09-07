@@ -45,6 +45,17 @@ public:
 	void Update()override;
 };
 
+//“Ëi‚³‚ê’†
+class CombinedEnemiesStateSkewer : public ICombinedEnemiesState
+{
+private:
+	Vector2 direction_ = { 0,0 };
+
+public:
+	void Initialize()override;
+	void Update()override;
+};
+
 //‘Ò‹@’†
 class CombinedEnemiesStateMoveWait : public ICombinedEnemiesState
 {

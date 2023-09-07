@@ -1,5 +1,7 @@
 #include "CombinedEnemiesState.h"
 #include "CombinedEnemies.h"
+#include "Util.h"
+#include "MathUtil.h"
 
 
 float lerp(float a, float b, float t)
@@ -14,6 +16,10 @@ std::unique_ptr<ICombinedEnemiesState> ICombinedEnemiesState::GetState(const std
 	if (name == "MOW_DOWN")
 	{
 		state = std::make_unique<CombinedEnemiesStateMoveMowDown>();
+	}
+	if (name == "SKEWER")
+	{
+		state = std::make_unique<CombinedEnemiesStateSkewer>();
 	}
 	if (name == "WAIT")
 	{
@@ -46,7 +52,7 @@ void ICombinedEnemiesState::Initialize()
 
 void ICombinedEnemiesState::TimerUpdate(const std::function<void(float)>& f, const std::function<void()>& endF)
 {
-	float t = timer_ / timerMax_;
+	float t = min(timer_ / timerMax_, 1.0f);
 
 	if (f)
 	{
@@ -61,6 +67,7 @@ void ICombinedEnemiesState::TimerUpdate(const std::function<void(float)>& f, con
 		}
 
 		enemies_->ChangeState(nextStateName_);
+		return;
 	}
 
 	timer_++;
@@ -71,7 +78,7 @@ void ICombinedEnemiesState::TimerUpdate(const std::function<void(float)>& f, con
 void CombinedEnemiesStateMoveMowDown::Initialize()
 {
 	nextStateName_ = "WAIT";
-	//timerMax_ = Enemy::kMowRatio_;
+	timerMax_ = Enemy::kMowFrame_;
 
 	direction_ = enemies_->GetMowDownVec();
 	//途中でステート変わったとき用
@@ -81,20 +88,33 @@ void CombinedEnemiesStateMoveMowDown::Initialize()
 
 void CombinedEnemiesStateMoveMowDown::Update()
 {
-
 	Vector2 centorPT = enemies_->GetCentorPosTmp();
 
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetCentorPos({ lerp(centorPT.x, centorPT.x + direction_.x * Player::kMowDist_, t),
-			lerp(centorPT.y, centorPT.y + direction_.y * Player::kMowDist_, t) });
+		enemies_->SetCentorPos({ lerp(centorPT.x, centorPT.x + direction_.x * Player::kMowDist_ * timerMax_,Math::Ease::EaseOutCirc(t,0,1.0f)),
+			lerp(centorPT.y, centorPT.y + direction_.y * Player::kMowDist_ * timerMax_, Math::Ease::EaseOutCirc(t,0,1.0f)) });
 	};
 
 	std::function<void()>endF = [=]() {
-		enemies_->SetIsMowDown(false);
-		enemies_->AllEnemiesEndMowDown();
+		enemies_->MowDownEnd();
 	};
 
-	TimerUpdate(f,endF);
+	TimerUpdate(f, endF);
+}
+
+
+//--------------------------------------------------------------------------------------
+void CombinedEnemiesStateSkewer::Initialize()
+{
+	//途中でステート変わったとき用
+	enemies_->SetRadius(enemies_->GetRadiusTmp());
+	enemies_->SetCentorPosTmp();
+	enemies_->SetIsSkewer(true);
+}
+
+void CombinedEnemiesStateSkewer::Update()
+{
+	enemies_->SkewerUpdate();
 }
 
 
@@ -128,7 +148,7 @@ void CombinedEnemiesStateShrink::Initialize()
 void CombinedEnemiesStateShrink::Update()
 {
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetRadius(lerp(enemies_->GetRadiusTmp(), 0, t));
+		enemies_->SetRadius(lerp(enemies_->GetRadiusTmp(), 0, Math::Ease::EaseInCubic(t, 0, 1.0f)));
 	};
 
 	TimerUpdate(f);
@@ -168,7 +188,7 @@ void CombinedEnemiesStateStretch::Update()
 	float radiusT = enemies_->GetRadiusTmp();
 
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetRadius(lerp(0, enemies_->GetRadiusTmp(), min(t, 1.0f)));
+		enemies_->SetRadius(lerp(0, enemies_->GetRadiusTmp(), Math::Ease::EaseInCubic(t, 0, 1.0f)));
 		//半径分向いてる方向に進む
 		enemies_->SetCentorPos({ lerp(centorPT.x, centorPT.x + directionT.x * radiusT * 2.0f, t),
 			lerp(centorPT.y, centorPT.y + directionT.y * radiusT * 2.0f, t) });

@@ -40,6 +40,10 @@ private:
 	Vector2 mowDownVec_ = {0,0};
 	//薙ぎ払われてるか
 	bool isMowDown_ = false;
+	//串刺しにされているか
+	bool isSkewer_ = false;
+	//生きているか
+	bool isAlive_ = true;
 
 
 public:
@@ -68,6 +72,10 @@ private:
 	void AnyEnemyMowDownUpdate();
 	//薙ぎ払う
 	void MowDown();
+	//くっついてる敵のどれか一つでも突進されたら
+	void AnyEnemySkewerUpdate();
+	//突進される処理
+	void Skewer();
 
 public:
 	const Vector2& GetCentorPos() { return centorPos_; }
@@ -83,6 +91,7 @@ public:
 	void SetCentorPosTmp() { centorPosTmp_ = centorPos_; }
 	void SetDirectionTmp() { directionTmp_ = direction_; }
 	void SetIsMowDown(bool isMowDown) { isMowDown_ = isMowDown; }
+	void SetIsSkewer(bool isSkewer) { isSkewer_ = isSkewer; }
 
 	float GetRadiusTmp() { return radiusTmp_; }
 	const Vector2& GetCentorPosTmp() { return centorPosTmp_; }
@@ -92,6 +101,10 @@ public:
 
 	const Vector2& GetMowDownVec() { return mowDownVec_; }
 	bool GetIsMowDown() { return isMowDown_; }
+	bool GetIsSkewer() { return isSkewer_; }
+	bool GetIsAlive() { return isAlive_; }
+
+	const Vector2& GetTargetPos() { player_->GetPos(); }
 
 	//配列の参照
 	std::vector<std::unique_ptr<Enemy>>& GetEnemies() { return enemies_; }
@@ -99,11 +112,18 @@ public:
 public:
 	//敵全体の中でほかの敵と合体したものがいるか
 	bool GetIsDockingAnyEnemy();
+	//敵全体の中でほかの串刺しにされてる敵と合体したものがいるか
+	bool GetIsDockingAndSkewer();
 	//ほかの敵と合体したときにisDockingをfalse
 	void AllEnemiesDockingEnd();
 	//移動し終わり、全部の敵の薙ぎ払いフラグをオフ
 	void AllEnemiesEndMowDown();
-
+	//薙ぎ払い終わり
+	void MowDownEnd();
+	//突進されてるときの更新
+	void SkewerUpdate();
+	//死亡処理
+	void Dead();
 
 public:
 	void ChangeState(const std::string& name);

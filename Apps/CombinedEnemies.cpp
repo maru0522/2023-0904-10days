@@ -17,6 +17,16 @@ bool CombinedEnemies::GetIsDockingAnyEnemy()
 	return false;
 }
 
+bool CombinedEnemies::GetIsDockingAndSkewer()
+{
+	if (GetIsDockingAnyEnemy() && isSkewer_)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void CombinedEnemies::AllEnemiesDockingEnd()
 {
 	for (auto& enemy : enemies_)
@@ -33,6 +43,12 @@ void CombinedEnemies::AllEnemiesEndMowDown()
 	{
 		enemy->SetIsMowDown(false);
 	}
+}
+
+void CombinedEnemies::MowDownEnd()
+{
+	isMowDown_ = false;
+	AllEnemiesEndMowDown();
 }
 
 void CombinedEnemies::ChangeState(const std::string& name)
@@ -74,7 +90,7 @@ void CombinedEnemies::CalcCentorPos(const Vector2& targetPos, const Vector2& dir
 
 void CombinedEnemies::AnyEnemyMowDownUpdate()
 {
-	if (isMowDown_)
+	if (isMowDown_ || isSkewer_)
 	{
 		return;
 	}
@@ -105,6 +121,61 @@ void CombinedEnemies::MowDown()
 	ChangeState("MOW_DOWN");
 }
 
+void CombinedEnemies::AnyEnemySkewerUpdate()
+{
+	bool isSkewer = false;
+
+	//どれか一つでも突進されてるか
+	for (auto& enemy : enemies_)
+	{
+		if (enemy->GetIsSkewer())
+		{
+			isSkewer = true;
+			break;
+		}
+	}
+
+	if (!isSkewer) { return; }
+
+	//突進される処理
+	Skewer();
+}
+
+void CombinedEnemies::Skewer()
+{
+	//どれか一つでも突進されてたら全部フラグ立てる
+	for (auto& enemy : enemies_)
+	{
+		enemy->SetIsSkewer(true);
+	}
+
+	isSkewer_ = true;
+
+	ChangeState("SKEWER");
+}
+
+void CombinedEnemies::SkewerUpdate()
+{
+	DirectionUpdate();
+	centorPos_ = player_->GetPos() + (player_->GetMoveVec() * radius_);
+
+	if (!player_->GetIsSkewer() && isSkewer_)
+	{
+		Dead();
+	}
+}
+
+//-------------------------------------------------
+void CombinedEnemies::Dead()
+{
+	for (auto& enemy : enemies_)
+	{
+		enemy->Dead();
+	}
+
+	isAlive_ = false;
+}
+
 //--------------------------------------------------
 void CombinedEnemies::EnemiesPosUpdate()
 {
@@ -125,6 +196,8 @@ void CombinedEnemies::Update()
 {
 	//薙ぎ払いの更新
 	AnyEnemyMowDownUpdate();
+	//突進の更新
+	AnyEnemySkewerUpdate();
 
 	state_->Update();
 	//敵一体一体の座標更新
@@ -142,6 +215,7 @@ void CombinedEnemies::Draw()
 //------------------------------------------------------------
 void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 {
+	enemy->SetIsDocking(false);
 	//敵の長さを加算していく
 	float addRadius = enemy->GetRad().Length() * 2.0f * (1.0f / (1.0f - Enemy::kPngScale_));
 	radius_ = radiusTmp_ + addRadius;
