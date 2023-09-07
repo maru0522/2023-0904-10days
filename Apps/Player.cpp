@@ -100,7 +100,7 @@ void Player::Draw(void)
         DrawFormatString(1000, 60, Util::Color::GREEN, "溜め状態");
         DrawFormatString(1000, 80, Util::Color::GREEN, "frame: %d/%d", frameCount_4Skewer_, kChargeFrame4Skewer_);
     }
-    else if(state_ != State::ATTACK_SKEWER) // 串刺し攻撃のために溜めてる間や、串刺し攻撃中は半円を表示しない ※それ以外の時に表示
+    else if (state_ != State::ATTACK_SKEWER) // 串刺し攻撃のために溜めてる間や、串刺し攻撃中は半円を表示しない ※それ以外の時に表示
     {
         // 攻撃範囲とdebugの表示
         mow_.Draw();
@@ -112,9 +112,11 @@ void Player::Draw(void)
     if (state_ == State::ATTACK_MOW && mow_.GetFrameCountAttack() > 1)
     {
         // 串を描画
-        //DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rotation_, png_sword_, true);
-        DrawCircle((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, 1, Util::Color::BLUE, true, 1);
+        DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rot4Sword2_, png_sword_, true);
+        //DrawCircle((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, 1, Util::Color::BLUE, true, 1);
     }
+    DrawRotaGraph(800, 120, kPngScale_, 0, png_sword_, true);
+    DrawFormatString(1000, 120, Util::Color::GREEN, "rot4s: %f", rot4RotationSword_);
 
     if (state_ == State::ATTACK_SKEWER) // 串刺し攻撃中、串刺しの描画関数を呼び出す
     {
@@ -124,7 +126,7 @@ void Player::Draw(void)
     }
 
     // 串刺し攻撃時の判定座標
-    DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)",skewer_.GetPos().x,skewer_.GetPos().y);
+    DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)", skewer_.GetPos().x, skewer_.GetPos().y);
 }
 
 void Player::MoveUpdate(void)
@@ -235,20 +237,23 @@ void Player::MowAttackUpdate(void)
     // フレーム換算で進行割合を算出
     float rate = (std::min)((float)(mow_.GetFrameCountAttack() - 1) / PlayerMowAttack::kMaxAttackFrame_, 1.f);
     // 角度で今どのくらいか当てはめる rad = ToRad(割合 * 180°)
-    rot4Sword_ = Math::Function::ToRadian(rate * 180.f);
+    rot4RotationSword_ = Math::Function::ToRadian(kMaxRangeSwordDegree_ * rate);
 
     // プレイヤーの右方向を出す
     Vector3 vec3_move = { vec_move_.x,vec_move_.y,0 };
     Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec3_move.Normalize());
     Vector2 vec2_right = { vec3_right.x,vec3_right.y };
-    // 初期座標 = 今の座標 + 右方向 * 規定距離
-    const Vector2 initPos = position_ + vec2_right * kMowSwordCenterDist_; // 回転時の初期座標
+    // 初期座標 = 右方向 * 規定距離
+    const Vector2 initPos = vec2_right * kMowSwordCenterDist_; // 回転時の初期座標
     // 回転移動の座標計算
-    pos4Sword_.x = initPos.x * std::cos(rot4Sword_) - initPos.x * std::sin(rot4Sword_);
-    pos4Sword_.y = initPos.y * std::sin(rot4Sword_) + initPos.y * std::cos(rot4Sword_);
+    pos4Sword_.x = -(initPos.x * std::cos(rot4RotationSword_) - initPos.y * std::sin(rot4RotationSword_));
+    pos4Sword_.y = -(initPos.x * std::sin(rot4RotationSword_) + initPos.y * std::cos(rot4RotationSword_));
+    // 回転後プレイヤーの位置まで移動させる。
+    pos4Sword_.x += position_.x;
+    pos4Sword_.y += position_.y;
 
-    pos4Sword_.x += 300;
-    pos4Sword_.y += 300;
+    // 串の絵自体の回転角を計算する
+    rot4Sword2_ = (rotation_ - Math::Function::ToRadian(90)) + rate * Math::Function::ToRadian(kMaxRangeSwordDegree_); // 角度ちょい深めに
 
     // 薙ぎ払い攻撃本体のUpdate()
     mow_.Update();
