@@ -147,7 +147,7 @@ void Player::MoveUpdate(void)
 
 
     // pad-RÇ≈Attack_MOWèÛë‘Ç…ëJà⁄
-    if (PadTriggerLorR())
+    if (PadTriggerLorR() || PadTriggerRB())
     {
         mow_.Attack(vec_move_, position_);
         state_ = State::ATTACK_MOW;

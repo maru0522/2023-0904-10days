@@ -26,3 +26,5 @@ bool PadLeft(); // スティック左倒す → true
 Vector2 PadStick(); // スティックの値取得(-1.0f~1.0f)
 
 void ControlUpdate(); // GetHitKeyStateAll(keys); の下に書いてね
+
+void DrawPad(void);
