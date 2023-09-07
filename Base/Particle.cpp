@@ -20,7 +20,7 @@ void Emitter::Update(bool isGravity)
 	//寿命が尽きたパーティクルを全削除
 	for (size_t i = 0; i < particles_.size(); i++)
 	{
-		if (particles_[i].frame >= particles_[i].num_frame)
+		if (particles_[i].aliveTimer.GetEnd())
 		{
 			particles_.erase(particles_.begin() + i);
 			i = (size_t)-1;
@@ -30,14 +30,13 @@ void Emitter::Update(bool isGravity)
 	//全パーティクル更新
 	for (size_t i = 0; i < particles_.size(); i++)
 	{
-		particles_[i].timer.Update();
-
-		//経過フレームをカウント
-		particles_[i].frame++;
+		//生存時間とイージング用タイマーの更新
+		particles_[i].easeTimer.Update();
+		particles_[i].aliveTimer.Update();
 
 		//スケールの線形補間
-		particles_[i].scale.x = Easing::lerp(particles_[i].startScale.x, particles_[i].endScale.x, particles_[i].timer.GetTimeRate());
-		particles_[i].scale.y = Easing::lerp(particles_[i].startScale.y, particles_[i].endScale.y, particles_[i].timer.GetTimeRate());
+		particles_[i].scale.x = Easing::lerp(particles_[i].startScale.x, particles_[i].endScale.x, particles_[i].easeTimer.GetTimeRate());
+		particles_[i].scale.y = Easing::lerp(particles_[i].startScale.y, particles_[i].endScale.y, particles_[i].easeTimer.GetTimeRate());
 
 		//加速度を速度に加算
 		particles_[i].velo += particles_[i].accel;
@@ -105,14 +104,15 @@ void Emitter::Add(uint32_t addNum, float life, float minScale, float maxScale, V
 		p.rot = rot;
 		p.velo = velo;
 		p.accel = accel;
-		p.num_frame = (uint32_t)life;
+		p.aliveTimer = life;
+		p.aliveTimer.Start();
 		p.scale = randomScale;
 		p.startScale = randomScale;
 		p.endScale = { 0,0 };
 		p.color = color;
 		//イージング用のタイマーを設定、開始
-		p.timer.maxTime_ = life / 60.0f;
-		p.timer.Start();
+		p.easeTimer.maxTime_ = life;
+		p.easeTimer.Start();
 	}
 }
 

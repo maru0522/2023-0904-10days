@@ -27,13 +27,11 @@ class Emitter final
 
 		//色
 		uint32_t color;
-		//現在フレーム
-		uint32_t frame = 0;
-		//終了フレーム
-		uint32_t num_frame = 0;
+		//生存時間(フレーム数)
+		Easing::EaseTimer aliveTimer;
 
 		//イージング用タイマー
-		Easing::EaseTimer timer = 1.0f;
+		Easing::EaseTimer easeTimer = 1.0f;
 
 		//距離
 		float radius = 0;
@@ -82,6 +80,7 @@ public:
 	void DrawGraph();
 
 	//パーティクル追加
+	//lifeは秒数指定
 	void Add(uint32_t addNum, float life, float minScale, float maxScale, Vector2 minVelo, Vector2 maxVelo,
 		Vector2 accel = { 0,0 }, float minRot = 0.0f, float maxRot = 0.0f, uint32_t color = 0xffffff);
 	//パーティクル全消し
