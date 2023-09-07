@@ -24,7 +24,7 @@ PlayerSkewerAttack::~PlayerSkewerAttack(void)
 
 void PlayerSkewerAttack::Attack(void)
 {
-    // 中心地点を取得（初期地点）
+    // 串刺し攻撃中フラグオン
     isSkewer_ = true;
 }
 
