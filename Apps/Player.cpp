@@ -115,7 +115,6 @@ void Player::Draw(void)
         DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rot4Sword2_, png_sword_, true);
         //DrawCircle((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, 1, Util::Color::BLUE, true, 1);
     }
-    DrawRotaGraph(800, 120, kPngScale_, 0, png_sword_, true);
     DrawFormatString(1000, 120, Util::Color::GREEN, "rot4s: %f", rot4RotationSword_);
 
     if (state_ == State::ATTACK_SKEWER) // 串刺し攻撃中、串刺しの描画関数を呼び出す
@@ -289,6 +288,8 @@ void Player::SkewerAttackUpdate(void)
     // 串刺し1フレーム後の座標 + (正規化されたプレイヤーの向き * 規定距離)
     skewer_.SetPos(skewered_pos + vec_move_ * kSkewerAttackCenterDist_);
     skewer_.Update();
+    // 串刺し絵の座標 = プレイヤーの座標 + 正規化されたプレイヤーの向き * 規定距離)
+    pos4Sword_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
 }
 
 void Player::OnCollision(void)
