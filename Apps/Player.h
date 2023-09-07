@@ -12,9 +12,10 @@ public:
     const float kMoveSpeed_{ 3.f }; // 速度
     const int32_t kMaxInvincibleFrame_{ 120 }; // 無敵時間(フレーム)
     const float kPushBackDist_{ 2.f }; // 押し戻す距離
+    const float kKnockbackDist_{ 80.f }; // 敵に触れられてノックバックする距離
 
     // 薙ぎ払い
-    static const float kKnockbackDist_; // ノックバック距離
+    static const float kMowDist_; // 薙ぎ払いで吹き飛ばす距離
     const float kMowSupportCenterDist_{ 35.f }; // mowsupportの中心が、プレイヤーの中心からどんくらいはなれてるか
     //const float kMowAttackCenterDist_{ 10.f }; // 薙ぎ払い攻撃の範囲の中心がプレイヤーの中心からどれだけ離れてるか
 

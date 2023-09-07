@@ -71,7 +71,7 @@ void ICombinedEnemiesState::TimerUpdate(const std::function<void(float)>& f, con
 void CombinedEnemiesStateMoveMowDown::Initialize()
 {
 	nextStateName_ = "WAIT";
-	timerMax_ = Enemy::kMowRatio_;
+	//timerMax_ = Enemy::kMowRatio_;
 
 	direction_ = enemies_->GetMowDownVec();
 	//途中でステート変わったとき用
@@ -85,8 +85,8 @@ void CombinedEnemiesStateMoveMowDown::Update()
 	Vector2 centorPT = enemies_->GetCentorPosTmp();
 
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetCentorPos({ lerp(centorPT.x, centorPT.x + direction_.x * Player::kKnockbackDist_, t),
-			lerp(centorPT.y, centorPT.y + direction_.y * Player::kKnockbackDist_, t) });
+		enemies_->SetCentorPos({ lerp(centorPT.x, centorPT.x + direction_.x * Player::kMowDist_, t),
+			lerp(centorPT.y, centorPT.y + direction_.y * Player::kMowDist_, t) });
 	};
 
 	std::function<void()>endF = [=]() {

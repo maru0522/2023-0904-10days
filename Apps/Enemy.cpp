@@ -6,9 +6,9 @@
 #include "PlayerAttack.h"
 #include "Vector3.h"
 #include "ParticleManager.h"
+#include <cmath>
 
 const float Enemy::kMoveSpeed_ = 30.0f;
-const float Enemy::kMowRatio_ = 20.0f; // 
 const float Enemy::kPushBackDist_ = 2.0f;
 const float Enemy::kPngScale_ = 0.07f;
 
@@ -46,23 +46,39 @@ void Enemy::Update(void)
 		// 薙ぎ払われてたら
 		if (isMowDown_)
 		{
-			// 吹っ飛び処理と移動したらisMowDownのオフ
+            // イージングタイマーが起動されてたら
+            if (frameCount_mow_)
+            {
+                // 加算
+                Math::Function::LoopIncrement<int32_t>(frameCount_mow_, 0, kMowFrame_);
+            }
+            else
+            {
+                // 起動されてなければ起動
+                frameCount_mow_++;
+            }
 
-			// 吹き飛ばされる速さ
-			const float mowSpeed = Player::kKnockbackDist_ / kMowRatio_;
+			/* 吹っ飛び処理と移動したらisMowDownのオフ */
+
+            // イージング用のタイムレート
+            float rate = (std::min)((float)frameCount_mow_ / kMowFrame_, 1.f);
+
+			// 吹き飛ばされる速さ を イージングで調整
+            const float mowSpeed = (1 - Math::Ease::EaseInSine(rate)) * Player::kMowDist_;
 			// 座標に加算
 			position_ += vec_mow_ * mowSpeed;
-			// とりあえずこんだけ移動しましたので、合計に加算します
-			tortalMowDist += mowSpeed;
 
 			// 押し戻しっつーか、それ以上いかないようにってだけ
 			position_.x = Math::Function::Clamp<float>(position_.x, stagePtr_->GetLT().x + radius_.x * 2, stagePtr_->GetRB().x - radius_.x * 2);
 			position_.y = Math::Function::Clamp<float>(position_.y, stagePtr_->GetLT().y + radius_.x * 2, stagePtr_->GetRB().y - radius_.x * 2);
 
 			// 座標のあれこれ終わったので、合計を鑑みて、終わるかどうか確認します。
-			if (tortalMowDist >= Player::kKnockbackDist_)
+            // rateが1ならイージング終わってます
+			if (rate >= 1.f)
 			{
-				tortalMowDist = 0;
+				//tortalMowDist = 0;
+                // 吹き飛ばされるためのカウンタ初期化
+                frameCount_mow_ = 0;
 				isMowDown_ = false;
 			}
 		}

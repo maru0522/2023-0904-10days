@@ -10,7 +10,7 @@
 
 using namespace Util;
 
-const float Player::kKnockbackDist_{ 200.f };// ノックバック距離 こっち変更するならenemy.hの割合も弄らないと瞬間移動になっちまう
+const float Player::kMowDist_{ 20.f };// 薙ぎ払いで吹き飛ばす距離 こっち変更するならenemy.hの割合も弄らないと瞬間移動になっちまう
 
 Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), mow_support_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
 {
@@ -266,7 +266,8 @@ void Player::OnCollision(void)
         if (frameCount_invincible_ == 0)
         {
             // ノックバック後の座標 = 座標 + (正規化されたノックバック方向 * 速度)
-            Vector2 knockbacked_pos = position_ + vec_enemy2player * kKnockbackDist_;
+            Vector2 knockbacked_pos = position_ + vec_enemy2player * kKnockbackDist_; // 敵に触れられてノックバックする距離
+            ;
 
             // ノックバック後の座標 (+ 半径)が、ステージの内側なら座標反映
             if (knockbacked_pos.x - radius_.x > stagePtr_->GetLT().x && knockbacked_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので

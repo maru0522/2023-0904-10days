@@ -10,9 +10,10 @@ public:
     static const float kMoveSpeed_; // 速度
     static const int32_t kMoveTimes_{ 5 }; // 何回に分けて移動するか(瞬間移動に見えるのを避けるため）
     static const int32_t kMoveInterval_{ 100 }; // 敵が動くまでの間隔(フレーム単位)
-    static const float kMowRatio_; // 吹っ飛ばされたとき距離に対して、どのくらいの割合で移動していくか
+    //static const float kMowRatio_; // 吹っ飛ばされたとき距離に対して、どのくらいの割合で移動していくか
     static const float kPushBackDist_; // 押し戻す距離
     static const float kPngScale_; // 画像の拡大率
+    const uint32_t kMowFrame_{ 15 }; // 何フレームかけて吹き飛ばされるか
     const float KRadius_{ 10.f }; // 半径
 
     // 関数
@@ -39,7 +40,9 @@ private:
     bool isMowDown_ = false;
     Vector2 vec_mow_{}; // 吹っ飛ばされる方向
     // 吹き飛ばされる距離だけちゃんと移動したか計測する変数
-    float tortalMowDist{};
+    //float tortalMowDist{};
+    // 吹き飛ばされる時のイージング用タイマー
+    int32_t frameCount_mow_;
 
     // 薙ぎ払われた最中に合体OKフラグ
     bool isDocking_{};
