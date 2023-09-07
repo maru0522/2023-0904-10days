@@ -131,7 +131,7 @@ void Player::MoveUpdate(void)
     }
 
     //　pad-Aを押していない時は移動できる。（串刺しの為に溜めてる時は動けない）
-    if (!PadDownA())
+    if (frameCount_4Skewer_ == 0) // 串刺しカウントが0なら（=溜めてない)
     {
         // 移動後の座標 = 座標 + (正規化された入力値 * 速度)
         Vector2 moved_pos = position_ + input.Normalize() * kMoveSpeed_;
@@ -145,47 +145,53 @@ void Player::MoveUpdate(void)
         }
     }
 
-
-    // pad-RでAttack_MOW状態に遷移
-    if (PadTriggerLorR())
-    {
-        mow_.Attack(vec_move_, position_);
-        state_ = State::ATTACK_MOW;
-    }
+#pragma region 薙ぎ払い攻撃の範囲を移動させてる
     mow_.SetPos(position_);
     mow_.SetRot(rotation_);
     // サポートの矩形の中心点 = プレイヤーの座標 + 正面vec * kMowSupportCenterDist_
     Vector2 center4MowSupport = position_ + vec_move_ * kMowSupportCenterDist_;
     // サポートの座標設定
     mow_support_.SetPos(center4MowSupport);
+#pragma endregion
 
-    // pad-A長押しでATTACK_SKEWER状態に遷移
-    if (PadDownA())
+    // 無敵中じゃなければ攻撃できる
+    if (frameCount_invincible_ == 0)
     {
-        // ATTACK_SKEWER状態に入るための溜め計測フレームを加算
-        //frameCount_4Skewer_++;
-        frameCount_4Skewer_ += 5; // スローモーション回避のため力技だけど5フレーム分ずつカウントします。
-
-        // ↑仕様上押してからスローモーション開始になるので、最初のフレーム分カウントが +n されてしまうのを簡単に回避する方法思いつきません。
-
-        // スローモーション開始
-        SceneManager::GetInstance()->StartSlowMotion();
-    }
-    else
-    {
-        // 規定フレーム以上触れてたら遷移
-        if (frameCount_4Skewer_ >= kChargeFrame4Skewer_)
+        // pad-RでAttack_MOW状態に遷移
+        if (PadTriggerLorR() || PadTriggerRB())
         {
-            // 遷移して初期化
-            skewer_.Attack();
-            state_ = State::ATTACK_SKEWER;
-            frameCount_4Skewer_ = 0;
+            mow_.Attack(vec_move_, position_);
+            state_ = State::ATTACK_MOW;
         }
-        // 離した瞬間に初期化
-        frameCount_4Skewer_ = 0;
 
-        // スローモーション解除
-        SceneManager::GetInstance()->EndSlowMotion();
+        // pad-A長押しでATTACK_SKEWER状態に遷移
+        if (PadDownA())
+        {
+            // ATTACK_SKEWER状態に入るための溜め計測フレームを加算
+            //frameCount_4Skewer_++;
+            frameCount_4Skewer_ += 5; // スローモーション回避のため力技だけど5フレーム分ずつカウントします。
+
+            // ↑仕様上押してからスローモーション開始になるので、最初のフレーム分カウントが +n されてしまうのを簡単に回避する方法思いつきません。
+
+            // スローモーション開始
+            SceneManager::GetInstance()->StartSlowMotion();
+        }
+        else
+        {
+            // 規定フレーム以上触れてたら遷移
+            if (frameCount_4Skewer_ >= kChargeFrame4Skewer_)
+            {
+                // 遷移して初期化
+                skewer_.Attack();
+                state_ = State::ATTACK_SKEWER;
+                frameCount_4Skewer_ = 0;
+            }
+            // 離した瞬間に初期化
+            frameCount_4Skewer_ = 0;
+
+            // スローモーション解除
+            SceneManager::GetInstance()->EndSlowMotion();
+        }
     }
 
 #ifdef _DEBUG
