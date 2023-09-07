@@ -200,6 +200,12 @@ void Enemy::OnCollision(void)
     // 接触対象の名称が player
     if (other_->GetId() == "player")
     {
+        // キャストして復元
+        Player* playerPtr = static_cast<Player*>(other_);
+
+        // 串刺しされてる最中なら押し戻し要らん
+        if (playerPtr->GetIsSkewer()) return;
+
         // playerから自分までの方向ベクトル
         Vector2 vec_player2enemy = (position_ - other_->GetPos()).Normalize();
 

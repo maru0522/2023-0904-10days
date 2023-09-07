@@ -262,6 +262,8 @@ void Player::OnCollision(void)
 
         // “GŽ€‚ñ‚Å‚ñ‚È‚ç‰Ÿ‚µ–ß‚µ—v‚ç‚ñ
         if (enemyPtr->GetIsAlive() == false) return;
+        // ‹øŽh‚µUŒ‚’†‚à‰Ÿ‚µ–ß‚µ—v‚ç‚ñ
+        if (skewer_.GetIsSkewer()) return;
 
         // “G‚©‚çŽ©•ª‚Ü‚Å‚Ì•ûŒüƒxƒNƒgƒ‹
         Vector2 vec_enemy2player = (position_ - other_->GetPos()).Normalize();

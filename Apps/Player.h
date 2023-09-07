@@ -66,5 +66,7 @@ private:
     int32_t png_arrow_ = LoadGraph("Resources/texture/arrow.png");  //–îˆó‰æ‘œ
 
 public:
+    // getter
     const Vector2& GetDirectionVec() { return pos4Line_; }
+    bool GetIsSkewer(void) { return skewer_.GetIsSkewer(); }
 };
