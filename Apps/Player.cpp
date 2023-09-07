@@ -100,7 +100,7 @@ void Player::Draw(void)
         DrawFormatString(1000, 60, Util::Color::GREEN, "—­‚ßó‘Ô");
         DrawFormatString(1000, 80, Util::Color::GREEN, "frame: %d/%d", frameCount_4Skewer_, kChargeFrame4Skewer_);
     }
-    else if(state_ != State::ATTACK_SKEWER) // ‹øŽh‚µUŒ‚‚Ì‚½‚ß‚É—­‚ß‚Ä‚éŠÔ‚âA‹øŽh‚µUŒ‚’†‚Í”¼‰~‚ð•\Ž¦‚µ‚È‚¢ ¦‚»‚êˆÈŠO‚ÌŽž‚É•\Ž¦
+    else if (state_ != State::ATTACK_SKEWER) // ‹øŽh‚µUŒ‚‚Ì‚½‚ß‚É—­‚ß‚Ä‚éŠÔ‚âA‹øŽh‚µUŒ‚’†‚Í”¼‰~‚ð•\Ž¦‚µ‚È‚¢ ¦‚»‚êˆÈŠO‚ÌŽž‚É•\Ž¦
     {
         // UŒ‚”ÍˆÍ‚Ædebug‚Ì•\Ž¦
         mow_.Draw();
@@ -112,9 +112,11 @@ void Player::Draw(void)
     if (state_ == State::ATTACK_MOW && mow_.GetFrameCountAttack() > 1)
     {
         // ‹ø‚ð•`‰æ
-        //DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rotation_, png_sword_, true);
-        DrawCircle((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, 1, Util::Color::BLUE, true, 1);
+        DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rot4Sword2_, png_sword_, true);
+        //DrawCircle((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, 1, Util::Color::BLUE, true, 1);
     }
+    DrawRotaGraph(800, 120, kPngScale_, 0, png_sword_, true);
+    DrawFormatString(1000, 120, Util::Color::GREEN, "rot4s: %f", rot4RotationSword_);
 
     if (state_ == State::ATTACK_SKEWER) // ‹øŽh‚µUŒ‚’†A‹øŽh‚µ‚Ì•`‰æŠÖ”‚ðŒÄ‚Ño‚·
     {
@@ -124,7 +126,7 @@ void Player::Draw(void)
     }
 
     // ‹øŽh‚µUŒ‚Žž‚Ì”»’èÀ•W
-    DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)",skewer_.GetPos().x,skewer_.GetPos().y);
+    DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)", skewer_.GetPos().x, skewer_.GetPos().y);
 }
 
 void Player::MoveUpdate(void)
@@ -235,20 +237,23 @@ void Player::MowAttackUpdate(void)
     // ƒtƒŒ[ƒ€Š·ŽZ‚ÅisŠ„‡‚ðŽZo
     float rate = (std::min)((float)(mow_.GetFrameCountAttack() - 1) / PlayerMowAttack::kMaxAttackFrame_, 1.f);
     // Šp“x‚Å¡‚Ç‚Ì‚­‚ç‚¢‚©“–‚Ä‚Í‚ß‚é rad = ToRad(Š„‡ * 180‹)
-    rot4Sword_ = Math::Function::ToRadian(rate * 180.f);
+    rot4RotationSword_ = Math::Function::ToRadian(kMaxRangeSwordDegree_ * rate);
 
     // ƒvƒŒƒCƒ„[‚Ì‰E•ûŒü‚ðo‚·
     Vector3 vec3_move = { vec_move_.x,vec_move_.y,0 };
     Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec3_move.Normalize());
     Vector2 vec2_right = { vec3_right.x,vec3_right.y };
-    // ‰ŠúÀ•W = ¡‚ÌÀ•W + ‰E•ûŒü * ‹K’è‹——£
-    const Vector2 initPos = position_ + vec2_right * kMowSwordCenterDist_; // ‰ñ“]Žž‚Ì‰ŠúÀ•W
+    // ‰ŠúÀ•W = ‰E•ûŒü * ‹K’è‹——£
+    const Vector2 initPos = vec2_right * kMowSwordCenterDist_; // ‰ñ“]Žž‚Ì‰ŠúÀ•W
     // ‰ñ“]ˆÚ“®‚ÌÀ•WŒvŽZ
-    pos4Sword_.x = initPos.x * std::cos(rot4Sword_) - initPos.x * std::sin(rot4Sword_);
-    pos4Sword_.y = initPos.y * std::sin(rot4Sword_) + initPos.y * std::cos(rot4Sword_);
+    pos4Sword_.x = -(initPos.x * std::cos(rot4RotationSword_) - initPos.y * std::sin(rot4RotationSword_));
+    pos4Sword_.y = -(initPos.x * std::sin(rot4RotationSword_) + initPos.y * std::cos(rot4RotationSword_));
+    // ‰ñ“]ŒãƒvƒŒƒCƒ„[‚ÌˆÊ’u‚Ü‚ÅˆÚ“®‚³‚¹‚éB
+    pos4Sword_.x += position_.x;
+    pos4Sword_.y += position_.y;
 
-    pos4Sword_.x += 300;
-    pos4Sword_.y += 300;
+    // ‹ø‚ÌŠGŽ©‘Ì‚Ì‰ñ“]Šp‚ðŒvŽZ‚·‚é
+    rot4Sword2_ = (rotation_ - Math::Function::ToRadian(90)) + rate * Math::Function::ToRadian(kMaxRangeSwordDegree_); // Šp“x‚¿‚å‚¢[‚ß‚É
 
     // “ã‚¬•¥‚¢UŒ‚–{‘Ì‚ÌUpdate()
     mow_.Update();
@@ -315,8 +320,15 @@ void Player::OnCollision(void)
             {
                 // ”½‰f
                 position_ = knockbacked_pos;
-                // –³“GŽžŠÔ‚É“ü‚é
-                frameCount_invincible_++;
+            }
+            // –³“GŽžŠÔ‚É“ü‚é
+            frameCount_invincible_++;
+
+            // ’·‰Ÿ‚µ’†‚É”í’e‚µ‚½ê‡ƒŠƒZƒbƒg(?)
+            if (frameCount_4Skewer_)
+            {
+                frameCount_4Skewer_ = 0;
+                SceneManager::GetInstance()->EndSlowMotion();
             }
         }
         else // –³“GŽžŠÔ’†‚È‚ç‰Ÿ‚µ–ß‚µ
