@@ -76,9 +76,7 @@ void Player::Draw(void)
 
         // playerの描画
         SetDrawBright(255, 255, 80); // 変色量カス
-        isRight_ ?
-            DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true, false) :
-            DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, -rotation_, png_player_, true);
+        DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true);
         SetDrawBright(255, 255, 255);
         DrawFormatString(1000, 20, Util::Color::YELLOW, "無敵状態");
         DrawFormatString(1000, 40, Util::Color::YELLOW, "frame: %d", kMaxInvincibleFrame_ - frameCount_invincible_);
@@ -111,6 +109,8 @@ void Player::Draw(void)
     {
         skewer_.Draw();
     }
+
+    DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)",skewer_.GetPos().x,skewer_.GetPos().y);
 }
 
 void Player::MoveUpdate(void)
@@ -226,6 +226,10 @@ void Player::SkewerAttackUpdate(void)
     if (skewer_.GetIsSkewer() == false)
     {
         state_ = State::MOVE;
+        // 判定がその場に残り続けちゃうから、絶対に引っかからない座標に転送するごり押し。 pos(-10万,-10万)
+        skewer_.SetPos({ -100000.f, -100000.f });
+        // 関数終了
+        return;
     }
 
     // 串刺し1フレーム後の座標 = 座標 + (正規化されたプレイヤーの向き * 速度)
