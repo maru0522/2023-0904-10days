@@ -43,9 +43,10 @@ private:
     //float tortalMowDist{};
     // 吹き飛ばされる時のイージング用タイマー
     int32_t frameCount_mow_;
-
     // 薙ぎ払われた最中に合体OKフラグ
     bool isDocking_{};
+    // 自分、今串刺しされてますフラグ
+    bool isSkewer_;
 
     // resource
     int32_t png_enemy_ = LoadGraph("Resources/texture/enemy.png");
@@ -54,12 +55,14 @@ public:
     // setter
     void SetIsMowDown(bool isMowDown) { isMowDown_ = isMowDown; }
     void SetIsDocking(bool isDocking) { isDocking_ = isDocking; }
+    void SetIsSkewer(bool isSkewer) { isSkewer_ = isSkewer; }
 
     // getter
     bool GetIsMowDown() { return isMowDown_; }
     bool GetIsAlive(void) { return isAlive_; }
     bool GetIsDocking() { return isDocking_; }
     const Vector2& GetMowDownVec() { return vec_mow_; }
+    bool GetIsSkewer(void) { return isSkewer_; }
     
 public:
     //合体したときに外部で呼び出す

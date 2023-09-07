@@ -9,7 +9,7 @@ class PlayerMowAttack :
 {
 public:
     // 定数
-    const int32_t kMaxAttackFrame_{ 10 }; // 攻撃範囲の有効時間(フレーム)
+    static const int32_t kMaxAttackFrame_{ 10 }; // 攻撃範囲の有効時間(フレーム)
     const float kBlewDist_{ 80.f }; // 吹き飛ばす距離
     const Vector2 kRadius_{ 50,0 }; // 攻撃範囲 ※現在判定が円なのでy使いません
     const float kPngScale_{ 0.06f }; // 画像の拡大率

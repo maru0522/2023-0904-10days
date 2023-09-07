@@ -18,6 +18,7 @@ public:
     static const float kMowDist_; // 薙ぎ払いで吹き飛ばす距離
     const float kMowSupportCenterDist_{ 35.f }; // mowsupportの中心が、プレイヤーの中心からどんくらいはなれてるか
     //const float kMowAttackCenterDist_{ 10.f }; // 薙ぎ払い攻撃の範囲の中心がプレイヤーの中心からどれだけ離れてるか
+    const float kMowSwordCenterDist_{ 30.f }; // 薙ぎ払い攻撃の絵の中心がプレイヤーの中心からどのくらい離れてるか
 
     // 串刺し
     const int32_t kChargeFrame4Skewer_{ 60 }; // 串刺し攻撃の為に、何フレームボタンを押し続けなければならないか
@@ -64,6 +65,9 @@ private:
     bool isRight_{};
     int32_t png_player_ = LoadGraph("Resources/texture/player.png");
     int32_t png_arrow_ = LoadGraph("Resources/texture/arrow.png");  //矢印画像
+    int32_t png_sword_ = LoadGraph("Resources/texture/sword.png");
+    Vector2 pos4Sword_; // 串の絵のための座標
+    float rot4Sword_; // 串の絵の為の角度
 
 public:
     // getter

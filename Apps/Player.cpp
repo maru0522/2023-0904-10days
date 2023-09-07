@@ -67,6 +67,7 @@ void Player::Draw(void)
     // 描画
     DrawLineAA(position_.x, position_.y, pos4Line_.x, pos4Line_.y, Color::WHITE, 3);
 
+    // 現在のプレイヤーの状態（数字のみ）
     DrawFormatString(0, 140, 0xffffff, "state ;%d", static_cast<int32_t>(state_));
 
     // 無敵時間中なら
@@ -81,7 +82,7 @@ void Player::Draw(void)
         DrawFormatString(1000, 20, Util::Color::YELLOW, "無敵状態");
         DrawFormatString(1000, 40, Util::Color::YELLOW, "frame: %d", kMaxInvincibleFrame_ - frameCount_invincible_);
     }
-    else
+    else // 無敵時間じゃないなら
     {
         DrawFormatString(1000, 20, Util::Color::WHITE, "通常状態");
         //DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
@@ -99,17 +100,30 @@ void Player::Draw(void)
         DrawFormatString(1000, 60, Util::Color::GREEN, "溜め状態");
         DrawFormatString(1000, 80, Util::Color::GREEN, "frame: %d/%d", frameCount_4Skewer_, kChargeFrame4Skewer_);
     }
-    else if(state_ != State::ATTACK_SKEWER) // 串刺し攻撃のために溜めてる間や、串刺し攻撃中は半円を表示しない
+    else if(state_ != State::ATTACK_SKEWER) // 串刺し攻撃のために溜めてる間や、串刺し攻撃中は半円を表示しない ※それ以外の時に表示
     {
+        // 攻撃範囲とdebugの表示
         mow_.Draw();
         mow_support_.Draw();
     }
 
+    // skewerの為にボタン長押ししてない && 串刺し攻撃中でない && 薙ぎ払い攻撃中なら
+    // 薙ぎ払い状態 && 薙ぎ払いフレームカウントが0以外
+    if (state_ == State::ATTACK_MOW && mow_.GetFrameCountAttack() > 1)
+    {
+        // 串を描画
+        //DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rotation_, png_sword_, true);
+        DrawCircle((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, 1, Util::Color::BLUE, true, 1);
+    }
+
     if (state_ == State::ATTACK_SKEWER) // 串刺し攻撃中、串刺しの描画関数を呼び出す
     {
+        // 串
+        DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rotation_, png_sword_, true);
         skewer_.Draw();
     }
 
+    // 串刺し攻撃時の判定座標
     DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)",skewer_.GetPos().x,skewer_.GetPos().y);
 }
 
@@ -214,7 +228,27 @@ void Player::MowAttackUpdate(void)
     {
         // 状態遷移
         state_ = State::MOVE;
+        // 関数終了
+        return;
     }
+
+    // フレーム換算で進行割合を算出
+    float rate = (std::min)((float)(mow_.GetFrameCountAttack() - 1) / PlayerMowAttack::kMaxAttackFrame_, 1.f);
+    // 角度で今どのくらいか当てはめる rad = ToRad(割合 * 180°)
+    rot4Sword_ = Math::Function::ToRadian(rate * 180.f);
+
+    // プレイヤーの右方向を出す
+    Vector3 vec3_move = { vec_move_.x,vec_move_.y,0 };
+    Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec3_move.Normalize());
+    Vector2 vec2_right = { vec3_right.x,vec3_right.y };
+    // 初期座標 = 今の座標 + 右方向 * 規定距離
+    const Vector2 initPos = position_ + vec2_right * kMowSwordCenterDist_; // 回転時の初期座標
+    // 回転移動の座標計算
+    pos4Sword_.x = initPos.x * std::cos(rot4Sword_) - initPos.x * std::sin(rot4Sword_);
+    pos4Sword_.y = initPos.y * std::sin(rot4Sword_) + initPos.y * std::cos(rot4Sword_);
+
+    pos4Sword_.x += 300;
+    pos4Sword_.y += 300;
 
     // 薙ぎ払い攻撃本体のUpdate()
     mow_.Update();

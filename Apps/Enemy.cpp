@@ -155,6 +155,7 @@ void Enemy::OnCollision(void)
         {
             // “G‚Í‹øŽh‚µ‚³‚ê‚ÄˆÚ“®‚µ‚Ä‚¢‚­(‹øŽh‚µ‚É‚µ‚Ä‚éƒvƒŒƒCƒ„[‚Æˆê‚É)
             position_ = skewerPtr->GetPos();
+            isSkewer_ = true;
         }
         else
         {
