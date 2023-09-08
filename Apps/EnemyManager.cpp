@@ -33,22 +33,23 @@ void EnemyManager::CombinedUpdate()
 	std::function<bool(std::vector<std::unique_ptr<CombinedEnemies>>::iterator, std::vector<std::unique_ptr<CombinedEnemies>>::iterator)>ifF0
 		= [=](std::vector<std::unique_ptr<CombinedEnemies>>::iterator itrA, std::vector<std::unique_ptr<CombinedEnemies>>::iterator itrB)
 	{
-		return itrA->get()->GetIsDockingAnyEnemy() && itrB->get()->GetIsDockingAnyEnemy();
-	};
+		return (itrA->get()->GetIsDockingAnyEnemy() || itrA->get()->GetIsMowDownTriggerAnyEnemy())
+			&& (itrB->get()->GetIsDockingAnyEnemy() || itrB->get()->GetIsMowDownTriggerAnyEnemy());
+				};
 	CoalesceneceCombEnemiesEachOther(ifF0);
 
 	//‚­‚Á‚Â‚¢‚Ä‚é“G‚ªA‚Ù‚©‚Ì“G‚Æ‡‘Ì‚µ‚½‚©
 	std::function<bool(std::vector<std::unique_ptr<CombinedEnemies>>::iterator)> ifF
 		= [=](std::vector<std::unique_ptr<CombinedEnemies>>::iterator itr)
 	{
-		return itr->get()->GetIsDockingAnyEnemy();
+		return itr->get()->GetIsDockingAnyEnemy() || itr->get()->GetIsMowDownTriggerAnyEnemy();
 	};
 	CheckCombinedEnemiesCondition(combEnemies, isMowDownedComb, ifF);
 
 	//“G‚Æ‡‘Ì‚µ‚½‚©
 	std::function<bool(std::unique_ptr<Enemy>&)>ifF2 = [=](std::unique_ptr<Enemy>& enemy)
 	{
-		return enemy->GetIsDocking();
+		return enemy->GetIsDocking() || enemy->GetIsMowDownTrigger();
 	};
 	std::function<bool(int32_t)>ifF3 = [=](int32_t count)
 	{
@@ -60,7 +61,7 @@ void EnemyManager::CombinedUpdate()
 	std::function<bool(std::vector<std::unique_ptr<Enemy>>::iterator)>addIfF =
 		[=](std::vector<std::unique_ptr<Enemy>>::iterator itr)
 	{
-		return itr->get()->GetIsDocking();
+		return itr->get()->GetIsDocking() || itr->get()->GetIsMowDownTrigger();
 	};
 	AddCombinedEnemies(std::move(combEnemies), isMowDowned, isMowDownedComb, addIfF);
 }
@@ -126,7 +127,6 @@ void EnemyManager::GenerateUpdate()
 	}
 }
 
-
 int32_t EnemyManager::GetEnemiesCount()
 {
 	int32_t count = 0;
@@ -188,7 +188,6 @@ void EnemyManager::CheckCombinedEnemiesCondition(std::unique_ptr<CombinedEnemies
 	{
 		if (ifF(itr))
 		{
-			//itr->get()->AllEnemiesDockingEnd();
 			combEnemies = std::move(*itr);
 			combinedEnemiesArray_.erase(itr);
 			settingFlag = true;

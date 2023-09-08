@@ -17,6 +17,19 @@ bool CombinedEnemies::GetIsDockingAnyEnemy()
 	return false;
 }
 
+bool CombinedEnemies::GetIsMowDownTriggerAnyEnemy()
+{
+	for (auto& enemy : enemies_)
+	{
+		if (enemy->GetIsMowDownTrigger())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool CombinedEnemies::GetIsDockingAndSkewer()
 {
 	if (GetIsDockingAnyEnemy() && isSkewer_)
@@ -49,6 +62,14 @@ void CombinedEnemies::MowDownEnd()
 {
 	isMowDown_ = false;
 	AllEnemiesEndMowDown();
+}
+
+void CombinedEnemies::MowDownTriggerEnd()
+{
+	for (auto& enemy : enemies_)
+	{
+		enemy->SetIsMowDownTrigger(false);
+	}
 }
 
 void CombinedEnemies::ChangeState(const std::string& name)
@@ -165,6 +186,15 @@ void CombinedEnemies::SkewerUpdate()
 	}
 }
 
+
+void CombinedEnemies::EnemiesMowDownTriggerUpdate()
+{
+	for (auto& enemy : enemies_)
+	{
+		enemy->MowDownFlagUpdate();
+	}
+}
+
 //-------------------------------------------------
 void CombinedEnemies::Dead()
 {
@@ -202,6 +232,9 @@ void CombinedEnemies::Update()
 	state_->Update();
 	//“Gˆê‘Ìˆê‘Ì‚ÌÀ•WXV
 	EnemiesPosUpdate();
+
+	//“ã‚¬•¥‚¢ƒtƒ‰ƒOXV
+	EnemiesMowDownTriggerUpdate();
 }
 
 void CombinedEnemies::Draw()
@@ -216,6 +249,7 @@ void CombinedEnemies::Draw()
 void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 {
 	enemy->SetIsDocking(false);
+	enemy->SetIsMowDownTrigger(false);
 	//“G‚Ì’·‚³‚ğ‰ÁZ‚µ‚Ä‚¢‚­
 	float addRadius = enemy->GetRad().Length() * 2.0f * (1.0f / (1.0f - Enemy::kPngScale_));
 	radius_ = radiusTmp_ + addRadius;
@@ -225,8 +259,13 @@ void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 	//“G‚Ì”‚ğ‰ÁZ
 	enemiesNum_++;
 
+	//“ã‚¬•¥‚í‚ê‚½uŠÔ‚É‡‘Ì‚µ‚½‚È‚ç
+	if (enemies_[enemiesNum_ - 1]->GetIsMowDownTrigger())
+	{
+		MowDown();
+	}
 	//‚Ç‚¿‚ç‚©‚ª“ã‚¬•¥‚í‚ê‚Ä‚½‚ç
-	if (GetIsMowDown())
+	else if (GetIsMowDown())
 	{
 		MowDownEnd();
 	}

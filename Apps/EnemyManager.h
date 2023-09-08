@@ -44,6 +44,9 @@ private:
 	//¶¬‚ÌXV
 	void GenerateUpdate();
 
+	//“ã‚¬•¥‚í‚ê‚½uŠÔ‚ğI‚í‚ç‚¹‚é
+	void MowDownTriggerEnd();
+
 private:
 	//“G‚Ì”‚ğæ“¾
 	int32_t GetEnemiesCount();
