@@ -26,9 +26,14 @@ private:
 
     bool isSkewer_; // ‹øh‚µUŒ‚’†‚©
 
+    uint32_t skeweredEnemiesCount_; //‹øh‚µ‚½“G‚Ì”‚ğƒJƒEƒ“ƒg‚·‚é
+
 public:
+    void AddSkeweredEnemiesCount(uint32_t addNum) { skeweredEnemiesCount_ += addNum; }
+
     // getter
     bool GetIsSkewer(void) { return isSkewer_; }
     float GetKMoveSpeed(void) { return kMoveSpeed_; }
+    uint32_t GetSkeweredEnemiesCount(void) { return skeweredEnemiesCount_; }
 };
 
