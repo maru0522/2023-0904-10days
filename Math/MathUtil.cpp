@@ -70,6 +70,13 @@ float Math::Ease::EaseOutElastic(float t, float start, float end)
     }
 }
 
+float Math::Ease::EaseOutQuad(float t, float start, float end)
+{
+    float time = std::max(0.f, std::min(1.f, t));
+    float x = 1.f - (1.f - time) * (1.f - time);
+    return start + x * (end - start);
+}
+
 float Math::Ease::EaseInOutSine(float t, float start, float end)
 {
     float time{ -(std::cosf(Math::kPI * t) - 1.f) / 2.f };

@@ -26,6 +26,7 @@ private:
     // •Ï”
     int32_t waitFrame_{};
     int32_t frameCount_slowMotion_{};
+    int32_t frameCount_debug_{};
 
     std::unique_ptr<IScene> currentScene_{ nullptr };
     std::unique_ptr<IScene> nextScene_{ nullptr };

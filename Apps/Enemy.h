@@ -27,6 +27,7 @@ public:
 	void Draw(void) override;
 
 private:
+    // ‚È‚ñ‚©•ª‚©‚ñ‚È‚¢‚¯‚ÇA‰Ÿ‚µ–ß‚µˆ—’Ê‚Á‚Ä‚é‚¯‚ÇA“G“¯m‚ª‰Ÿ‚µ–ß‚µ‚³‚ê‚Ü‚¹‚ñB
 	void OnCollision(void);
 
 	// •Ï”

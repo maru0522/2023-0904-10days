@@ -99,6 +99,7 @@ namespace Math {
         float EaseOutQuint(float t, float start = 0.f, float end = 1.f);
         float EaseOutCirc(float t, float start = 0.f, float end = 1.f);
         float EaseOutElastic(float t, float start = 0.f, float end = 1.f);
+        float EaseOutQuad(float t, float start = 0.f, float end = 1.f);
 
         // InOut
         float EaseInOutSine(float t, float start = 0.f, float end = 1.f);
