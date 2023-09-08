@@ -140,7 +140,7 @@ void CombinedEnemiesStateMoveWait::Update()
 void CombinedEnemiesStateShrink::Initialize()
 {
 	nextStateName_ = "WAIT_STRETCH";
-	timerMax_ = (float)10 / (float)enemies_->GetEnemiesNum();
+	timerMax_ = 10;
 	//Šî‚É‚·‚éƒpƒ‰ƒ[ƒ^‚ð•Û‘¶
 	ICombinedEnemiesState::Initialize();
 }
@@ -178,7 +178,7 @@ void CombinedEnemiesStateWaitStretch::Update()
 void CombinedEnemiesStateStretch::Initialize()
 {
 	nextStateName_ = "WAIT";
-	timerMax_ = (float)10 / (float)enemies_->GetEnemiesNum();
+	timerMax_ = 10;
 }
 
 void CombinedEnemiesStateStretch::Update()
