@@ -263,8 +263,8 @@ void Enemy::OnCollision(void)
 		if (paPtr->GetFrameCountAttack()) //** 現状下記の条件式だと、範囲内に中心点はいないけど、半径は触れているみたいな状態が考慮されていない。やり方もわからない。
 		{
             // 座標を、当たり判定円の中心(=プレイヤーの中心座標）+ プレイヤーの正面 * (プレイヤーの半径 + 5.f)に設定
-            //position_ = paPtr->GetPos() + paPtr->GetVecMove() * 15.f;
-            position_ = { 300,300 };
+            position_ = paPtr->GetPos() + paPtr->GetVecMove() * 15.f;
+            //position_ = { 300,300 };
 
 			// 薙ぎ払われたフラグオン
 			isMowDown_ = true;
