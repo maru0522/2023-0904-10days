@@ -1,6 +1,7 @@
 #pragma once
 #include "CombinedEnemies.h"
 #include "CombinedEnemiesState.h"
+#include "Stage.h"
 
 
 //敵管理クラス
@@ -13,6 +14,11 @@ private://変数
 	std::vector<std::unique_ptr<CombinedEnemies>> combinedEnemiesArray_;
 	//プレイヤーのポインタ
 	Player* player_ = nullptr;
+	//ステージの
+	Stage* stage_ = nullptr;
+
+	//敵の上限
+	const uint32_t ENEMIES_MAX_ = 5;
 
 private://関数
 	EnemyManager() { ; }
@@ -25,7 +31,7 @@ public:
 	static EnemyManager& GetInstance();
 
 public:
-	void Initialize(Player* player);
+	void Initialize(Player* player, Stage* stage);
 	void Update();
 	void Draw();
 
@@ -34,6 +40,13 @@ private:
 	void CombinedUpdate();
 	//串刺しの敵をくっつける処理
 	void SkewerCombinedUpdate();
+
+	//生成の更新
+	void GenerateUpdate();
+
+private:
+	//敵の数を取得
+	int32_t GetEnemiesCount();
 
 private:
 	void CoalesceneceCombEnemiesEachOther(std::function<bool(std::vector<std::unique_ptr<CombinedEnemies>>::iterator,

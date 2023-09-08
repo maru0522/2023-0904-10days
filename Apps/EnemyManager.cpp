@@ -1,5 +1,7 @@
 #include "EnemyManager.h"
 #include "Keyboard.h"
+#include "MathUtil.h"
+#include <memory>
 
 
 EnemyManager& EnemyManager::GetInstance()
@@ -9,9 +11,10 @@ EnemyManager& EnemyManager::GetInstance()
 }
 
 //---------------------------------------------
-void EnemyManager::Initialize(Player* player)
+void EnemyManager::Initialize(Player* player, Stage* stage)
 {
 	player_ = player;
+	stage_ = stage;
 
 	enemies_.clear();
 	combinedEnemiesArray_.clear();
@@ -107,6 +110,33 @@ void EnemyManager::SkewerCombinedUpdate()
 	AddCombinedEnemies(std::move(skewerCombEnemies), isSkewerDocking, isDockSkewCombined, addIfF);
 }
 
+void EnemyManager::GenerateUpdate()
+{
+	if (GetEnemiesCount() < ENEMIES_MAX_)
+	{
+
+		float x = Math::Function::Random<float>(100, 1100);
+		float y = Math::Function::Random<float>(100, 600);
+		std::unique_ptr<Enemy>enemy = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_, stage_);
+		enemy->SetPos({ x,y });
+		enemy->SetRot(0);
+		enemy->SetRad({ 10,0 });
+
+		EnemyManager::GetInstance().AddEnemy(std::move(enemy));
+	}
+}
+
+
+int32_t EnemyManager::GetEnemiesCount()
+{
+	int32_t count = 0;
+
+	count += enemies_.size();
+
+	count += combinedEnemiesArray_.size();
+
+	return count;
+}
 
 //------------------------------------------------------------------------------------------------------------------
 //‹¤’Êˆ—
@@ -240,7 +270,6 @@ void EnemyManager::AddCombinedEnemies(std::unique_ptr<CombinedEnemies> combEnemi
 	}
 }
 
-
 //----------------------------------------------------------------------------------
 void EnemyManager::Update()
 {
@@ -286,6 +315,8 @@ void EnemyManager::Update()
 	CombinedUpdate();
 	//“Ëi‚³‚ê‚Ä‚é“G‚Æ‚­‚Á‚Â‚¢‚½‚©
 	SkewerCombinedUpdate();
+	//¶¬ˆ—
+	GenerateUpdate();
 }
 
 void EnemyManager::Draw()
