@@ -7,9 +7,9 @@ class SceneTransition
 {
 public:
     // 定数
-    static const int32_t kMaxFrameRolled_{ 60 }; // 何フレーム掛けて移動してくるか
+    static const int32_t kMaxFrameRolled_{ 50 }; // 何フレーム掛けて移動してくるか
     static const int32_t kMaxFrameRolledTrans_{ 10 }; // 何フレーム掛けて透明になるか
-    static const int32_t kMaxFrameTBBelt_{ 7 }; // 何フレーム掛けるか
+    static const int32_t kMaxFrameTBBelt_{ 10 }; // 何フレーム掛けるか
     static const int32_t kTotalFrame_{kMaxFrameRolled_ + kMaxFrameRolledTrans_ + kMaxFrameTBBelt_}; // 上記の合計値
 
     // 関数
@@ -37,7 +37,7 @@ private:
 
     // resorce
     int32_t png_rolledScroll_ = LoadGraph("Resources/texture/makimono.png");
-    int32_t png_unrollScroll_ = LoadGraph("Resources/texture/wasi_back.png");
-    int32_t png_topBeltBG_ = LoadGraph("Resources/texture/wasi_frame_up.png");
-    int32_t png_bottomBeltBG_ = LoadGraph("Resources/texture/wasi_frame_bottom.png");
+    int32_t png_unrollScroll_ = LoadGraph("Resources/texture/wasi_back2.png");
+    int32_t png_topBeltBG_ = LoadGraph("Resources/texture/wasi_frame_up2.png");
+    int32_t png_bottomBeltBG_ = LoadGraph("Resources/texture/wasi_frame_bottom2.png");
 };
