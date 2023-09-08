@@ -194,8 +194,8 @@ void Player::MoveUpdate(void)
     // –³“G’†‚¶‚á‚È‚¯‚ê‚ÎUŒ‚‚Å‚«‚é
     if (frameCount_invincible_ == 0)
     {
-        // pad-R‚ÅAttack_MOWó‘Ô‚É‘JˆÚ
-        if (PadTriggerLorR() || PadTriggerRB())
+        // pad-A‰Ÿ‚µ‚Ä‚È‚¢ && pad-R||RB ‚ÅAttack_MOWó‘Ô‚É‘JˆÚ
+        if (PadDownA() == false && PadTriggerLorR() || PadTriggerRB())
         {
             mow_.Attack(vec_move_, position_);
             state_ = State::ATTACK_MOW;
