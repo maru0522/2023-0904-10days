@@ -121,7 +121,7 @@ void EnemyManager::GenerateUpdate()
 		std::unique_ptr<Enemy>enemy = std::make_unique<Enemy>(CollisionManger::GetInstance(), player_, stage_);
 		enemy->SetPos({ x,y });
 		enemy->SetRot(0);
-		enemy->SetRad({ 10,0 });
+		enemy->SetRad({ Enemy::KRadius_,0 });
 
 		EnemyManager::GetInstance().AddEnemy(std::move(enemy));
 	}

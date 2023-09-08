@@ -12,6 +12,7 @@
 const float Enemy::kMoveSpeed_ = 30.0f;
 const float Enemy::kPushBackDist_ = 2.0f;
 const float Enemy::kPngScale_ = 0.07f;
+const float Enemy::KRadius_ = 16.f;
 
 Enemy::Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr) : IEntity(stagePtr), playerPtr_(playerPtr), colMPtr_(colMPtr)
 {
@@ -139,22 +140,22 @@ void Enemy::Draw(void)
 		if (frameCount_move_ == 0)
 		{
 			// ìGÇÃêFÇÕê‘êFÇ…
-			//DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::RED, true, 1);
 			SetDrawBright(255, 50, 50);
 			DrawRotaGraph3((int32_t)position_.x, (int32_t)position_.y, 250, 250,
 				scale_.x * kPngScale_, scale_.y * kPngScale_, rotation_, png_enemy_, true);
 			SetDrawBright(255, 255, 255);
+			//DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::WHITE, false, 1);
 		}
 
 		// êLÇ—èÛë‘Ç»ÇÁ
 		if (frameCount_wait_ >= kMoveInterval_)
 		{
 			// ìGÇÃêFÇÕóŒêFÇ…
-			//DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::GREEN, true, 1);
 			SetDrawBright(50, 255, 50);
 			DrawRotaGraph3((int32_t)position_.x, (int32_t)position_.y, 250, 250,
 				scale_.x * kPngScale_, scale_.y * kPngScale_, rotation_, png_enemy_, true);
 			SetDrawBright(255, 255, 255);
+			//DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::GREEN, false, 1);
 		}
 	}
 }
