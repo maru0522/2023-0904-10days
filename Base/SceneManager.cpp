@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include <DxLib.h>
+#include "Keyboard.h"
 
 SceneManager::~SceneManager(void)
 {
@@ -35,21 +36,32 @@ void SceneManager::Update(void)
     {
         // 次シーンの予約がある
         if (nextScene_) {
-            // 待機フレーム指定がない && 現在シーンがnullptrではない
-            if (waitFrame_ == 0 && currentScene_) {
-                currentScene_->Finalize();
-                currentScene_.reset();
-            }
+            if (waitFrame_ == 0)
+            {
+                // 現在シーンがnullptrではない
+                if (currentScene_) {
+                    currentScene_->Finalize();
+                    currentScene_.reset();
+                }
 
-            // シーン移行
-            currentScene_ = std::move(nextScene_); // 管理権限移譲
-            nextScene_.reset();                    // 次シーンをnullptrにする
-            currentScene_->Initialize();           // 現在シーンを初期化
+                // シーン移行
+                currentScene_ = std::move(nextScene_); // 管理権限移譲
+                nextScene_.reset();                    // 次シーンをnullptrにする
+                currentScene_->Initialize();           // 現在シーンを初期化
+            }
+        }
+        // 次シーンの予約がない && シーン遷移待機フレームがない
+        else if(waitFrame_ == 0)
+        {
+            // 現在シーンUpdate()
+            currentScene_->Update();
         }
 
-        // 現在シーンUpdate()
-        currentScene_->Update();
-
+        if(KEYS::IsTrigger(KEY_INPUT_P))
+        {
+            transition_.Start();
+        }
+        transition_.Update();
 
         // 待機フレームを減少させる
         waitFrame_--;
@@ -101,6 +113,7 @@ void SceneManager::Draw(void)
     currentScene_->Draw();
     DrawFormatString(0, 100, Util::Color::WHITE, frameCount_slowMotion_ == 0 ? "no slow" : "slow");
     DrawFormatString(0, 120, Util::Color::WHITE, "slow: %d", frameCount_slowMotion_);
+    transition_.Draw();
 }
 
 void SceneManager::StartSlowMotion(void)

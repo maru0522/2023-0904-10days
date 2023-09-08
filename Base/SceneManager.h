@@ -2,6 +2,7 @@
 #include "IScene.h"
 #include "SceneFactory.h"
 #include <memory>
+#include "SceneTransition.h"
 
 class SceneManager final
 {
@@ -30,6 +31,7 @@ private:
     std::unique_ptr<IScene> nextScene_{ nullptr };
 
     std::unique_ptr<SceneFactory> sceneFactory_{ nullptr };
+    SceneTransition transition_;
 
     // singleton
     SceneManager(void) : sceneFactory_(std::make_unique<SceneFactory>()) {}
