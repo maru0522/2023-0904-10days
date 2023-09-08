@@ -41,6 +41,7 @@ void SceneManager::Update(void)
     // スローモーションなし
     if (frameCount_slowMotion_ == 0)
     {
+        CollisionManger::GetInstance()->Update();
         // 次シーンの予約がある
         if (nextScene_) {
             // 待機フレームが規定値以下の時（今回の場合、画面が埋まったら、シーンを遷移する）
@@ -59,13 +60,13 @@ void SceneManager::Update(void)
             }
         }
         // 次シーンの予約がない && シーン遷移待機フレームがない
-        else if(waitFrame_ == 0)
+        else if (waitFrame_ == 0)
         {
             // 現在シーンUpdate()
             currentScene_->Update();
         }
 
-        if(KEYS::IsTrigger(KEY_INPUT_P))
+        if (KEYS::IsTrigger(KEY_INPUT_P))
         {
             transition_.Start();
         }
@@ -82,6 +83,7 @@ void SceneManager::Update(void)
         if (frameCount_slowMotion_ % kSlowFrameRatio_ == 0)
         {
             frameCount_slowMotion_++;
+            CollisionManger::GetInstance()->Update();
             // 次シーンの予約がある
             if (nextScene_) {
                 // 待機フレーム指定がない && 現在シーンがnullptrではない
@@ -122,7 +124,7 @@ void SceneManager::Draw(void)
     DrawFormatString(0, 100, Util::Color::WHITE, frameCount_slowMotion_ == 0 ? "no slow" : "slow");
     DrawFormatString(0, 120, Util::Color::WHITE, "slow: %d", frameCount_slowMotion_);
     transition_.Draw();
-    DrawFormatString(0, 160, Util::Color::GREEN, "frameCount: %d",frameCount_debug_);
+    DrawFormatString(0, 160, Util::Color::GREEN, "frameCount: %d", frameCount_debug_);
 }
 
 void SceneManager::StartSlowMotion(void)
