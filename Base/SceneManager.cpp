@@ -25,6 +25,7 @@ void SceneManager::RequestChangeScene(SceneFactory::Usage nextScene, int32_t wai
     if (frameCount_slowMotion_) EndSlowMotion();
     // 遷移起動
     transition_.Start();
+    frameCount_debug_ = 0;
 }
 
 void SceneManager::Initialize(SceneFactory::Usage firstScene)
@@ -36,6 +37,7 @@ void SceneManager::Initialize(SceneFactory::Usage firstScene)
 
 void SceneManager::Update(void)
 {
+    frameCount_debug_++;
     // スローモーションなし
     if (frameCount_slowMotion_ == 0)
     {
@@ -120,6 +122,7 @@ void SceneManager::Draw(void)
     DrawFormatString(0, 100, Util::Color::WHITE, frameCount_slowMotion_ == 0 ? "no slow" : "slow");
     DrawFormatString(0, 120, Util::Color::WHITE, "slow: %d", frameCount_slowMotion_);
     transition_.Draw();
+    DrawFormatString(0, 160, Util::Color::GREEN, "frameCount: %d",frameCount_debug_);
 }
 
 void SceneManager::StartSlowMotion(void)
