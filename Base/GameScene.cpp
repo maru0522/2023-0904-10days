@@ -31,6 +31,7 @@ void GameScene::Initialize(void)
 	ParticleManager::GetInstance()->Init();
 
 	Score::Init();
+    Update();
 }
 
 void GameScene::Update(void)

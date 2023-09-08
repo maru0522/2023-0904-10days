@@ -7,9 +7,10 @@ class SceneTransition
 {
 public:
     // 定数
-    const int32_t kMaxFrameRolled_{ 60 }; // 何フレーム掛けて移動してくるか
-    const int32_t kMaxFrameRolledTrans_{ 60 }; // 何フレーム掛けて透明になるか
-    const int32_t kMaxFrameTBBelt_{ 20 }; // 何フレーム掛けるか
+    static const int32_t kMaxFrameRolled_{ 60 }; // 何フレーム掛けて移動してくるか
+    static const int32_t kMaxFrameRolledTrans_{ 40 }; // 何フレーム掛けて透明になるか
+    static const int32_t kMaxFrameTBBelt_{ 20 }; // 何フレーム掛けるか
+    static const int32_t kTotalFrame_{kMaxFrameRolled_ + kMaxFrameRolledTrans_ + kMaxFrameTBBelt_}; // 上記の合計値
 
     // 関数
     SceneTransition(void) { Reset(); }
@@ -30,11 +31,13 @@ private:
     Vector2 pos_unrollScroll_; // 巻物のまだ巻かれてない部分の絵の座標
     Vector2 pos_TBBeltBG_; // 巻物が遷移した先の上の帯部分の座標
 
-    int32_t frameCount_rolled_;
-    int32_t frameCount_transBG_;
+    int32_t frameCount_rolled_; // 巻く為のカウンタ
+    int32_t frameCount_transBG_; // 真ん中を透過するカウンタ
+    int32_t frameCount_moveTBBG_; // 上下の帯が捌ける為のカウンタ
 
     // resorce
     int32_t png_rolledScroll_ = LoadGraph("Resources/texture/makimono.png");
     int32_t png_unrollScroll_ = LoadGraph("Resources/texture/wasi_back.png");
-    int32_t png_TBBeltBG_ = LoadGraph("Resources/texture/wasi_frame.png");
+    int32_t png_topBeltBG_ = LoadGraph("Resources/texture/wasi_frame_up.png");
+    int32_t png_bottomBeltBG_ = LoadGraph("Resources/texture/wasi_frame_bottom.png");
 };

@@ -13,7 +13,7 @@ public:
     // ä÷êî
     static SceneManager* GetInstance(void);
 
-    void RequestChangeScene(SceneFactory::Usage nextScene, int32_t waitFrame = 0);
+    void RequestChangeScene(SceneFactory::Usage nextScene, int32_t waitFrame = SceneTransition::kTotalFrame_);
 
     void Initialize(SceneFactory::Usage firstScene = SceneFactory::Usage::DEMO);
     void Update(void);

@@ -20,6 +20,11 @@ void SceneManager::RequestChangeScene(SceneFactory::Usage nextScene, int32_t wai
 {
     nextScene_ = std::move(sceneFactory_->CreateScene(nextScene));
     waitFrame_ = waitFrame;
+
+    // スローモーション中の場合解除
+    if (frameCount_slowMotion_) EndSlowMotion();
+    // 遷移起動
+    transition_.Start();
 }
 
 void SceneManager::Initialize(SceneFactory::Usage firstScene)
@@ -36,7 +41,8 @@ void SceneManager::Update(void)
     {
         // 次シーンの予約がある
         if (nextScene_) {
-            if (waitFrame_ == 0)
+            // 待機フレームが規定値以下の時（今回の場合、画面が埋まったら、シーンを遷移する）
+            if (waitFrame_ <= SceneTransition::kTotalFrame_ - SceneTransition::kMaxFrameRolled_)
             {
                 // 現在シーンがnullptrではない
                 if (currentScene_) {
