@@ -106,7 +106,7 @@ public:
 	bool GetIsSkewer() { return isSkewer_; }
 	bool GetIsAlive() { return isAlive_; }
 
-	const Vector2& GetTargetPos() { player_->GetPos(); }
+	const Vector2& GetTargetPos() { return player_->GetPos(); }
 
 	//”z—ñ‚ÌQÆ
 	std::vector<std::unique_ptr<Enemy>>& GetEnemies() { return enemies_; }
