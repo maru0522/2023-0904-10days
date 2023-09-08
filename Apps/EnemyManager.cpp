@@ -443,3 +443,16 @@ void EnemyManager::AddEnemy(std::unique_ptr<Enemy> enemy)
 
 	combinedEnemiesArray_.push_back(std::move(cEs));
 }
+
+float EnemyManager::GetSkewerEnemiesRadius()
+{
+	for (auto& enemies : combinedEnemiesArray_)
+	{
+		if (enemies->GetIsSkewer())
+		{
+			return enemies->GetRadius();
+		}
+	}
+
+	return 0.0f;
+}

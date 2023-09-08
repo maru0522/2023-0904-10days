@@ -91,6 +91,10 @@ private:
 
 public:
 	void AddEnemy(std::unique_ptr<Enemy>enemy);
+
+public:
+	//“Ëi‚³‚ê‚Ä‚é“G‚Ì‰ò‚Ì”¼Œa
+	float GetSkewerEnemiesRadius();
 };
 
 
