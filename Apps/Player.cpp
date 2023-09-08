@@ -174,16 +174,12 @@ void Player::MoveUpdate(void)
     //　pad-Aを押していない時は移動できる。（串刺しの為に溜めてる時は動けない）
     if (frameCount_4Skewer_ == 0) // 串刺しカウントが0なら（=溜めてない)
     {
-        // 移動後の座標 = 座標 + (正規化された入力値 * 速度)
-        Vector2 moved_pos = position_ + input.Normalize() * kMoveSpeed_;
+        // 座標 += (正規化された入力値 * 速度)
+        position_ += input.Normalize() * kMoveSpeed_;
 
-        // 移動後の座標 (+ 半径)が、ステージの内側なら移動できる
-        if (moved_pos.x - radius_.x > stagePtr_->GetLT().x && moved_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
-            moved_pos.x + radius_.x < stagePtr_->GetRB().x && moved_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
-        {
-            // 座標を移動後の値に
-            position_ = moved_pos;
-        }
+        // 押し戻しっつーか、それ以上いかないようにってだけ
+        position_.x = Math::Function::Clamp<float>(position_.x, stagePtr_->GetLT().x + radius_.x * 2, stagePtr_->GetRB().x - radius_.x * 2);
+        position_.y = Math::Function::Clamp<float>(position_.y, stagePtr_->GetLT().y + radius_.x * 2, stagePtr_->GetRB().y - radius_.x * 2);
     }
 
 #pragma region 薙ぎ払い攻撃の範囲を移動させてる
@@ -198,8 +194,8 @@ void Player::MoveUpdate(void)
     // 無敵中じゃなければ攻撃できる
     if (frameCount_invincible_ == 0)
     {
-        // pad-RでAttack_MOW状態に遷移
-        if (PadTriggerLorR() || PadTriggerRB())
+        // pad-A押してない時 && pad-R||RB でAttack_MOW状態に遷移
+        if (PadDownA() == false && PadTriggerLorR() || PadTriggerRB())
         {
             mow_.Attack(vec_move_, position_);
             state_ = State::ATTACK_MOW;
