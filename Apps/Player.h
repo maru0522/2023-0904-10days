@@ -78,7 +78,7 @@ private:
 
 public:
     // getter
-    const Vector2& GetDirectionVec() { return pos4Line_; }
+    const Vector2& GetDirectionVec() { return pos4Line_.Normalize(); }
     const Vector2& GetMoveVec() { return vec_move_; }
     bool GetIsSkewer(void) { return skewer_.GetIsSkewer(); }
     int32_t GetFrameCountAttack(void) { return mow_.GetFrameCountAttack(); }

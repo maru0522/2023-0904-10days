@@ -16,6 +16,8 @@ private://変数
 	Player* player_ = nullptr;
 	//ステージの
 	Stage* stage_ = nullptr;
+	//攻撃に当たった敵を保管
+	std::unique_ptr<CombinedEnemies>mowDownedEnemies_ = nullptr;
 
 	//敵の上限
 	const uint32_t ENEMIES_MAX_ = 5;
@@ -36,6 +38,8 @@ public:
 	void Draw();
 
 private:
+	//薙ぎ払われた敵をまとめて保存しておく
+	void SaveMowDownEnemies();
 	//くっつける更新処理
 	void CombinedUpdate();
 	//串刺しの敵をくっつける処理
@@ -43,6 +47,8 @@ private:
 
 	//生成の更新
 	void GenerateUpdate();
+	//薙ぎ払われてる最中の敵の塊の更新
+	void MowDownTriggerEnemiesUpdate();
 
 	//薙ぎ払われた瞬間を終わらせる
 	void MowDownTriggerEnd();
@@ -79,8 +85,9 @@ private:
 	/// <param name="combEnemies">くっついてる敵の配列（新たに作られる場合はnullptr）</param>
 	/// <param name="isCombined">敵一体一体を追加していくか</param>
 	/// <param name="isDockCombined">すでにある合体した敵に追加していくか</param>
+	/// <param name="isPushBackArray">配列に追加するか</param>
 	void AddCombinedEnemies(std::unique_ptr<CombinedEnemies> combEnemies, bool isCombined, bool isDockCombined,
-		std::function<bool(std::vector<std::unique_ptr<Enemy>>::iterator)> addIfF);
+		std::function<bool(std::vector<std::unique_ptr<Enemy>>::iterator)> addIfF, bool isPushBackArray = true);
 
 public:
 	void AddEnemy(std::unique_ptr<Enemy>enemy);

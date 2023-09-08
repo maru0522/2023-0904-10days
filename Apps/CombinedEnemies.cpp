@@ -89,24 +89,24 @@ CombinedEnemies::~CombinedEnemies()
 }
 
 //-------------------------------------------------
-void CombinedEnemies::Initialize(Player* player, const Vector2& direciton)
+void CombinedEnemies::Initialize(Player* player, const Vector2& direction)
 {
 	player_ = player;
 
 	//
-	distance_ = (player_->GetPos() - player_->GetPos() + direciton.Normalize() * radius_ * ((float)enemiesNum_ / 2.0f)).Length();
+	distance_ = (player_->GetPos() - player_->GetPos() + direction.Normalize() * radius_ * ((float)enemiesNum_ / 2.0f)).Length();
 
 	//中央位置計算
-	CalcCentorPos(player_->GetPos(), direciton.Normalize());
+	CalcCentorPos(player_->GetPos(), direction.Normalize());
 
 	//ステート
 	ChangeState("AFTER_COMBINED");
 }
 
-void CombinedEnemies::CalcCentorPos(const Vector2& targetPos, const Vector2& direciton)
+void CombinedEnemies::CalcCentorPos(const Vector2& targetPos, const Vector2& direction, float length)
 {
 	//仮
-	centorPos_ = enemies_[0]->GetPos();
+	centorPos_ = targetPos + direction * length;
 }
 
 void CombinedEnemies::AnyEnemyMowDownUpdate()
@@ -121,7 +121,6 @@ void CombinedEnemies::AnyEnemyMowDownUpdate()
 		//一体でも薙ぎ払われてたら
 		if (enemy->GetIsMowDown())
 		{
-			mowDownVec_ = enemy->GetMowDownVec();
 			//薙ぎ払う処理
 			MowDown();
 			break;
@@ -135,6 +134,7 @@ void CombinedEnemies::MowDown()
 	{
 		//敵単体の薙ぎ払いフラグ
 		enemy->SetIsMowDown(true);
+		mowDownVec_ = enemy->GetMowDownVec();
 	}
 	//敵全体の薙ぎ払いフラグ
 	isMowDown_ = true;
@@ -210,7 +210,7 @@ void CombinedEnemies::Dead()
 void CombinedEnemies::EnemiesPosUpdate()
 {
 	//敵が一体の場合は敵の座標を使う（押し戻しなどがあるので）
-	if (enemiesNum_ == 1)
+	if (enemiesNum_ == 1 && !GetIsMowDownTriggerAnyEnemy())
 	{
 		centorPos_ = enemies_[0]->GetPos();
 		return;
@@ -280,7 +280,7 @@ void CombinedEnemies::SetScaleSinRot(float minS, float maxS, float rate, int32_t
 void CombinedEnemies::Update()
 {
 	//薙ぎ払いの更新
-	AnyEnemyMowDownUpdate();
+	//AnyEnemyMowDownUpdate();
 	//突進の更新
 	AnyEnemySkewerUpdate();
 
@@ -315,7 +315,7 @@ void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 	enemy->SetIsDocking(false);
 	enemy->SetIsMowDownTrigger(false);
 	//敵の長さを加算していく
-	float addRadius = enemy->GetRad().Length() * 2.0f * (1.0f / (1.0f - Enemy::kPngScale_));
+	float addRadius = enemy->GetRad().Length() * 2.0f;
 	radius_ = radiusTmp_ + addRadius;
 	radiusTmp_ = radius_;
 	//登録

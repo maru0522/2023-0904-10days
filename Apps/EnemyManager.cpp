@@ -20,6 +20,72 @@ void EnemyManager::Initialize(Player* player, Stage* stage)
 	combinedEnemiesArray_.clear();
 }
 
+void EnemyManager::SaveMowDownEnemies()
+{
+	//“ã‚¬•¥‚í‚ê‚½“G‚ª‚¢‚é‚©
+	bool isMowDowned = false;
+	bool isMowDownedComb = false;
+
+	//“ã‚¬•¥‚í‚ê‚Ä‚é“G‚Ì‰ò‚ª‚¢‚é‚©
+	std::function<bool(std::vector<std::unique_ptr<CombinedEnemies>>::iterator)> ifF
+		= [=](std::vector<std::unique_ptr<CombinedEnemies>>::iterator itr)
+	{
+		return itr->get()->GetIsMowDownTriggerAnyEnemy();
+	};
+	CheckCombinedEnemiesCondition(mowDownedEnemies_, isMowDownedComb, ifF);
+
+	//“ã‚¬•¥‚í‚ê‚Ä‚éÅ’†‚©
+	for (auto itrB = combinedEnemiesArray_.begin(); itrB != combinedEnemiesArray_.end(); itrB++)
+	{
+		//“ã‚¬•¥‚í‚ê‚Ä‚éÅ’†‚Ì“G‚Ì‰ò‚ª‚ ‚é‚©
+		if (itrB->get()->GetIsMowDownTriggerAnyEnemy())
+		{
+			//“G‚Ì‚Ü‚Æ‚Ü‚è‚É•Ê‚Ì‚Ü‚Æ‚Ü‚è‚ğ’Ç‰Á
+			if (mowDownedEnemies_ == nullptr)
+			{
+				mowDownedEnemies_ = std::make_unique<CombinedEnemies>();
+				mowDownedEnemies_->Initialize(player_, player_->GetDirectionVec());
+			}
+			//‚Ä‚«‚Ì‚©‚½‚Ü‚è‚ğ’Ç‰Á‚·‚é
+			mowDownedEnemies_->AddCombinedEnemies(std::move(*itrB));
+			combinedEnemiesArray_.erase(itrB);
+
+			if (combinedEnemiesArray_.size())
+			{
+				itrB = combinedEnemiesArray_.begin();
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+
+	////“ã‚¬•¥‚í‚ê‚Ä‚éÅ’†‚Ì“G‚ª‚¢‚é‚©
+	//std::function<bool(std::unique_ptr<Enemy>&)>ifF2 = [=](std::unique_ptr<Enemy>& enemy)
+	//{
+	//	return enemy->GetIsMowDownTrigger();
+	//};
+	//std::function<bool(int32_t)>ifF3 = [=](int32_t count)
+	//{
+	//	return count >= 1;
+	//};
+	//CheckEnemiesCondition(mowDownedEnemies_, isMowDowned, ifF2, ifF3);
+
+	//if (mowDownedEnemies_)
+	//{
+	//	mowDownedEnemies_.get();
+	//}
+
+	////“ã‚¬•¥‚í‚ê‚Ä‚éÅ’†‚Ì“G‚ğ’Ç‰Á‚µ‚Ä‚¢‚­
+	//std::function<bool(std::vector<std::unique_ptr<Enemy>>::iterator)>addIfF =
+	//	[=](std::vector<std::unique_ptr<Enemy>>::iterator itr)
+	//{
+	//	return itr->get()->GetIsMowDownTrigger();
+	//};
+	//AddCombinedEnemies(std::move(mowDownedEnemies_), isMowDowned, isMowDownedComb, addIfF, false);
+}
+
 void EnemyManager::CombinedUpdate()
 {
 	//“ã‚¬•¥‚í‚ê‚½“G‚ª‚¢‚é‚©
@@ -33,8 +99,8 @@ void EnemyManager::CombinedUpdate()
 	std::function<bool(std::vector<std::unique_ptr<CombinedEnemies>>::iterator, std::vector<std::unique_ptr<CombinedEnemies>>::iterator)>ifF0
 		= [=](std::vector<std::unique_ptr<CombinedEnemies>>::iterator itrA, std::vector<std::unique_ptr<CombinedEnemies>>::iterator itrB)
 	{
-		return (itrA->get()->GetIsDockingAnyEnemy() || itrA->get()->GetIsMowDownTriggerAnyEnemy())
-			&& (itrB->get()->GetIsDockingAnyEnemy() || itrB->get()->GetIsMowDownTriggerAnyEnemy());
+		return (itrA->get()->GetIsDockingAnyEnemy())
+			&& (itrB->get()->GetIsDockingAnyEnemy());
 	};
 	CoalesceneceCombEnemiesEachOther(ifF0);
 
@@ -42,20 +108,20 @@ void EnemyManager::CombinedUpdate()
 	std::function<bool(std::vector<std::unique_ptr<CombinedEnemies>>::iterator)> ifF
 		= [=](std::vector<std::unique_ptr<CombinedEnemies>>::iterator itr)
 	{
-		return itr->get()->GetIsDockingAnyEnemy() || itr->get()->GetIsMowDownTriggerAnyEnemy();
+		return itr->get()->GetIsDockingAnyEnemy();
 	};
 	CheckCombinedEnemiesCondition(combEnemies, isMowDownedComb, ifF);
 
-	//“G‚Æ‡‘Ì‚µ‚½‚©
-	std::function<bool(std::unique_ptr<Enemy>&)>ifF2 = [=](std::unique_ptr<Enemy>& enemy)
-	{
-		return enemy->GetIsDocking() || enemy->GetIsMowDownTrigger();
-	};
-	std::function<bool(int32_t)>ifF3 = [=](int32_t count)
-	{
-		return count >= 2;
-	};
-	CheckEnemiesCondition(combEnemies, isMowDowned, ifF2, ifF3);
+	////“G‚Æ‡‘Ì‚µ‚½‚©
+	//std::function<bool(std::unique_ptr<Enemy>&)>ifF2 = [=](std::unique_ptr<Enemy>& enemy)
+	//{
+	//	return enemy->GetIsDocking() || enemy->GetIsMowDownTrigger();
+	//};
+	//std::function<bool(int32_t)>ifF3 = [=](int32_t count)
+	//{
+	//	return count >= 2;
+	//};
+	//CheckEnemiesCondition(combEnemies, isMowDowned, ifF2, ifF3);
 
 	//‡‘Ì‚µ‚Ä‚é“G‚É“G‚ğˆê‘Ìˆê‘Ì’Ç‰Á
 	std::function<bool(std::vector<std::unique_ptr<Enemy>>::iterator)>addIfF =
@@ -91,16 +157,16 @@ void EnemyManager::SkewerCombinedUpdate()
 	};
 	CheckCombinedEnemiesCondition(skewerCombEnemies, isDockSkewCombined, ifF2);
 
-	//‹ø‚´‚³‚ê‚Ä‚é“G‚Æ‡‘Ì‚µ‚½‚©
-	std::function<bool(std::unique_ptr<Enemy>&)>ifF3 = [=](std::unique_ptr<Enemy>& enemy)
-	{
-		return /*enemy->GetIsDocking() && */enemy->GetIsSkewer();
-	};
-	std::function<bool(int32_t)>ifF4 = [=](int32_t count)
-	{
-		return count >= 1;
-	};
-	CheckEnemiesCondition(skewerCombEnemies, isSkewerDocking, ifF3, ifF4);
+	////‹ø‚´‚³‚ê‚Ä‚é“G‚Æ‡‘Ì‚µ‚½‚©
+	//std::function<bool(std::unique_ptr<Enemy>&)>ifF3 = [=](std::unique_ptr<Enemy>& enemy)
+	//{
+	//	return /*enemy->GetIsDocking() && */enemy->GetIsSkewer();
+	//};
+	//std::function<bool(int32_t)>ifF4 = [=](int32_t count)
+	//{
+	//	return count >= 1;
+	//};
+	//CheckEnemiesCondition(skewerCombEnemies, isSkewerDocking, ifF3, ifF4);
 
 	//‚­‚Á‚Â‚¢‚Ä‚é“G‚É’Ç‰Á‚µ‚Ä‚¢‚­ˆ—
 	std::function<bool(std::vector<std::unique_ptr<Enemy>>::iterator)>addIfF =
@@ -127,6 +193,26 @@ void EnemyManager::GenerateUpdate()
 	}
 }
 
+void EnemyManager::MowDownTriggerEnemiesUpdate()
+{
+	//ƒvƒŒƒCƒ„[‚ÌUŒ‚‚ªI‚í‚Á‚½‚ç
+	if (!player_->GetFrameCountAttack() && mowDownedEnemies_)
+	{
+		mowDownedEnemies_->MowDown();
+		//”z—ñ‚É“o˜^
+		combinedEnemiesArray_.push_back(std::move(mowDownedEnemies_));
+		mowDownedEnemies_ = nullptr;
+	}
+	else if (mowDownedEnemies_)
+	{
+		mowDownedEnemies_->ChangeState("WAIT");
+		mowDownedEnemies_->SetDirection(-player_->GetMoveVec());
+		mowDownedEnemies_->CalcCentorPos(player_->GetPos(), player_->GetMoveVec().Normalize(),
+			player_->kMowSupportCenterDist_ + mowDownedEnemies_->GetRadius() + player_->GetRad().x);
+		mowDownedEnemies_->EnemiesPosUpdate();
+	}
+}
+
 int32_t EnemyManager::GetEnemiesCount()
 {
 	int32_t count = 0;
@@ -134,6 +220,11 @@ int32_t EnemyManager::GetEnemiesCount()
 	count += enemies_.size();
 
 	count += combinedEnemiesArray_.size();
+
+	if (mowDownedEnemies_)
+	{
+		count++;
+	}
 
 	return count;
 }
@@ -163,6 +254,7 @@ void EnemyManager::CoalesceneceCombEnemiesEachOther(std::function<bool(std::vect
 				//ğŒƒNƒŠƒA‚·‚ê‚Î
 				if (ifF(itr, itrB) && itr != itrB)
 				{
+					//“G‚Ì‚Ü‚Æ‚Ü‚è‚É•Ê‚Ì‚Ü‚Æ‚Ü‚è‚ğ’Ç‰Á
 					itr->get()->AddCombinedEnemies(std::move(*itrB));
 					combinedEnemiesArray_.erase(itrB);
 
@@ -188,6 +280,7 @@ void EnemyManager::CheckCombinedEnemiesCondition(std::unique_ptr<CombinedEnemies
 	{
 		if (ifF(itr))
 		{
+			//Š—LŒ “n‚·
 			combEnemies = std::move(*itr);
 			combinedEnemiesArray_.erase(itr);
 			settingFlag = true;
@@ -218,7 +311,7 @@ void EnemyManager::CheckEnemiesCondition(std::unique_ptr<CombinedEnemies>& combE
 }
 
 void EnemyManager::AddCombinedEnemies(std::unique_ptr<CombinedEnemies> combEnemies, bool isCombined, bool isDockCombined
-	, std::function<bool(std::vector<std::unique_ptr<Enemy>>::iterator)> addIfF)
+	, std::function<bool(std::vector<std::unique_ptr<Enemy>>::iterator)> addIfF, bool isPushBackArray)
 {
 	if (isCombined)
 	{
@@ -262,7 +355,8 @@ void EnemyManager::AddCombinedEnemies(std::unique_ptr<CombinedEnemies> combEnemi
 		}
 		combEnemies->AllEnemiesDockingEnd();
 	}
-	if (combEnemies)
+	//“ã‚¬•¥‚í‚ê‚éÅ’†‚Ì“G‚ğ•Û‘¶‚µ‚Ä‚¨‚­ƒCƒ“ƒXƒ^ƒ“ƒX‚Å‚È‚¯‚ê‚Î
+	if (combEnemies && isPushBackArray)
 	{
 		//‚­‚Á‚Â‚¢‚½“G‚Ì‰ò‚ğŠÇ—‚·‚é”z—ñ‚É’Ç‰Á
 		combinedEnemiesArray_.push_back(std::move(combEnemies));
@@ -310,12 +404,16 @@ void EnemyManager::Update()
 		}
 	}
 
+	//“ã‚¬•¥‚í‚ê‚Ä‚éÅ’†‚ÌXV
+	SaveMowDownEnemies();
 	//‚­‚Á‚Â‚­“G‚ª‚¢‚é‚©‚ÌXVˆ—
 	CombinedUpdate();
 	//“Ëi‚³‚ê‚Ä‚é“G‚Æ‚­‚Á‚Â‚¢‚½‚©
 	SkewerCombinedUpdate();
 	//¶¬ˆ—
 	GenerateUpdate();
+	//“ã‚¬•¥‚í‚ê‚Ä‚éÅ’†‚ÌXV2
+	MowDownTriggerEnemiesUpdate();
 }
 
 void EnemyManager::Draw()
@@ -328,6 +426,11 @@ void EnemyManager::Draw()
 	for (auto& combinedEnemies : combinedEnemiesArray_)
 	{
 		combinedEnemies->Draw();
+	}
+
+	if (mowDownedEnemies_)
+	{
+		mowDownedEnemies_->Draw();
 	}
 }
 

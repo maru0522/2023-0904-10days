@@ -37,7 +37,7 @@ private:
 	Vector2 centorPosTmp_;
 	Vector2 directionTmp_;
 	//薙ぎ払い方向
-	Vector2 mowDownVec_ = {0,0};
+	Vector2 mowDownVec_ = { 0,0 };
 	//薙ぎ払われてるか
 	bool isMowDown_ = false;
 	//串刺しにされているか
@@ -53,9 +53,9 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="player_">playerポインタ</param>
-	/// <param name="direciton">プレイヤーから見た敵の方向</param>
+	/// <param name="direction">プレイヤーから見た敵の方向</param>
 	/// <param name="enemies">くっつく敵の配列</param>
-	void Initialize(Player* player_, const Vector2& direciton);
+	void Initialize(Player* player_, const Vector2& direction);
 	void Update();
 	void Draw();
 
@@ -68,18 +68,18 @@ public:
 	void EnemiesPosUpdate();
 	//スケールを元に戻す
 	void EnemiesScaleReset();
+	//薙ぎ払う
+	void MowDown();
+	//
+	void CalcCentorPos(const Vector2& targetPos, const Vector2& direction, float length = 1.0f);
 
 private:
 	//角度の更新
 	void EnemiesRotUpdate();
 	//スケールをセット
 	void SetEnemiesScale(const Vector2& scale);
-	//
-	void CalcCentorPos(const Vector2& targetPos, const Vector2& direciton);
 	//くっついてる敵のどれか一つでも薙ぎ払われたら
 	void AnyEnemyMowDownUpdate();
-	//薙ぎ払う
-	void MowDown();
 	//くっついてる敵のどれか一つでも突進されたら
 	void AnyEnemySkewerUpdate();
 	//突進される処理
@@ -90,18 +90,19 @@ private:
 public:
 	const Vector2& GetCentorPos() { return centorPos_; }
 	void SetCentorPos(const Vector2& centorPos) { centorPos_ = centorPos; }
-	const Vector2& GetDireciton() { return direction_; }
-	void SetDireciton(const Vector2& direciton) { direction_ = direciton; }
+	const Vector2& GetDirection() { return direction_; }
+	void SetDirection(const Vector2& direction) { direction_ = direction.Normalize(); }
 	float GetRadius() { return radius_; }
 	void SetRadius(float radius) { radius_ = radius; }
 
-	void SetRadiusTmp() { 
-		radiusTmp_ = radius_; 
+	void SetRadiusTmp() {
+		radiusTmp_ = radius_;
 	}
 	void SetCentorPosTmp() { centorPosTmp_ = centorPos_; }
 	void SetDirectionTmp() { directionTmp_ = direction_; }
 	void SetIsMowDown(bool isMowDown) { isMowDown_ = isMowDown; }
 	void SetIsSkewer(bool isSkewer) { isSkewer_ = isSkewer; }
+	void SetIsSkewer(const Vector2& mowDownVec) { mowDownVec_ = mowDownVec; }
 
 	float GetRadiusTmp() { return radiusTmp_; }
 	const Vector2& GetCentorPosTmp() { return centorPosTmp_; }
