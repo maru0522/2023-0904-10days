@@ -38,8 +38,9 @@ float Math::Ease::EaseOutSine(float t, float start, float end)
 
 float Math::Ease::EaseOutCubic(float t, float start, float end)
 {
-    float time{ 1.f - t * t * t };
-    return start * (1.f - time) + end * time;
+    float time = (1.f - t) * (1.f - t) * (1.f - t);
+    //return start * (1.f - time) + end * time;
+    return (end - start) * (1.0 - time) + start;
 }
 
 float Math::Ease::EaseOutQuint(float t, float start, float end)
