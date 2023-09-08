@@ -224,6 +224,12 @@ void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 	enemies_.push_back(std::move(enemy));
 	//“G‚Ì”‚ğ‰ÁZ
 	enemiesNum_++;
+
+	//‚Ç‚¿‚ç‚©‚ª“ã‚¬•¥‚í‚ê‚Ä‚½‚ç
+	if (GetIsMowDown())
+	{
+		MowDownEnd();
+	}
 }
 
 void CombinedEnemies::AddCombinedEnemies(std::unique_ptr<CombinedEnemies> combinedEneies)
@@ -236,7 +242,12 @@ void CombinedEnemies::AddCombinedEnemies(std::unique_ptr<CombinedEnemies> combin
 		AddEnemy(std::move(enemy));
 	}
 
-	SetIsMowDown(false);
+	//‚Ç‚¿‚ç‚©‚ª“ã‚¬•¥‚í‚ê‚Ä‚½‚ç
+	if (combinedEneies->GetIsMowDown() || GetIsMowDown())
+	{
+		MowDownEnd();
+	}
+
 	ChangeState("WAIT");
 }
 

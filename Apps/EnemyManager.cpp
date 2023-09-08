@@ -120,24 +120,29 @@ void EnemyManager::CoalesceneceCombEnemiesEachOther(std::function<bool(std::vect
 			itr != combinedEnemiesArray_.end();
 			itr++)
 		{
+			if (combinedEnemiesArray_.size() < 2)
+			{
+				break;
+			}
+
 			auto itrB = itr;
 			itrB++;
 
 			for (itrB; itrB != combinedEnemiesArray_.end(); itrB++)
 			{
 				//ðŒƒNƒŠƒA‚·‚ê‚Î
-				if (ifF(itr, itrB))
+				if (ifF(itr, itrB) && itr != itrB)
 				{
 					itr->get()->AddCombinedEnemies(std::move(*itrB));
 					combinedEnemiesArray_.erase(itrB);
 
 					if (combinedEnemiesArray_.size() >= 2)
 					{
-						itr = combinedEnemiesArray_.begin();
+						itrB = combinedEnemiesArray_.begin();
 					}
 					else
 					{
-						itr = combinedEnemiesArray_.begin();
+						itrB = combinedEnemiesArray_.begin();
 						break;
 					}
 				}

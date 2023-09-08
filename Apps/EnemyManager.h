@@ -36,7 +36,6 @@ private:
 	void SkewerCombinedUpdate();
 
 private:
-
 	void CoalesceneceCombEnemiesEachOther(std::function<bool(std::vector<std::unique_ptr<CombinedEnemies>>::iterator,
 		std::vector<std::unique_ptr<CombinedEnemies>>::iterator)> ifF);
 
