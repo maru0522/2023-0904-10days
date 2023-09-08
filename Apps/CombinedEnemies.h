@@ -76,6 +76,8 @@ private:
 	void AnyEnemySkewerUpdate();
 	//突進される処理
 	void Skewer();
+	//薙ぎ払われた瞬間フラグの更新
+	void EnemiesMowDownTriggerUpdate();
 
 public:
 	const Vector2& GetCentorPos() { return centorPos_; }
@@ -112,6 +114,8 @@ public:
 public:
 	//敵全体の中でほかの敵と合体したものがいるか
 	bool GetIsDockingAnyEnemy();
+	//薙ぎ払いされた瞬間がいるか
+	bool GetIsMowDownTriggerAnyEnemy();
 	//敵全体の中でほかの串刺しにされてる敵と合体したものがいるか
 	bool GetIsDockingAndSkewer();
 	//ほかの敵と合体したときにisDockingをfalse
@@ -120,6 +124,8 @@ public:
 	void AllEnemiesEndMowDown();
 	//薙ぎ払い終わり
 	void MowDownEnd();
+	//薙ぎ払われた瞬間終わり
+	void MowDownTriggerEnd();
 	//突進されてるときの更新
 	void SkewerUpdate();
 	//死亡処理

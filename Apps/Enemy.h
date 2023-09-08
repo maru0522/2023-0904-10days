@@ -21,6 +21,9 @@ public:
 	~Enemy(void) override;
 
 	void Update(void) override;
+	//薙ぎ払い関係のアップデート
+	void MowDownFlagUpdate();
+
 	void Draw(void) override;
 
 private:
@@ -38,6 +41,7 @@ private:
 
 	// 薙ぎ払われたか
 	bool isMowDown_ = false;
+	bool isMowDownTrigger_ = false;
 	Vector2 vec_mow_{}; // 吹っ飛ばされる方向
 	// 吹き飛ばされる距離だけちゃんと移動したか計測する変数
 	//float tortalMowDist{};
@@ -54,11 +58,13 @@ private:
 public:
 	// setter
 	void SetIsMowDown(bool isMowDown) { isMowDown_ = isMowDown; }
+	void SetIsMowDownTrigger(bool isMowDownTrigger) { isMowDownTrigger_ = isMowDownTrigger; }
 	void SetIsDocking(bool isDocking) { isDocking_ = isDocking; }
 	void SetIsSkewer(bool isSkewer) { isSkewer_ = isSkewer; }
 
 	// getter
 	bool GetIsMowDown() { return isMowDown_; }
+	bool GetIsMowDownTrigger() { return isMowDownTrigger_; }
 	bool GetIsAlive(void) { return isAlive_; }
 	bool GetIsDocking() { return isDocking_; }
 	const Vector2& GetMowDownVec() { return vec_mow_; }

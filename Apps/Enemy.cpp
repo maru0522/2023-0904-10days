@@ -115,6 +115,8 @@ void Enemy::Update(void)
 			}
 		}
 	}
+
+	MowDownFlagUpdate();
 }
 
 void Enemy::Draw(void)
@@ -141,6 +143,15 @@ void Enemy::Draw(void)
 			DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, 0.f, png_enemy_, true);
 			SetDrawBright(255, 255, 255);
 		}
+	}
+}
+
+void Enemy::MowDownFlagUpdate()
+{
+	//“G‚ÌUŒ‚‚ªI‚í‚Á‚½‚ç‡‘Ì‚µ‚È‚¢‚æ‚¤‚É
+	if (!playerPtr_->GetFrameCountAttack())
+	{
+		isMowDownTrigger_ = false;
 	}
 }
 
@@ -240,6 +251,7 @@ void Enemy::OnCollision(void)
 		{
 			// “ã‚¬•¥‚í‚ê‚½ƒtƒ‰ƒOƒIƒ“
 			isMowDown_ = true;
+			isMowDownTrigger_ = true;
 			// ‚«”ò‚Î‚³‚ê‚é•ûŒü‚ð‹L˜^
 			vec_mow_ = paPtr->GetVecMove();
 		}
