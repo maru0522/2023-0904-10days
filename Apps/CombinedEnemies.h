@@ -64,9 +64,17 @@ public:
 	void AddCombinedEnemies(std::unique_ptr<CombinedEnemies>combinedEneies);
 	//向く方向の更新
 	void DirectionUpdate();
+	//敵一体一体の位置更新
+	void EnemiesPosUpdate();
+	//スケールを元に戻す
+	void EnemiesScaleReset();
 
 private:
-	void EnemiesPosUpdate();
+	//角度の更新
+	void EnemiesRotUpdate();
+	//スケールをセット
+	void SetEnemiesScale(const Vector2& scale);
+	//
 	void CalcCentorPos(const Vector2& targetPos, const Vector2& direciton);
 	//くっついてる敵のどれか一つでも薙ぎ払われたら
 	void AnyEnemyMowDownUpdate();
@@ -130,6 +138,8 @@ public:
 	void SkewerUpdate();
 	//死亡処理
 	void Dead();
+	//スケール揺らす
+	void SetScaleSinRot(float minS, float maxS, float rate, int32_t timer);
 
 public:
 	void ChangeState(const std::string& name);

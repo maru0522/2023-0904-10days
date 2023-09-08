@@ -52,6 +52,8 @@ private:
 	// 自分、今串刺しされてますフラグ
 	bool isSkewer_;
 
+	Vector2 scale_ = { 1.0f,1.0f };
+
 	// resource
 	int32_t png_enemy_ = LoadGraph("Resources/texture/enemy.png");
 
@@ -61,6 +63,7 @@ public:
 	void SetIsMowDownTrigger(bool isMowDownTrigger) { isMowDownTrigger_ = isMowDownTrigger; }
 	void SetIsDocking(bool isDocking) { isDocking_ = isDocking; }
 	void SetIsSkewer(bool isSkewer) { isSkewer_ = isSkewer; }
+	void SetScale(const Vector2& scale) { scale_ = scale; }
 
 	// getter
 	bool GetIsMowDown() { return isMowDown_; }
@@ -69,6 +72,7 @@ public:
 	bool GetIsDocking() { return isDocking_; }
 	const Vector2& GetMowDownVec() { return vec_mow_; }
 	bool GetIsSkewer(void) { return isSkewer_; }
+	const Vector2& GetScale() { return scale_; }
 
 public:
 	//合体したときに外部で呼び出す

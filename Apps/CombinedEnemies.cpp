@@ -47,7 +47,7 @@ void CombinedEnemies::AllEnemiesDockingEnd()
 		enemy->SetIsDocking(false);
 	}
 
-	ChangeState("WAIT");
+	ChangeState("AFTER_COMBINED");
 }
 
 void CombinedEnemies::AllEnemiesEndMowDown()
@@ -100,7 +100,7 @@ void CombinedEnemies::Initialize(Player* player, const Vector2& direciton)
 	CalcCentorPos(player_->GetPos(), direciton.Normalize());
 
 	//ステート
-	ChangeState("WAIT");
+	ChangeState("AFTER_COMBINED");
 }
 
 void CombinedEnemies::CalcCentorPos(const Vector2& targetPos, const Vector2& direciton)
@@ -222,6 +222,54 @@ void CombinedEnemies::EnemiesPosUpdate()
 	}
 }
 
+void CombinedEnemies::EnemiesScaleReset()
+{
+	for (auto& enemy : enemies_)
+	{
+		enemy->SetScale({ 1.0f,1.0f });
+	}
+}
+
+void CombinedEnemies::EnemiesRotUpdate()
+{
+	float rot = atan2f(direction_.y, direction_.x);
+
+	for (auto& enemy : enemies_)
+	{
+		enemy->SetRot(rot + Math::kPI / 2.0f);
+	}
+}
+
+void CombinedEnemies::SetEnemiesScale(const Vector2& scale)
+{
+	for (auto& enemy : enemies_)
+	{
+		enemy->SetScale(scale);
+	}
+}
+
+void CombinedEnemies::SetScaleSinRot(float minS, float maxS, float rate, int32_t timer)
+{
+	int32_t count = 0;
+	for (auto& enemy : enemies_)
+	{
+		float rot = atan2f(direction_.y, direction_.x);
+
+		Vector2 scale = { -sinf(rot) * sinf((float)timer * rate + (float)count),
+			cosf(rot) * sinf((float)timer * rate + (float)count) };
+
+		scale += {Math::Function::Random<float>((double)minS, (double)maxS),
+			Math::Function::Random<float>((double)minS, (double)maxS)};
+
+		scale.x = min(max(scale.x, minS), maxS);
+		scale.y = min(max(scale.y, minS), maxS);
+
+		enemy->SetScale(scale);
+		count++;
+	}
+}
+
+//------------------------------------------------------------------------------
 void CombinedEnemies::Update()
 {
 	//薙ぎ払いの更新
@@ -232,6 +280,8 @@ void CombinedEnemies::Update()
 	state_->Update();
 	//敵一体一体の座標更新
 	EnemiesPosUpdate();
+	//角度更新
+	EnemiesRotUpdate();
 
 	//薙ぎ払いフラグ更新
 	EnemiesMowDownTriggerUpdate();
@@ -268,6 +318,7 @@ void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 	else if (GetIsMowDown())
 	{
 		MowDownEnd();
+		ChangeState("AFTER_COMBINED");
 	}
 }
 
@@ -287,7 +338,7 @@ void CombinedEnemies::AddCombinedEnemies(std::unique_ptr<CombinedEnemies> combin
 		MowDownEnd();
 	}
 
-	ChangeState("WAIT");
+	ChangeState("AFTER_COMBINED");
 }
 
 

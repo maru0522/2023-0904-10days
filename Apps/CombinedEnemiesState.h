@@ -26,6 +26,7 @@ public:
 	virtual void Initialize();
 	virtual void Update() = 0;
 	void TimerUpdate(const std::function<void(float)>& f = NULL, const std::function<void()>& endF = NULL);
+	void ShakeUpdate(float minS, float maxS, float rate, float t);
 
 	void SetCombinedEnemies(CombinedEnemies* enemies) { enemies_ = enemies; }
 
@@ -50,6 +51,16 @@ class CombinedEnemiesStateSkewer : public ICombinedEnemiesState
 {
 private:
 	Vector2 direction_ = { 0,0 };
+
+public:
+	void Initialize()override;
+	void Update()override;
+};
+
+//çáëÃå„
+class CombinedEnemiesStateAfterCombined : public ICombinedEnemiesState
+{
+private:
 
 public:
 	void Initialize()override;

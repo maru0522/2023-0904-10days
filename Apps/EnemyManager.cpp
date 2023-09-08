@@ -35,7 +35,7 @@ void EnemyManager::CombinedUpdate()
 	{
 		return (itrA->get()->GetIsDockingAnyEnemy() || itrA->get()->GetIsMowDownTriggerAnyEnemy())
 			&& (itrB->get()->GetIsDockingAnyEnemy() || itrB->get()->GetIsMowDownTriggerAnyEnemy());
-				};
+	};
 	CoalesceneceCombEnemiesEachOther(ifF0);
 
 	//‚­‚Á‚Â‚¢‚Ä‚é“G‚ªA‚Ù‚©‚Ì“G‚Æ‡‘Ì‚µ‚½‚©
@@ -334,5 +334,9 @@ void EnemyManager::Draw()
 //-------------------------------------------------------------
 void EnemyManager::AddEnemy(std::unique_ptr<Enemy> enemy)
 {
-	enemies_.push_back(std::move(enemy));
+	std::unique_ptr<CombinedEnemies>cEs = std::make_unique<CombinedEnemies>();
+	cEs->AddEnemy(std::move(enemy));
+	cEs->Initialize(player_, player_->GetDirectionVec());
+
+	combinedEnemiesArray_.push_back(std::move(cEs));
 }
