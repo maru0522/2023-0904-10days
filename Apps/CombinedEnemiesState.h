@@ -18,6 +18,14 @@ protected:
 	CombinedEnemies* enemies_ = nullptr;
 	//
 	std::string nextStateName_;
+protected:
+	//ぶるんのパラメータ
+	//最小スケール
+	float minScale_ = 1.0f;
+	//最大スケール
+	float maxScale_ = 1.0f;
+	//どのくらいのスピードでやるか
+	float shakeRate_ = 1.0f;
 
 public:
 	virtual ~ICombinedEnemiesState() { ; }

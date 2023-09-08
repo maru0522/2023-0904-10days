@@ -209,6 +209,13 @@ void CombinedEnemies::Dead()
 //--------------------------------------------------
 void CombinedEnemies::EnemiesPosUpdate()
 {
+	//敵が一体の場合は敵の座標を使う（押し戻しなどがあるので）
+	if (enemiesNum_ == 1)
+	{
+		centorPos_ = enemies_[0]->GetPos();
+		return;
+	}
+
 	//中央のインデックス
 	float centorIndex = (float)enemiesNum_ / 2.0f - 0.5f;
 
@@ -277,14 +284,21 @@ void CombinedEnemies::Update()
 	//突進の更新
 	AnyEnemySkewerUpdate();
 
-	state_->Update();
 	//敵一体一体の座標更新
 	EnemiesPosUpdate();
+
+	state_->Update();
 	//角度更新
 	EnemiesRotUpdate();
 
 	//薙ぎ払いフラグ更新
 	EnemiesMowDownTriggerUpdate();
+
+	//敵が一体の場合は押し戻しなどをするため
+	if (enemiesNum_ == 1)
+	{
+		enemies_[0]->SetPos(centorPos_);
+	}
 }
 
 void CombinedEnemies::Draw()
