@@ -22,7 +22,7 @@ public:
 
 private:
     uint32_t game_BGM_ = 0;
-    uint32_t sceneChange_SE_ = 0;  //シーン遷移音
+    uint32_t sceneChange_SE_ = 0;   //シーン遷移音
 
     // 変数
     std::unique_ptr<Stage> stage_{ std::make_unique<Stage>() };

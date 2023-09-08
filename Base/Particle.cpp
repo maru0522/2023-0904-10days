@@ -52,7 +52,7 @@ void Emitter::Update(bool isGravity)
 	}
 }
 
-void Emitter::DrawBoxParticle()
+void Emitter::DrawCircleParticle()
 {
 	for (auto& p : particles_)
 	{

@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include <memory>
 
 class Stage final
 {
@@ -16,6 +17,8 @@ private:
     // 変数
     Vector2 leftTop_{};
     Vector2 RightBottom_{};
+
+    uint32_t png_Stage_ = 0;        //ステージ画像
 
 public:
     // getter
