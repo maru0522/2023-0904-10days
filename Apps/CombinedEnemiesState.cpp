@@ -190,8 +190,17 @@ void CombinedEnemiesStateStretch::Update()
 	std::function<void(float)>f = [=](float t) {
 		enemies_->SetRadius(lerp(0, enemies_->GetRadiusTmp(), Math::Ease::EaseInCubic(t, 0, 1.0f)));
 		//”¼Œa•ªŒü‚¢‚Ä‚é•ûŒü‚Éi‚Þ
-		enemies_->SetCentorPos({ lerp(centorPT.x, centorPT.x + directionT.x * radiusT * 2.0f, t),
-			lerp(centorPT.y, centorPT.y + directionT.y * radiusT * 2.0f, t) });
+		Vector2 nextPos = { lerp(centorPT.x, centorPT.x + directionT.x * radiusT * 2.0f, t),
+			lerp(centorPT.y, centorPT.y + directionT.y * radiusT * 2.0f, t) };
+
+		//‚·‚è”²‚¯‚½‚ç
+		Vector2 directionT2 = (enemies_->GetTargetPos() - enemies_->GetCentorPos()).Normalize();
+		if ((enemies_->GetTargetPos() - nextPos).Normalize().Dot(directionT2) <= 0.0f)
+		{
+			nextPos = enemies_->GetTargetPos() + (-directionT2 * enemies_->GetRadiusTmp() / 2.0f);
+		}
+
+		enemies_->SetCentorPos(nextPos);
 	};
 
 	TimerUpdate(f);
