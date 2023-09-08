@@ -14,7 +14,7 @@ public:
 	static const float kPushBackDist_; // ‰Ÿ‚µ–ß‚·‹——£
 	static const float kPngScale_; // ‰æ‘œ‚ÌŠg‘å—¦
 	static const uint32_t kMowFrame_ = 15; // ‰½ƒtƒŒ[ƒ€‚©‚¯‚Ä‚«”ò‚Î‚³‚ê‚é‚©
-	const float KRadius_{ 10.f }; // ”¼Œa
+	static const float KRadius_; // ”¼Œa
 
 	// ŠÖ”
 	Enemy(CollisionManger* colMPtr, Player* playerPtr, Stage* stagePtr);

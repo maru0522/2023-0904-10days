@@ -26,7 +26,7 @@ void ParticleManager::Update()
 
 void ParticleManager::Draw()
 {
-	enemyDeadParticle.DrawBoxParticle();
+	enemyDeadParticle.DrawCircleParticle();
 }
 
 void ParticleManager::Reset()
