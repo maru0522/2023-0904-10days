@@ -44,7 +44,7 @@ void EnemyManager::SaveMowDownEnemies()
 			if (mowDownedEnemies_ == nullptr)
 			{
 				mowDownedEnemies_ = std::make_unique<CombinedEnemies>();
-				mowDownedEnemies_->Initialize(player_, player_->GetDirectionVec());
+				mowDownedEnemies_->Initialize(player_, stage_, player_->GetDirectionVec());
 			}
 			//‚Ä‚«‚Ì‚©‚½‚Ü‚è‚ð’Ç‰Á‚·‚é
 			mowDownedEnemies_->AddCombinedEnemies(std::move(*itrB));
@@ -366,7 +366,7 @@ void EnemyManager::AddCombinedEnemies(std::unique_ptr<CombinedEnemies> combEnemi
 		if (isDockCombined == false)
 		{
 			//‰Šú‰»
-			combEnemies->Initialize(player_, player_->GetDirectionVec());
+			combEnemies->Initialize(player_, stage_, player_->GetDirectionVec());
 		}
 		combEnemies->AllEnemiesDockingEnd();
 	}
@@ -457,7 +457,7 @@ void EnemyManager::AddEnemy(std::unique_ptr<Enemy> enemy)
 {
 	std::unique_ptr<CombinedEnemies>cEs = std::make_unique<CombinedEnemies>();
 	cEs->AddEnemy(std::move(enemy));
-	cEs->Initialize(player_, player_->GetDirectionVec());
+	cEs->Initialize(player_, stage_, player_->GetDirectionVec());
 
 	combinedEnemiesArray_.push_back(std::move(cEs));
 }

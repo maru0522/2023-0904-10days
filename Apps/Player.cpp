@@ -100,10 +100,36 @@ void Player::Draw(void)
     // skewerの為にボタン長押ししてるなら
     if (frameCount_4Skewer_ > 0)
     {
-        //矢印描画
-        Vector2 pos4PredictionLine = position_ + vec_move_ * 1000;
+        // プレイヤーの右方向を出す
+        Vector3 vec3_move = { vec_move_.x,vec_move_.y,0 };
+        Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec3_move.Normalize());
+        Vector2 vec2_right = { vec3_right.x,vec3_right.y };
 
-        DrawLine((int32_t)position_.x, (int32_t)position_.y, (int32_t)pos4PredictionLine.x, (int32_t)pos4PredictionLine.y, Color::RED, 2);
+        // box用変数
+        //Vector2 frame_pos4PredictionBox_front = position_ - vec2_right * radius_.x;
+        //Vector2 frame_pos4PredictionBox_Back = position_ + vec_move_ * 1000 + vec2_right * radius_.x;
+        //Vector2 contents_pos4PredictionBox_front = position_ - vec2_right * (radius_.x - 1);
+        //Vector2 contents_pos4PredictionBox_Back = position_ + vec_move_ * 1000 + vec2_right * (radius_.x - 1);
+
+        // line用変数
+        Vector2 pos_predictionLine_LB = position_ - vec2_right * radius_.x;
+        Vector2 pos_predictionLine_LT = position_ + vec_move_ * 1500 - vec2_right * radius_.x;
+        Vector2 pos_predictionLine_RB = position_ + vec2_right * radius_.x;
+        Vector2 pos_predictionLine_RT = position_ + vec_move_ * 1500 + vec2_right * radius_.x;
+
+        // DxlibのDrawBox()は回転機能ないからムリです
+        //DrawBox((int32_t)frame_pos4PredictionBox_front.x, (int32_t)frame_pos4PredictionBox_front.y, (int32_t)frame_pos4PredictionBox_Back.x, (int32_t)frame_pos4PredictionBox_Back.y, Color::RED,false);
+        //SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
+        //DrawBox((int32_t)contents_pos4PredictionBox_front.x, (int32_t)contents_pos4PredictionBox_front.y, (int32_t)contents_pos4PredictionBox_Back.x, (int32_t)contents_pos4PredictionBox_Back.y, Color::RED,true);
+        //SetDrawBlendMode(DX_BLENDMODE_NOBLEND,0);
+
+        // DrawLineで無理矢理やります
+        DrawLine((int32_t)pos_predictionLine_LB.x, (int32_t)pos_predictionLine_LB.y, (int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, Color::RED, 2); // 左縦
+        DrawLine((int32_t)pos_predictionLine_RB.x, (int32_t)pos_predictionLine_RB.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // 右縦
+        DrawLine((int32_t)pos_predictionLine_LB.x, (int32_t)pos_predictionLine_LB.y, (int32_t)pos_predictionLine_RB.x, (int32_t)pos_predictionLine_RB.y, Color::RED, 2); // 下横
+        DrawLine((int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // 
+
+        //矢印描画
         DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_ * 3.0f, rotation_, png_arrow_, true);
 
         DrawFormatString(1000, 60, Util::Color::GREEN, "溜め状態");
