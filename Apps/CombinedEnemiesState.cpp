@@ -186,7 +186,10 @@ void CombinedEnemiesStateShrink::Initialize()
 void CombinedEnemiesStateShrink::Update()
 {
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetRadius(lerp(enemies_->GetRadiusTmp(), 0, Math::Ease::EaseInCubic(t, 0, 1.0f)));
+		//半径セット
+		enemies_->SetRadius(lerp(enemies_->GetRadiusTmp(), enemies_->GetRadiusTmp() / 2.0f, Math::Ease::EaseInCubic(t, 0, 1.0f)));
+		//スケール
+		enemies_->SetScale({ lerp(1.0f, 1.5f, t),lerp(1.0f, 0.5f, t) });
 	};
 
 	TimerUpdate(f);
@@ -204,7 +207,10 @@ void CombinedEnemiesStateWaitStretch::Initialize()
 void CombinedEnemiesStateWaitStretch::Update()
 {
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetRadius(0);
+		//半径セット
+		enemies_->SetRadius(enemies_->GetRadiusTmp() / 2.0f);
+		//スケール
+		enemies_->SetScale({ 1.5f,0.5f });
 	};
 
 	TimerUpdate(f);
@@ -216,7 +222,7 @@ void CombinedEnemiesStateWaitStretch::Update()
 void CombinedEnemiesStateStretch::Initialize()
 {
 	nextStateName_ = "WAIT";
-	timerMax_ = 20;
+	timerMax_ = 13;
 }
 
 void CombinedEnemiesStateStretch::Update()
@@ -226,13 +232,14 @@ void CombinedEnemiesStateStretch::Update()
 	float radiusT = enemies_->GetRadiusTmp();
 
 	std::function<void(float)>f = [=](float t) {
-		enemies_->SetRadius(lerp(0, enemies_->GetRadiusTmp(), Math::Ease::EaseInCubic(t, 0, 1.0f)));
+		//半径セット
+		enemies_->SetRadius(lerp(enemies_->GetRadiusTmp() / 2.0f, enemies_->GetRadiusTmp(), Math::Ease::EaseInCubic(t, 0, 1.0f)));
 		//半径分向いてる方向に進む
 		Vector2 nextPos = { lerp(centorPT.x, centorPT.x + directionT.x * radiusT * 2.0f, t),
 			lerp(centorPT.y, centorPT.y + directionT.y * radiusT * 2.0f, t) };
 
-		//揺らす
-		ShakeUpdate(0.7f, 1.1f, 0.3f, t);
+		//スケール
+		enemies_->SetScale({ lerp(1.5f,1.0f, t),lerp(0.5f,1.0f,  t) });
 
 		//すり抜けたら
 		Vector2 directionT2 = (enemies_->GetTargetPos() - enemies_->GetCentorPos()).Normalize();

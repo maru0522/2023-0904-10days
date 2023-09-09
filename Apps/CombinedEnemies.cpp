@@ -59,8 +59,6 @@ void CombinedEnemies::AllEnemiesDockingEnd()
 	{
 		enemy->SetIsDocking(false);
 	}
-
-	ChangeState("AFTER_COMBINED");
 }
 
 void CombinedEnemies::AllEnemiesEndMowDown()
@@ -290,6 +288,19 @@ void CombinedEnemies::SetScaleSinRot(float minS, float maxS, float rate, int32_t
 	}
 }
 
+void CombinedEnemies::SetScale(const Vector2& scale)
+{
+	for (auto& enemy : enemies_)
+	{
+		Vector2 scaleL = scale;
+
+		scaleL += {Math::Function::Random<float>((double)-scale.x * 0.1f, (double)scale.x * 0.1f),
+			Math::Function::Random<float>((double)-scale.y * 0.1f, (double)scale.y * 0.1f)};
+
+		enemy->SetScale(scaleL);
+	}
+}
+
 //------------------------------------------------------------------------------
 void CombinedEnemies::Update()
 {
@@ -336,14 +347,11 @@ void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 	enemies_.push_back(std::move(enemy));
 	//“G‚Ì”‚ð‰ÁŽZ
 	enemiesNum_++;
+	//‡‘Ìƒtƒ‰ƒOƒIƒt
+	AllEnemiesDockingEnd();
 
-	//“ã‚¬•¥‚í‚ê‚½uŠÔ‚É‡‘Ì‚µ‚½‚È‚ç
-	if (enemies_[enemiesNum_ - 1]->GetIsMowDownTrigger())
-	{
-		MowDown();
-	}
 	//‚Ç‚¿‚ç‚©‚ª“ã‚¬•¥‚í‚ê‚Ä‚½‚ç
-	else if (GetIsMowDown())
+	/*else*/ if (GetIsMowDown())
 	{
 		MowDownEnd();
 		ChangeState("AFTER_COMBINED");

@@ -93,7 +93,9 @@ public:
 	const Vector2& GetDirection() { return direction_; }
 	void SetDirection(const Vector2& direction) { direction_ = direction.Normalize(); }
 	float GetRadius() { return radius_; }
-	void SetRadius(float radius) { radius_ = radius; }
+	void SetRadius(float radius) { 
+		radius_ = radius; 
+	}
 
 	void SetRadiusTmp() {
 		radiusTmp_ = radius_;
@@ -143,6 +145,8 @@ public:
 	void Dead();
 	//スケール揺らす
 	void SetScaleSinRot(float minS, float maxS, float rate, int32_t timer);
+	//スケールセット
+	void SetScale(const Vector2& scale);
 
 public:
 	void ChangeState(const std::string& name);
