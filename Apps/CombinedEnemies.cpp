@@ -3,7 +3,27 @@
 #include "MathUtil.h"
 
 
+CombinedEnemies::~CombinedEnemies()
+{
+	state_.reset();
+}
 
+//-------------------------------------------------
+void CombinedEnemies::Initialize(Player* player, Stage* stage, const Vector2& direction)
+{
+	player_ = player;
+	stage_ = stage;
+	//
+	distance_ = (player_->GetPos() - player_->GetPos() + direction.Normalize() * length * ((float)enemiesNum_ / 2.0f)).Length();
+
+	//中央位置計算
+	CalcCentorPos(player_->GetPos(), direction.Normalize());
+
+	//ステート
+	ChangeState("AFTER_COMBINED");
+}
+
+//-----------------------------------------------------------------------------------------------------
 bool CombinedEnemies::GetIsDockingAnyEnemy()
 {
 	for (auto& enemy : enemies_)
@@ -94,31 +114,72 @@ void CombinedEnemies::ChangeState(const std::string& name)
 	state_->Initialize();
 }
 
-
-CombinedEnemies::~CombinedEnemies()
-{
-	state_.reset();
-}
-
-//-------------------------------------------------
-void CombinedEnemies::Initialize(Player* player, const Vector2& direction)
-{
-	player_ = player;
-
-	//
-	distance_ = (player_->GetPos() - player_->GetPos() + direction.Normalize() * length * ((float)enemiesNum_ / 2.0f)).Length();
-
-	//中央位置計算
-	CalcCentorPos(player_->GetPos(), direction.Normalize());
-
-	//ステート
-	ChangeState("AFTER_COMBINED");
-}
-
+//-----------------------------------------------------------------------------------------------------
 void CombinedEnemies::CalcCentorPos(const Vector2& targetPos, const Vector2& direction, float length)
 {
 	//仮
 	centorPos_ = targetPos + direction * length;
+}
+
+bool CombinedEnemies::SetInStagePos(const Vector2& pos, Vector2& pushBackVec)
+{
+	Vector2 pushBackVecL = { 0,0 };
+	bool isPushBack = false;
+
+	//x
+	if (pos.x < stage_->GetLT().x)
+	{
+		pushBackVecL.x += stage_->GetLT().x - pos.x;
+		isPushBack = true;
+	}
+	if (pos.x > stage_->GetRB().x)
+	{
+		pushBackVecL.x += stage_->GetRB().x - pos.x;
+		isPushBack = true;
+	}
+	//y
+	if (pos.y > stage_->GetRB().y)
+	{
+		pushBackVecL.y += stage_->GetRB().y - pos.y;
+		isPushBack = true;
+	}
+	if (pos.y < stage_->GetLT().y)
+	{
+		pushBackVecL.y += stage_->GetLT().y - pos.y;
+		isPushBack = true;
+	}
+
+	//押し戻す
+	pushBackVec += pushBackVecL;
+
+	return isPushBack;
+}
+
+bool CombinedEnemies::SetInStageEnemiesPos()
+{
+	bool isSet = false;
+	Vector2 pushBackVec = { 0,0 };
+
+	//先頭と最後の敵を見て押し戻し
+	if (enemies_.size() >= 2)
+	{
+		isSet = SetInStagePos(enemies_[0]->GetPos(), pushBackVec);
+		isSet = SetInStagePos(enemies_[enemies_.size() - 1]->GetPos(), pushBackVec);
+	}
+	//敵が一体のみだったら
+	else if (enemies_.size())
+	{
+		isSet = SetInStagePos(enemies_[0]->GetPos(), pushBackVec);
+	}
+
+	centorPos_ += pushBackVec.Normalize() * (pushBackVec.Length() + Enemy::KRadius_);
+
+	if (isSet)
+	{
+		ChangeState("WAIT");
+	}
+
+	return isSet;
 }
 
 void CombinedEnemies::AnyEnemyMowDownUpdate()
@@ -223,12 +284,19 @@ void CombinedEnemies::Dead()
 //--------------------------------------------------
 void CombinedEnemies::EnemiesPosUpdate()
 {
+	bool isSetCentorPos = false;
+
 	//敵が一体の場合は敵の座標を使う（押し戻しなどがあるので）
 	if (enemiesNum_ == 1 && !GetIsMowDownTriggerAnyEnemy())
 	{
 		centorPos_ = enemies_[0]->GetPos();
+		//ステージ内に収める
+		SetInStageEnemiesPos();
 		return;
 	}
+
+	//ステージ内に収める
+	SetInStageEnemiesPos();
 
 	//中央のインデックス
 	float centorIndex = (float)enemiesNum_ / 2.0f - 0.5f;

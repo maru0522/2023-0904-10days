@@ -28,6 +28,8 @@ private:
 	const int32_t MOVE_INTERVAL_ = Enemy::kMoveInterval_; // 敵が動くまでの間隔(フレーム単位)
 	//プレイヤーのポインター
 	Player* player_ = nullptr;
+	//ステージのポインタ
+	Stage* stage_ = nullptr;
 	int32_t frameCountWait_; // 待機用フレームカウント
 	int32_t frameCountMove_; // 移動用フレームカウント
 	//ステート
@@ -55,7 +57,7 @@ public:
 	/// <param name="player_">playerポインタ</param>
 	/// <param name="direction">プレイヤーから見た敵の方向</param>
 	/// <param name="enemies">くっつく敵の配列</param>
-	void Initialize(Player* player_, const Vector2& direction);
+	void Initialize(Player* player, Stage* stage, const Vector2& direction);
 	void Update();
 	void Draw();
 
@@ -72,6 +74,12 @@ public:
 	void MowDown();
 	//
 	void CalcCentorPos(const Vector2& targetPos, const Vector2& direction, float length = 1.0f);
+
+private:
+	//敵をステージ外に出さないように
+	bool SetInStagePos(const Vector2& pos, Vector2& pushBackVec);
+	//
+	bool SetInStageEnemiesPos();
 
 private:
 	//角度の更新
