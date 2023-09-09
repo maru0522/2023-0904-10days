@@ -125,12 +125,13 @@ void Player::Draw(void)
 
     if (state_ == State::ATTACK_SKEWER) // 串刺し攻撃中、串刺しの描画関数を呼び出す
     {
-        Vector2 pos4SwordUp = pos4Sword_ + vec_move_ * (10 + EnemyManager::GetInstance().GetSkewerEnemiesLength());
-        pos4SwordBottom_ = pos4Sword_ - vec_move_ * 12;
+        pos4Sword_ += vec_move_ * 5;
+        pos4SwordUp_ += vec_move_ * (6 + EnemyManager::GetInstance().GetSkewerEnemiesLength());
+        pos4SwordBottom_ -= vec_move_ * 12;
 
         // 串
         DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rotation_, png_sword_, true);
-        DrawRotaGraph((int32_t)pos4SwordUp.x, (int32_t)pos4SwordUp.y, kPngScale_, rotation_, png_swordUp_, true);
+        DrawRotaGraph((int32_t)pos4SwordUp_.x, (int32_t)pos4SwordUp_.y, kPngScale_, rotation_, png_swordUp_, true);
         DrawRotaGraph((int32_t)pos4SwordBottom_.x, (int32_t)pos4SwordBottom_.y, kPngScale_, rotation_, png_swordBottom_, true);
         skewer_.Draw();
     }
@@ -325,6 +326,7 @@ void Player::SkewerAttackUpdate(void)
     skewer_.Update();
     // 串刺し絵の座標 = プレイヤーの座標 + 正規化されたプレイヤーの向き * 規定距離)
     pos4Sword_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+    pos4SwordUp_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
     pos4SwordBottom_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
 }
 
