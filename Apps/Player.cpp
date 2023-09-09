@@ -129,7 +129,9 @@ void Player::Draw(void)
         DrawLine((int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // è„â°
 
         //ñÓàÛï`âÊ
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
         DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_ * 3.0f, rotation_, png_arrow_, true);
+        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
         DrawFormatString(1000, 60, Util::Color::GREEN, "ó≠ÇﬂèÛë‘");
         DrawFormatString(1000, 80, Util::Color::GREEN, "frame: %d/%d", frameCount_4Skewer_, kChargeFrame4Skewer_);
@@ -139,6 +141,22 @@ void Player::Draw(void)
         // çUåÇîÕàÕÇ∆debugÇÃï\é¶
         mow_.Draw();
         mow_support_.Draw();
+
+        Vector2 pos_arrow = position_ + vec_move_ * 70;
+
+        if (vec_move_.IsNonZero() == false)
+        {
+            pos_arrow = position_ + Vector2(1,0) * 70;
+            SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+            DrawRotaGraph3((int32_t)pos_arrow.x, (int32_t)pos_arrow.y, 250, 250, 0.4, 0.08, rotation_, png_arrow_, true);
+            SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+        }
+        else
+        {
+            SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+            DrawRotaGraph3((int32_t)pos_arrow.x, (int32_t)pos_arrow.y, 250, 250, 0.4, 0.08, rotation_, png_arrow_, true);
+            SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+        }
     }
 
     // skewerÇÃà◊Ç…É{É^Éìí∑âüÇµÇµÇƒÇ»Ç¢ && ã¯éhÇµçUåÇíÜÇ≈Ç»Ç¢ && ì„Ç¨ï•Ç¢çUåÇíÜÇ»ÇÁ
@@ -148,19 +166,6 @@ void Player::Draw(void)
         // ã¯Çï`âÊ
         DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rot4Sword2_, png_sword_, true);
         //DrawCircle((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, 1, Util::Color::BLUE, true, 1);
-
-        // lineópïœêî
-        Vector2 pos_predictionLine_LB = position_ - vec2_right * radius_.x;
-        Vector2 pos_predictionLine_LT = position_ + vec_move_ * 1500 - vec2_right * radius_.x;
-        Vector2 pos_predictionLine_RB = position_ + vec2_right * radius_.x;
-        Vector2 pos_predictionLine_RT = position_ + vec_move_ * 1500 + vec2_right * radius_.x;
-
-        // DrawLineÇ≈ñ≥óùñÓóùÇ‚ÇËÇ‹Ç∑
-        DrawLine((int32_t)pos_predictionLine_LB.x, (int32_t)pos_predictionLine_LB.y, (int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, Color::RED, 2); // ç∂èc
-        DrawLine((int32_t)pos_predictionLine_RB.x, (int32_t)pos_predictionLine_RB.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // âEèc
-        DrawLine((int32_t)pos_predictionLine_LB.x, (int32_t)pos_predictionLine_LB.y, (int32_t)pos_predictionLine_RB.x, (int32_t)pos_predictionLine_RB.y, Color::RED, 2); // â∫â°
-        DrawLine((int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // è„â°
-
     }
     DrawFormatString(1000, 120, Util::Color::GREEN, "rot4s: %f", rot4RotationSword_);
 
