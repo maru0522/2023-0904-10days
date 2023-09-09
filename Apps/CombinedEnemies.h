@@ -125,6 +125,8 @@ public:
 	bool GetIsDockingAnyEnemy();
 	//“ã‚¬•¥‚¢‚³‚ê‚½uŠÔ‚ª‚¢‚é‚©
 	bool GetIsMowDownTriggerAnyEnemy();
+	//‘S‚Ä‚Ì“G‚ª“ã‚¬•¥‚í‚ê‚½uŠÔ‚Å‚Í‚È‚¢‚©‚Ç‚¤‚©
+	bool GetIsMowDownTriggerEnd();
 	//“G‘S‘Ì‚Ì’†‚Å‚Ù‚©‚Ì‹øh‚µ‚É‚³‚ê‚Ä‚é“G‚Æ‡‘Ì‚µ‚½‚à‚Ì‚ª‚¢‚é‚©
 	bool GetIsDockingAndSkewer();
 	//‚Ù‚©‚Ì“G‚Æ‡‘Ì‚µ‚½‚Æ‚«‚ÉisDocking‚ğfalse

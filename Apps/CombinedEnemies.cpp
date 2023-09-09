@@ -30,6 +30,19 @@ bool CombinedEnemies::GetIsMowDownTriggerAnyEnemy()
 	return false;
 }
 
+bool CombinedEnemies::GetIsMowDownTriggerEnd()
+{
+	for (auto& enemy : enemies_)
+	{
+		if (enemy->GetIsMowDownTrigger())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 bool CombinedEnemies::GetIsDockingAndSkewer()
 {
 	if (GetIsDockingAnyEnemy() && isSkewer_)
@@ -55,6 +68,7 @@ void CombinedEnemies::AllEnemiesEndMowDown()
 	for (auto& enemy : enemies_)
 	{
 		enemy->SetIsMowDown(false);
+		enemy->SetIsMowDownTrigger(false);
 	}
 }
 

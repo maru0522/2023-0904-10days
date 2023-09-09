@@ -216,7 +216,7 @@ void CombinedEnemiesStateWaitStretch::Update()
 void CombinedEnemiesStateStretch::Initialize()
 {
 	nextStateName_ = "WAIT";
-	timerMax_ = 10;
+	timerMax_ = 20;
 }
 
 void CombinedEnemiesStateStretch::Update()
