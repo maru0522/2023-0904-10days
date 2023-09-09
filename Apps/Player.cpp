@@ -96,26 +96,19 @@ void Player::Draw(void)
     // 現在のプレイヤーの状態（数字のみ）
     DrawFormatString(0, 140, 0xffffff, "state ;%d", static_cast<int32_t>(state_));
 
+    // プレイヤーの右方向を出す
+    Vector3 vec3_move = { vec_move_.x,vec_move_.y,0 };
+    Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec3_move.Normalize());
+    Vector2 vec2_right = { vec3_right.x,vec3_right.y };
 
     // skewerの為にボタン長押ししてるなら
     if (frameCount_4Skewer_ > 0)
     {
-        // プレイヤーの右方向を出す
-        Vector3 vec3_move = { vec_move_.x,vec_move_.y,0 };
-        Vector3 vec3_right = Vector3(0, 0, 1).Cross(vec3_move.Normalize());
-        Vector2 vec2_right = { vec3_right.x,vec3_right.y };
-
         // box用変数
         //Vector2 frame_pos4PredictionBox_front = position_ - vec2_right * radius_.x;
         //Vector2 frame_pos4PredictionBox_Back = position_ + vec_move_ * 1000 + vec2_right * radius_.x;
         //Vector2 contents_pos4PredictionBox_front = position_ - vec2_right * (radius_.x - 1);
         //Vector2 contents_pos4PredictionBox_Back = position_ + vec_move_ * 1000 + vec2_right * (radius_.x - 1);
-
-        // line用変数
-        Vector2 pos_predictionLine_LB = position_ - vec2_right * radius_.x;
-        Vector2 pos_predictionLine_LT = position_ + vec_move_ * 1500 - vec2_right * radius_.x;
-        Vector2 pos_predictionLine_RB = position_ + vec2_right * radius_.x;
-        Vector2 pos_predictionLine_RT = position_ + vec_move_ * 1500 + vec2_right * radius_.x;
 
         // DxlibのDrawBox()は回転機能ないからムリです
         //DrawBox((int32_t)frame_pos4PredictionBox_front.x, (int32_t)frame_pos4PredictionBox_front.y, (int32_t)frame_pos4PredictionBox_Back.x, (int32_t)frame_pos4PredictionBox_Back.y, Color::RED,false);
@@ -123,11 +116,17 @@ void Player::Draw(void)
         //DrawBox((int32_t)contents_pos4PredictionBox_front.x, (int32_t)contents_pos4PredictionBox_front.y, (int32_t)contents_pos4PredictionBox_Back.x, (int32_t)contents_pos4PredictionBox_Back.y, Color::RED,true);
         //SetDrawBlendMode(DX_BLENDMODE_NOBLEND,0);
 
+        // line用変数
+        Vector2 pos_predictionLine_LB = position_ - vec2_right * radius_.x;
+        Vector2 pos_predictionLine_LT = position_ + vec_move_ * 1500 - vec2_right * radius_.x;
+        Vector2 pos_predictionLine_RB = position_ + vec2_right * radius_.x;
+        Vector2 pos_predictionLine_RT = position_ + vec_move_ * 1500 + vec2_right * radius_.x;
+
         // DrawLineで無理矢理やります
         DrawLine((int32_t)pos_predictionLine_LB.x, (int32_t)pos_predictionLine_LB.y, (int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, Color::RED, 2); // 左縦
         DrawLine((int32_t)pos_predictionLine_RB.x, (int32_t)pos_predictionLine_RB.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // 右縦
         DrawLine((int32_t)pos_predictionLine_LB.x, (int32_t)pos_predictionLine_LB.y, (int32_t)pos_predictionLine_RB.x, (int32_t)pos_predictionLine_RB.y, Color::RED, 2); // 下横
-        DrawLine((int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // 
+        DrawLine((int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // 上横
 
         //矢印描画
         DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_ * 3.0f, rotation_, png_arrow_, true);
@@ -149,6 +148,19 @@ void Player::Draw(void)
         // 串を描画
         DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rot4Sword2_, png_sword_, true);
         //DrawCircle((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, 1, Util::Color::BLUE, true, 1);
+
+        // line用変数
+        Vector2 pos_predictionLine_LB = position_ - vec2_right * radius_.x;
+        Vector2 pos_predictionLine_LT = position_ + vec_move_ * 1500 - vec2_right * radius_.x;
+        Vector2 pos_predictionLine_RB = position_ + vec2_right * radius_.x;
+        Vector2 pos_predictionLine_RT = position_ + vec_move_ * 1500 + vec2_right * radius_.x;
+
+        // DrawLineで無理矢理やります
+        DrawLine((int32_t)pos_predictionLine_LB.x, (int32_t)pos_predictionLine_LB.y, (int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, Color::RED, 2); // 左縦
+        DrawLine((int32_t)pos_predictionLine_RB.x, (int32_t)pos_predictionLine_RB.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // 右縦
+        DrawLine((int32_t)pos_predictionLine_LB.x, (int32_t)pos_predictionLine_LB.y, (int32_t)pos_predictionLine_RB.x, (int32_t)pos_predictionLine_RB.y, Color::RED, 2); // 下横
+        DrawLine((int32_t)pos_predictionLine_LT.x, (int32_t)pos_predictionLine_LT.y, (int32_t)pos_predictionLine_RT.x, (int32_t)pos_predictionLine_RT.y, Color::RED, 2); // 上横
+
     }
     DrawFormatString(1000, 120, Util::Color::GREEN, "rot4s: %f", rot4RotationSword_);
 
@@ -382,7 +394,7 @@ void Player::OnCollision(void)
         {
             // ノクバしま～す
             isKnockback_ = true;
-            
+
             // 無敵時間に入る
             frameCount_invincible_++;
 
