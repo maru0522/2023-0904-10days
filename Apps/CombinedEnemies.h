@@ -20,8 +20,8 @@ private:
 	uint32_t enemiesNum_ = 0;
 	//動くスピードの基
 	const float MOVE_SPEED_TMP_ = Enemy::kMoveSpeed_;
-	//全体の半径
-	float radius_ = 0.0f;
+	//全体の長さ
+	float length = 0.0f;
 	//プレイヤーまでの距離
 	float distance_ = 0;
 	const int32_t MOVE_TIMES_ = Enemy::kMoveTimes_; // 何回に分けて移動するか(瞬間移動に見えるのを避けるため）
@@ -92,13 +92,13 @@ public:
 	void SetCentorPos(const Vector2& centorPos) { centorPos_ = centorPos; }
 	const Vector2& GetDirection() { return direction_; }
 	void SetDirection(const Vector2& direction) { direction_ = direction.Normalize(); }
-	float GetRadius() { return radius_; }
-	void SetRadius(float radius) { 
-		radius_ = radius; 
+	float GetLength() { return length; }
+	void SetLength(float radius) {
+		length = radius;
 	}
 
-	void SetRadiusTmp() {
-		radiusTmp_ = radius_;
+	void SetLengthTmp() {
+		radiusTmp_ = length;
 	}
 	void SetCentorPosTmp() { centorPosTmp_ = centorPos_; }
 	void SetDirectionTmp() { directionTmp_ = direction_; }
@@ -106,7 +106,7 @@ public:
 	void SetIsSkewer(bool isSkewer) { isSkewer_ = isSkewer; }
 	void SetIsSkewer(const Vector2& mowDownVec) { mowDownVec_ = mowDownVec; }
 
-	float GetRadiusTmp() { return radiusTmp_; }
+	float GetLengthTmp() { return radiusTmp_; }
 	const Vector2& GetCentorPosTmp() { return centorPosTmp_; }
 	const Vector2& GetDirectionTmp() { return directionTmp_; }
 

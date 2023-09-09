@@ -200,7 +200,7 @@ void EnemyManager::MowDownTriggerEnemiesUpdate()
 		//正面にテレポート
 		mowDownedEnemies_->SetDirection(-player_->GetMoveVec());
 		mowDownedEnemies_->CalcCentorPos(player_->GetPos(), player_->GetMoveVec().Normalize(),
-			player_->kMowSupportCenterDist_ + mowDownedEnemies_->GetRadius() + player_->GetRad().x);
+			player_->kMowSupportCenterDist_ + mowDownedEnemies_->GetLength() + player_->GetRad().x);
 		mowDownedEnemies_->EnemiesPosUpdate();
 
 		//薙ぎ払う
@@ -462,13 +462,13 @@ void EnemyManager::AddEnemy(std::unique_ptr<Enemy> enemy)
 	combinedEnemiesArray_.push_back(std::move(cEs));
 }
 
-float EnemyManager::GetSkewerEnemiesRadius()
+float EnemyManager::GetSkewerEnemiesLength()
 {
 	for (auto& enemies : combinedEnemiesArray_)
 	{
 		if (enemies->GetIsSkewer())
 		{
-			return enemies->GetRadius();
+			return enemies->GetLength();
 		}
 	}
 

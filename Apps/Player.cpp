@@ -10,7 +10,7 @@
 
 using namespace Util;
 
-const float Player::kMowDist_{ 20.f };// “ã‚¬•¥‚¢‚Å‚«”ò‚Î‚·‹——£ ‚±‚Á‚¿•ÏX‚·‚é‚È‚çenemy.h‚ÌŠ„‡‚à˜M‚ç‚È‚¢‚ÆuŠÔˆÚ“®‚É‚È‚Á‚¿‚Ü‚¤
+const float Player::kMowDist_{ 15.f };// “ã‚¬•¥‚¢‚Å‚«”ò‚Î‚·‹——£ ‚±‚Á‚¿•ÏX‚·‚é‚È‚çenemy.h‚ÌŠ„‡‚à˜M‚ç‚È‚¢‚ÆuŠÔˆÚ“®‚É‚È‚Á‚¿‚Ü‚¤
 
 Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), mow_support_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
 {

@@ -106,7 +106,7 @@ void CombinedEnemies::Initialize(Player* player, const Vector2& direction)
 	player_ = player;
 
 	//
-	distance_ = (player_->GetPos() - player_->GetPos() + direction.Normalize() * radius_ * ((float)enemiesNum_ / 2.0f)).Length();
+	distance_ = (player_->GetPos() - player_->GetPos() + direction.Normalize() * length * ((float)enemiesNum_ / 2.0f)).Length();
 
 	//’†‰›ˆÊ’uŒvZ
 	CalcCentorPos(player_->GetPos(), direction.Normalize());
@@ -190,7 +190,7 @@ void CombinedEnemies::Skewer()
 void CombinedEnemies::SkewerUpdate()
 {
 	DirectionUpdate();
-	centorPos_ = player_->GetPos() + (player_->GetMoveVec() * radius_);
+	centorPos_ = player_->GetPos() + (player_->GetMoveVec() * length);
 
 	if (!player_->GetIsSkewer() && isSkewer_)
 	{
@@ -235,7 +235,7 @@ void CombinedEnemies::EnemiesPosUpdate()
 	//‘Î‰‚µ‚½ˆÊ’u‚É”z’u
 	for (auto& enemy : enemies_)
 	{
-		enemy->SetPos(centorPos_ + direction_ * (centorIndex - (float)count) * (radius_ / (float)enemiesNum_));
+		enemy->SetPos(centorPos_ + direction_ * (centorIndex - (float)count) * (length / (float)enemiesNum_));
 
 		count++;
 	}
@@ -340,9 +340,9 @@ void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 	enemy->SetIsDocking(false);
 	enemy->SetIsMowDownTrigger(false);
 	//“G‚Ì’·‚³‚ğ‰ÁZ‚µ‚Ä‚¢‚­
-	float addRadius = enemy->GetRad().Length() * 2.0f;
-	radius_ = radiusTmp_ + addRadius;
-	radiusTmp_ = radius_;
+	float addRadius = Enemy::KRadius_ * 2.0f;
+	length = radiusTmp_ + addRadius;
+	radiusTmp_ = length;
 	//“o˜^
 	enemies_.push_back(std::move(enemy));
 	//“G‚Ì”‚ğ‰ÁZ
