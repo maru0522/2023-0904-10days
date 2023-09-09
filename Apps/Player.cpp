@@ -12,6 +12,7 @@
 using namespace Util;
 
 const float Player::kMowDist_{ 15.f };// 薙ぎ払いで吹き飛ばす距離 こっち変更するならenemy.hの割合も弄らないと瞬間移動になっちまう
+bool Player::isSkewerHitStop4SceneM_{};
 
 Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), mow_support_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
 {
@@ -269,6 +270,7 @@ void Player::MoveUpdate(void)
 
             // スローモーション開始
             SceneManager::GetInstance()->StartSlowMotion();
+            isSkewerHitStop4SceneM_ = true;
         }
         else
         {
@@ -285,8 +287,20 @@ void Player::MoveUpdate(void)
             }
             // 離した瞬間に初期化
             frameCount_4Skewer_ = 0;
+            isSkewerHitStop4SceneM_ = false;
 
             // スローモーション解除
+            SceneManager::GetInstance()->EndSlowMotion();
+        }
+    }
+
+    // 串刺し終了後のヒットストップ
+    if (frameCount_SkewerEndHitStop_)
+    {
+        // フレーム加算
+        frameCount_SkewerEndHitStop_ += 5;
+        if (frameCount_SkewerEndHitStop_ >= kMaxFrameSkewerEndHitStop_) // フレームカウントが規定以上なら終了
+        {
             SceneManager::GetInstance()->EndSlowMotion();
         }
     }
@@ -303,6 +317,17 @@ void Player::MoveUpdate(void)
 
 void Player::MowAttackUpdate(void)
 {
+    // 串刺し終了後のヒットストップ
+    if (frameCount_SkewerEndHitStop_)
+    {
+        // フレーム加算
+        frameCount_SkewerEndHitStop_ += 5;
+        if (frameCount_SkewerEndHitStop_ >= kMaxFrameSkewerEndHitStop_) // フレームカウントが規定以上なら終了
+        {
+            SceneManager::GetInstance()->EndSlowMotion();
+        }
+    }
+
     //プレイヤーの前方半円分にいる敵を吹き飛ばす仕様
     // 実現のため、プレイヤーの前方に長方形の当たり判定を出して、かつ円状の当たり判定にも引っかかってるやつを吹っ飛ばす
 
@@ -348,6 +373,12 @@ void Player::SkewerAttackUpdate(void)
         state_ = State::MOVE;
         // 判定がその場に残り続けちゃうから、絶対に引っかからない座標に転送するごり押し。 pos(-10万,-10万)
         skewer_.SetPos({ -100000.f, -100000.f });
+        // 多分、ほぼ確実に通ると思うんだけど、ここカウントしないとスローモーション1フレーム（実質5フレーム）カウントされないままになってしまうので
+        if (frameCount_SkewerEndHitStop_)
+        {
+            // フレーム加算
+            frameCount_SkewerEndHitStop_ += 5;
+        }
         // 関数終了
         return;
     }
@@ -368,6 +399,8 @@ void Player::SkewerAttackUpdate(void)
     else // 串刺し1フレーム後の座標 (+ 半径)が、ステージ外なら串刺し状態終了
     {
         skewer_.End(); // isSkewerをfalseにする。
+        SceneManager::GetInstance()->StartSlowMotion();
+        frameCount_SkewerEndHitStop_ += 5;
     }
 
     const float eRange = EnemyManager::GetInstance().GetSkewerEnemiesLength();

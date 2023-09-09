@@ -123,7 +123,8 @@ void SceneManager::Draw(void)
     
     currentScene_->Draw();
     transition_.Draw();
-    if (frameCount_slowMotion_)
+    // スローモーション用のフレームカウンタの値が0以外 && プレイヤーのSceneM用のフラグがtrueなら
+    if (frameCount_slowMotion_ && Player::isSkewerHitStop4SceneM_)
     {
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
         DrawBox(0, 0, 1280, 720, Util::Color::BLACK, true);

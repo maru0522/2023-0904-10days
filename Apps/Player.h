@@ -30,6 +30,8 @@ public:
     const float kSkewerAttackCenterDist_{ 35.f }; // 串刺し攻撃の範囲の中心がプレイヤーの中心からどれだけ離れてるか ※仕様上、目標+5frameにする必要がある。
     const int32_t kSlowMotionFrameUntilStart_{ 0 }; // スローモーションが始まるまでのフレーム
     const float kPngScale_{ 0.07f }; // 画像の拡大
+    const int32_t kMaxFrameSkewerEndHitStop_{ 20 }; // 串刺し終了後のヒットストップが何フレームかかり続けるか
+    static bool isSkewerHitStop4SceneM_;
 
     // 定義
     enum class State
@@ -57,6 +59,7 @@ private:
 
     int32_t frameCount_invincible_; // 無敵時間カウントのためのフレームカウンタ
     int32_t frameCount_4Skewer_; // 串刺しの溜めのフレームカウンタ
+    int32_t frameCount_SkewerEndHitStop_; // 串刺し終了後のヒットストップの為のフレームカウンタ
     Vector2 vec_move_; // プレイヤーの向き
     State state_; // 現在の状態fsm
 
