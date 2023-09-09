@@ -94,7 +94,7 @@ public:
 
 public:
 	//“Ëi‚³‚ê‚Ä‚é“G‚Ì‰ò‚Ì”¼Œa
-	float GetSkewerEnemiesRadius();
+	float GetSkewerEnemiesLength();
 };
 
 

@@ -13,7 +13,7 @@ public:
 	//static const float kMowRatio_; // 吹っ飛ばされたとき距離に対して、どのくらいの割合で移動していくか
 	static const float kPushBackDist_; // 押し戻す距離
 	static const float kPngScale_; // 画像の拡大率
-	static const uint32_t kMowFrame_ = 15; // 何フレームかけて吹き飛ばされるか
+	static const uint32_t kMowFrame_ = 20; // 何フレームかけて吹き飛ばされるか
 	static const float KRadius_; // 半径
 
 	// 関数

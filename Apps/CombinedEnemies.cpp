@@ -30,6 +30,19 @@ bool CombinedEnemies::GetIsMowDownTriggerAnyEnemy()
 	return false;
 }
 
+bool CombinedEnemies::GetIsMowDownTriggerEnd()
+{
+	for (auto& enemy : enemies_)
+	{
+		if (enemy->GetIsMowDownTrigger())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 bool CombinedEnemies::GetIsDockingAndSkewer()
 {
 	if (GetIsDockingAnyEnemy() && isSkewer_)
@@ -46,8 +59,6 @@ void CombinedEnemies::AllEnemiesDockingEnd()
 	{
 		enemy->SetIsDocking(false);
 	}
-
-	ChangeState("AFTER_COMBINED");
 }
 
 void CombinedEnemies::AllEnemiesEndMowDown()
@@ -55,6 +66,7 @@ void CombinedEnemies::AllEnemiesEndMowDown()
 	for (auto& enemy : enemies_)
 	{
 		enemy->SetIsMowDown(false);
+		enemy->SetIsMowDownTrigger(false);
 	}
 }
 
@@ -94,7 +106,7 @@ void CombinedEnemies::Initialize(Player* player, const Vector2& direction)
 	player_ = player;
 
 	//
-	distance_ = (player_->GetPos() - player_->GetPos() + direction.Normalize() * radius_ * ((float)enemiesNum_ / 2.0f)).Length();
+	distance_ = (player_->GetPos() - player_->GetPos() + direction.Normalize() * length * ((float)enemiesNum_ / 2.0f)).Length();
 
 	//’†‰›ˆÊ’uŒvŽZ
 	CalcCentorPos(player_->GetPos(), direction.Normalize());
@@ -178,7 +190,7 @@ void CombinedEnemies::Skewer()
 void CombinedEnemies::SkewerUpdate()
 {
 	DirectionUpdate();
-	centorPos_ = player_->GetPos() + (player_->GetMoveVec() * radius_);
+	centorPos_ = player_->GetPos() + (player_->GetMoveVec() * length);
 
 	if (!player_->GetIsSkewer() && isSkewer_)
 	{
@@ -223,7 +235,7 @@ void CombinedEnemies::EnemiesPosUpdate()
 	//‘Î‰ž‚µ‚½ˆÊ’u‚É”z’u
 	for (auto& enemy : enemies_)
 	{
-		enemy->SetPos(centorPos_ + direction_ * (centorIndex - (float)count) * (radius_ / (float)enemiesNum_));
+		enemy->SetPos(centorPos_ + direction_ * (centorIndex - (float)count) * (length / (float)enemiesNum_));
 
 		count++;
 	}
@@ -276,6 +288,19 @@ void CombinedEnemies::SetScaleSinRot(float minS, float maxS, float rate, int32_t
 	}
 }
 
+void CombinedEnemies::SetScale(const Vector2& scale)
+{
+	for (auto& enemy : enemies_)
+	{
+		Vector2 scaleL = scale;
+
+		scaleL += {Math::Function::Random<float>((double)-scale.x * 0.1f, (double)scale.x * 0.1f),
+			Math::Function::Random<float>((double)-scale.y * 0.1f, (double)scale.y * 0.1f)};
+
+		enemy->SetScale(scaleL);
+	}
+}
+
 //------------------------------------------------------------------------------
 void CombinedEnemies::Update()
 {
@@ -315,21 +340,18 @@ void CombinedEnemies::AddEnemy(std::unique_ptr<Enemy> enemy)
 	enemy->SetIsDocking(false);
 	enemy->SetIsMowDownTrigger(false);
 	//“G‚Ì’·‚³‚ð‰ÁŽZ‚µ‚Ä‚¢‚­
-	float addRadius = enemy->GetRad().Length() * 2.0f;
-	radius_ = radiusTmp_ + addRadius;
-	radiusTmp_ = radius_;
+	float addRadius = Enemy::KRadius_ * 2.0f;
+	length = radiusTmp_ + addRadius;
+	radiusTmp_ = length;
 	//“o˜^
 	enemies_.push_back(std::move(enemy));
 	//“G‚Ì”‚ð‰ÁŽZ
 	enemiesNum_++;
+	//‡‘Ìƒtƒ‰ƒOƒIƒt
+	AllEnemiesDockingEnd();
 
-	//“ã‚¬•¥‚í‚ê‚½uŠÔ‚É‡‘Ì‚µ‚½‚È‚ç
-	if (enemies_[enemiesNum_ - 1]->GetIsMowDownTrigger())
-	{
-		MowDown();
-	}
 	//‚Ç‚¿‚ç‚©‚ª“ã‚¬•¥‚í‚ê‚Ä‚½‚ç
-	else if (GetIsMowDown())
+	/*else*/ if (GetIsMowDown())
 	{
 		MowDownEnd();
 		ChangeState("AFTER_COMBINED");

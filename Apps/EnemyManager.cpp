@@ -195,21 +195,36 @@ void EnemyManager::GenerateUpdate()
 
 void EnemyManager::MowDownTriggerEnemiesUpdate()
 {
-	//プレイヤーの攻撃が終わったら
-	if (!player_->GetFrameCountAttack() && mowDownedEnemies_)
+	if (mowDownedEnemies_)
 	{
+		//正面にテレポート
+		mowDownedEnemies_->SetDirection(-player_->GetMoveVec());
+		mowDownedEnemies_->CalcCentorPos(player_->GetPos(), player_->GetMoveVec().Normalize(),
+			player_->kMowSupportCenterDist_ + mowDownedEnemies_->GetLength() + player_->GetRad().x);
+		mowDownedEnemies_->EnemiesPosUpdate();
+
+		//薙ぎ払う
 		mowDownedEnemies_->MowDown();
 		//配列に登録
 		combinedEnemiesArray_.push_back(std::move(mowDownedEnemies_));
 		mowDownedEnemies_ = nullptr;
 	}
-	else if (mowDownedEnemies_)
+	
+}
+
+void EnemyManager::MowDownTriggerEnd()
+{
+	for (auto& enemy : enemies_)
 	{
-		mowDownedEnemies_->ChangeState("WAIT");
-		mowDownedEnemies_->SetDirection(-player_->GetMoveVec());
-		mowDownedEnemies_->CalcCentorPos(player_->GetPos(), player_->GetMoveVec().Normalize(),
-			player_->kMowSupportCenterDist_ + mowDownedEnemies_->GetRadius() + player_->GetRad().x);
-		mowDownedEnemies_->EnemiesPosUpdate();
+		enemy->SetIsMowDownTrigger(false);
+	}
+	for (auto& enemies : combinedEnemiesArray_)
+	{
+		enemies->MowDownTriggerEnd();
+	}
+	if (mowDownedEnemies_)
+	{
+		mowDownedEnemies_->MowDownEnd();
 	}
 }
 
@@ -404,7 +419,7 @@ void EnemyManager::Update()
 		}
 	}
 
-	//薙ぎ払われてる最中の更新
+	//薙ぎ払われてる最中の保存しておく更新
 	SaveMowDownEnemies();
 	//くっつく敵がいるかの更新処理
 	CombinedUpdate();
@@ -414,6 +429,9 @@ void EnemyManager::Update()
 	GenerateUpdate();
 	//薙ぎ払われてる最中の更新2
 	MowDownTriggerEnemiesUpdate();
+
+	//薙ぎ払われた瞬間を終わらせる
+	MowDownTriggerEnd();
 }
 
 void EnemyManager::Draw()
@@ -444,13 +462,13 @@ void EnemyManager::AddEnemy(std::unique_ptr<Enemy> enemy)
 	combinedEnemiesArray_.push_back(std::move(cEs));
 }
 
-float EnemyManager::GetSkewerEnemiesRadius()
+float EnemyManager::GetSkewerEnemiesLength()
 {
 	for (auto& enemies : combinedEnemiesArray_)
 	{
 		if (enemies->GetIsSkewer())
 		{
-			return enemies->GetRadius();
+			return enemies->GetLength();
 		}
 	}
 
