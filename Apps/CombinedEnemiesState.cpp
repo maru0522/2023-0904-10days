@@ -56,7 +56,7 @@ void ICombinedEnemiesState::Initialize()
 
 void ICombinedEnemiesState::TimerUpdate(const std::function<void(float)>& f, const std::function<void()>& endF)
 {
-	float t = min(timer_ / timerMax_, 1.0f);
+	float t = GetTimeRate();
 
 	if (f)
 	{
@@ -80,6 +80,11 @@ void ICombinedEnemiesState::TimerUpdate(const std::function<void(float)>& f, con
 void ICombinedEnemiesState::ShakeUpdate(float minS, float maxS, float rate, float t)
 {
 	enemies_->SetScaleSinRot(minS + lerp(0, 1.0f - minS, t), maxS + lerp(0, 1.0f - maxS, t), rate, timer_);
+}
+
+float ICombinedEnemiesState::GetTimeRate()
+{
+	return min(timer_ / timerMax_, 1.0f);
 }
 
 //-------------------------------------------------------------------------------------
@@ -127,6 +132,9 @@ void CombinedEnemiesStateSkewer::Initialize()
 
 void CombinedEnemiesStateSkewer::Update()
 {
+	timer_++;
+
+	enemies_->SetScaleSinRot(0.8f, 1.3f, 0.2f, timer_);
 	enemies_->SkewerUpdate();
 }
 

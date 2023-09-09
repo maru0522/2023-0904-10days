@@ -86,4 +86,5 @@ public:
     const Vector2& GetMoveVec() { return vec_move_; }
     bool GetIsSkewer(void) { return skewer_.GetIsSkewer(); }
     int32_t GetFrameCountAttack(void) { return mow_.GetFrameCountAttack(); }
+    const Vector2& GetPos4SwordBottom(void) { return pos4SwordBottom_; }
 };

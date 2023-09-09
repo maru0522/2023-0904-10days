@@ -190,7 +190,9 @@ void CombinedEnemies::Skewer()
 void CombinedEnemies::SkewerUpdate()
 {
 	DirectionUpdate();
-	centorPos_ = player_->GetPos() + (player_->GetMoveVec() * length);
+	//‹ø‚Ì‰º‚Ì•”•ª‚ª’[‚Ì“G‚É‚È‚é‚æ‚¤‚É
+	float enemyRadius = length / (float)enemiesNum_ / 2.0f;
+	centorPos_ = player_->GetPos4SwordBottom() + (player_->GetMoveVec() * (length / 2.0f + enemyRadius));
 
 	if (!player_->GetIsSkewer() && isSkewer_)
 	{

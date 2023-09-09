@@ -126,12 +126,12 @@ void Player::Draw(void)
     if (state_ == State::ATTACK_SKEWER) // ã¯éhÇµçUåÇíÜÅAã¯éhÇµÇÃï`âÊä÷êîÇåƒÇ—èoÇ∑
     {
         Vector2 pos4SwordUp = pos4Sword_ + vec_move_ * (10 + EnemyManager::GetInstance().GetSkewerEnemiesLength());
-        Vector2 pos4SwordBottom = pos4Sword_ - vec_move_ * 12;
+        pos4SwordBottom_ = pos4Sword_ - vec_move_ * 12;
 
         // ã¯
         DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rotation_, png_sword_, true);
         DrawRotaGraph((int32_t)pos4SwordUp.x, (int32_t)pos4SwordUp.y, kPngScale_, rotation_, png_swordUp_, true);
-        DrawRotaGraph((int32_t)pos4SwordBottom.x, (int32_t)pos4SwordBottom.y, kPngScale_, rotation_, png_swordBottom_, true);
+        DrawRotaGraph((int32_t)pos4SwordBottom_.x, (int32_t)pos4SwordBottom_.y, kPngScale_, rotation_, png_swordBottom_, true);
         skewer_.Draw();
     }
 
