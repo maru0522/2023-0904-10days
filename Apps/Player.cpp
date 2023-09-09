@@ -302,6 +302,7 @@ void Player::MoveUpdate(void)
         if (frameCount_SkewerEndHitStop_ >= kMaxFrameSkewerEndHitStop_) // フレームカウントが規定以上なら終了
         {
             SceneManager::GetInstance()->EndSlowMotion();
+            frameCount_SkewerEndHitStop_ = 0;
         }
     }
 
