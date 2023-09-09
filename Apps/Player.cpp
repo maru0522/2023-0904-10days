@@ -7,6 +7,7 @@
 #include "Vector3.h"
 #include "Enemy.h"
 #include "SceneManager.h"
+#include "EnemyManager.h"
 
 using namespace Util;
 
@@ -95,26 +96,6 @@ void Player::Draw(void)
     // 現在のプレイヤーの状態（数字のみ）
     DrawFormatString(0, 140, 0xffffff, "state ;%d", static_cast<int32_t>(state_));
 
-    // 無敵時間中なら
-    if (frameCount_invincible_ != 0)
-    {
-        //DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::YELLOW, true, 1);
-
-        // playerの描画
-        SetDrawBright(255, 255, 80); // 変色量カス
-        DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true);
-        SetDrawBright(255, 255, 255);
-        DrawFormatString(1000, 20, Util::Color::YELLOW, "無敵状態");
-        DrawFormatString(1000, 40, Util::Color::YELLOW, "frame: %d", kMaxInvincibleFrame_ - frameCount_invincible_);
-    }
-    else // 無敵時間じゃないなら
-    {
-        DrawFormatString(1000, 20, Util::Color::WHITE, "通常状態");
-        //DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
-
-        // playerの描画
-        DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true);
-    }
 
     // skewerの為にボタン長押ししてるなら
     if (frameCount_4Skewer_ > 0)
@@ -144,10 +125,40 @@ void Player::Draw(void)
 
     if (state_ == State::ATTACK_SKEWER) // 串刺し攻撃中、串刺しの描画関数を呼び出す
     {
+        Vector2 pos4SwordUp = pos4Sword_ + vec_move_ * (10 + EnemyManager::GetInstance().GetSkewerEnemiesRadius());
+        Vector2 pos4SwordBottom = pos4Sword_ - vec_move_ * 12;
+
         // 串
         DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rotation_, png_sword_, true);
+        DrawRotaGraph((int32_t)pos4SwordUp.x, (int32_t)pos4SwordUp.y, kPngScale_, rotation_, png_swordUp_, true);
+        DrawRotaGraph((int32_t)pos4SwordBottom.x, (int32_t)pos4SwordBottom.y, kPngScale_, rotation_, png_swordBottom_, true);
         skewer_.Draw();
     }
+
+    // 無敵時間中なら
+    if (frameCount_invincible_ != 0)
+    {
+        //DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::YELLOW, true, 1);
+
+        // playerの描画
+        SetDrawBright(255, 255, 80); // 変色量カス
+        DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true);
+        SetDrawBright(255, 255, 255);
+        DrawFormatString(1000, 20, Util::Color::YELLOW, "無敵状態");
+        DrawFormatString(1000, 40, Util::Color::YELLOW, "frame: %d", kMaxInvincibleFrame_ - frameCount_invincible_);
+    }
+    else // 無敵時間じゃないなら
+    {
+        DrawFormatString(1000, 20, Util::Color::WHITE, "通常状態");
+        //DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Color::WHITE, true, 1);
+
+        // playerの描画
+        DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true);
+    }
+
+    DrawRotaGraph(500,518, kPngScale_, 0, png_swordBottom_, true);
+    DrawRotaGraph(500,500, kPngScale_, 0, png_swordUp_, true);
+    DrawRotaGraph(530,508, kPngScale_, 0, png_sword_, true);
 
     // 串刺し攻撃時の判定座標
     DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)", skewer_.GetPos().x, skewer_.GetPos().y);
@@ -307,11 +318,14 @@ void Player::SkewerAttackUpdate(void)
         skewer_.End(); // isSkewerをfalseにする。
     }
 
-    // 串刺し1フレーム後の座標 + (正規化されたプレイヤーの向き * 規定距離)
-    skewer_.SetPos(skewered_pos + vec_move_ * kSkewerAttackCenterDist_);
+    const float eRange = EnemyManager::GetInstance().GetSkewerEnemiesRadius();
+
+    // 串刺し1フレーム後の座標 + (正規化されたプレイヤーの向き * (規定距離 + 串刺してる敵の"直径"))
+    skewer_.SetPos(skewered_pos + vec_move_ * (kSkewerAttackCenterDist_ + eRange));
     skewer_.Update();
     // 串刺し絵の座標 = プレイヤーの座標 + 正規化されたプレイヤーの向き * 規定距離)
     pos4Sword_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+    pos4SwordBottom_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
 }
 
 void Player::OnCollision(void)

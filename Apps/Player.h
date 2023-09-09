@@ -75,6 +75,8 @@ private:
     int32_t png_swordUp_ = LoadGraph("Resources/texture/sword_up.png");
     int32_t png_swordBottom_ = LoadGraph("Resources/texture/sword_bottom.png");
     Vector2 pos4Sword_; // ‹ø‚ÌŠG‚Ì‚½‚ß‚ÌÀ•W
+    Vector2 pos4SwordUp_; // ‹ø‚ÌŠG‚Ì‚½‚ß‚ÌÀ•W
+    Vector2 pos4SwordBottom_; // ‹ø‚ÌŠG‚Ì‚½‚ß‚ÌÀ•W
     float rot4Sword2_; // ‹ø‚ÌŠG©‘Ì‚ğ‰ñ“]‚³‚¹‚é‚½‚ß‚ÌŠp“x
     float rot4RotationSword_; // ‹ø‚ğ‰ñ“]ˆÚ“®‚³‚¹‚éˆ×‚ÌŠp“x
 

@@ -144,7 +144,7 @@ void Enemy::Draw(void)
 			DrawRotaGraph3((int32_t)position_.x, (int32_t)position_.y, 250, 250,
 				scale_.x * kPngScale_, scale_.y * kPngScale_, rotation_, png_enemy_, true);
 			SetDrawBright(255, 255, 255);
-			//DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::WHITE, false, 1);
+			DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::WHITE, false, 1);
 		}
 
 		// êLÇ—èÛë‘Ç»ÇÁ
@@ -155,7 +155,7 @@ void Enemy::Draw(void)
 			DrawRotaGraph3((int32_t)position_.x, (int32_t)position_.y, 250, 250,
 				scale_.x * kPngScale_, scale_.y * kPngScale_, rotation_, png_enemy_, true);
 			SetDrawBright(255, 255, 255);
-			//DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::GREEN, false, 1);
+			DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::GREEN, false, 1);
 		}
 	}
 }
