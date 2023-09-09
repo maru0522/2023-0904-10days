@@ -125,7 +125,7 @@ void Player::Draw(void)
 
     if (state_ == State::ATTACK_SKEWER) // ‹øh‚µUŒ‚’†A‹øh‚µ‚Ì•`‰æŠÖ”‚ğŒÄ‚Ño‚·
     {
-        Vector2 pos4SwordUp = pos4Sword_ + vec_move_ * (10 + EnemyManager::GetInstance().GetSkewerEnemiesRadius());
+        Vector2 pos4SwordUp = pos4Sword_ + vec_move_ * (10 + EnemyManager::GetInstance().GetSkewerEnemiesLength());
         Vector2 pos4SwordBottom = pos4Sword_ - vec_move_ * 12;
 
         // ‹ø
@@ -318,7 +318,7 @@ void Player::SkewerAttackUpdate(void)
         skewer_.End(); // isSkewer‚ğfalse‚É‚·‚éB
     }
 
-    const float eRange = EnemyManager::GetInstance().GetSkewerEnemiesRadius();
+    const float eRange = EnemyManager::GetInstance().GetSkewerEnemiesLength();
 
     // ‹øh‚µ1ƒtƒŒ[ƒ€Œã‚ÌÀ•W + (³‹K‰»‚³‚ê‚½ƒvƒŒƒCƒ„[‚ÌŒü‚« * (‹K’è‹——£ + ‹øh‚µ‚Ä‚é“G‚Ì"’¼Œa"))
     skewer_.SetPos(skewered_pos + vec_move_ * (kSkewerAttackCenterDist_ + eRange));
