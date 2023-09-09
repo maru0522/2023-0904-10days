@@ -101,6 +101,9 @@ void Player::Draw(void)
     if (frameCount_4Skewer_ > 0)
     {
         //矢印描画
+        Vector2 pos4PredictionLine = position_ + vec_move_ * 1000;
+
+        DrawLine((int32_t)position_.x, (int32_t)position_.y, (int32_t)pos4PredictionLine.x, (int32_t)pos4PredictionLine.y, Color::RED, 2);
         DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_ * 3.0f, rotation_, png_arrow_, true);
 
         DrawFormatString(1000, 60, Util::Color::GREEN, "溜め状態");
@@ -156,10 +159,6 @@ void Player::Draw(void)
         // playerの描画
         DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true);
     }
-
-    DrawRotaGraph(500,518, kPngScale_, 0, png_swordBottom_, true);
-    DrawRotaGraph(500,500, kPngScale_, 0, png_swordUp_, true);
-    DrawRotaGraph(530,508, kPngScale_, 0, png_sword_, true);
 
     // 串刺し攻撃時の判定座標
     DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)", skewer_.GetPos().x, skewer_.GetPos().y);
@@ -234,6 +233,9 @@ void Player::MoveUpdate(void)
                 skewer_.Attack();
                 state_ = State::ATTACK_SKEWER;
                 frameCount_4Skewer_ = 0;
+                pos4Sword_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+                pos4SwordUp_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+                pos4SwordBottom_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
             }
             // 離した瞬間に初期化
             frameCount_4Skewer_ = 0;
@@ -304,12 +306,15 @@ void Player::SkewerAttackUpdate(void)
         return;
     }
 
+    // 串刺しの上半分の1フレーム後の座標 = 1フレーム前の上半分の座標 + (正規化されたプレイヤーの向き * 速度)
+    Vector2 skewerd_swordUp_pos = pos4SwordUp_ /*+ vec_move_ * skewer_.GetKMoveSpeed()*/;
+
     // 串刺し1フレーム後の座標 = 座標 + (正規化されたプレイヤーの向き * 速度)
     Vector2 skewered_pos = position_ + vec_move_ * skewer_.GetKMoveSpeed();
 
-    // 串刺し1フレーム後の座標 (+ 半径)が、ステージの内側なら座標反映
-    if (skewered_pos.x - radius_.x > stagePtr_->GetLT().x && skewered_pos.y - radius_.x > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので
-        skewered_pos.x + radius_.x < stagePtr_->GetRB().x && skewered_pos.y + radius_.x < stagePtr_->GetRB().y)   // yが使われていないのは意図的
+    // 串刺しの上半分の1フレーム後の座標 (+ 半径)が、ステージの内側ならプレイヤーの座標を更新
+    if (skewerd_swordUp_pos.x - skewer_.GetRad().x > stagePtr_->GetLT().x && skewerd_swordUp_pos.y - skewer_.GetRad().y > stagePtr_->GetLT().y && // 現在、半径は円としてxしか使っていないので、yが使われていないのは意図的
+        skewerd_swordUp_pos.x + skewer_.GetRad().x < stagePtr_->GetRB().x && skewerd_swordUp_pos.y + skewer_.GetRad().y < stagePtr_->GetRB().y)   // [2023/09/10]仕様が変わり、串の判定位置で止まるか判断するので、矩形の判定をもつ串は、yも使う
     {
         // 反映
         position_ = skewered_pos;
