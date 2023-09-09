@@ -8,7 +8,7 @@ class SceneManager final
 {
 public:
     // 定数
-    const int32_t kSlowFrameRatio_{ 5 }; // 何Frameに一回更新処理を入れるか（スローモーションの割合）
+    const int32_t kSlowFrameRatio_{ 5 }; // 何Frameに一回更新処理を入れるか（スローモーションの割合）の初期値
 
     // 関数
     static SceneManager* GetInstance(void);
@@ -19,11 +19,13 @@ public:
     void Update(void);
     void Draw(void);
 
-    void StartSlowMotion(void);
+    void StartSlowMotion(int32_t slowFrameRatio);
     void EndSlowMotion(void);
 
 private:
     // 変数
+    int32_t slowFrameRatio_{ kSlowFrameRatio_ }; // 何Frameに一回更新処理を入れるか（スローモーションの割合）の初期値
+
     int32_t waitFrame_{};
     int32_t frameCount_slowMotion_{};
     int32_t frameCount_debug_{};

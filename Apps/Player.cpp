@@ -12,7 +12,7 @@
 using namespace Util;
 
 const float Player::kMowDist_{ 15.f };// 薙ぎ払いで吹き飛ばす距離 こっち変更するならenemy.hの割合も弄らないと瞬間移動になっちまう
-bool Player::isSkewerHitStop4SceneM_{};
+bool Player::isSkewerScreenBlack4SceneM_{};
 
 Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), mow_support_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
 {
@@ -150,7 +150,7 @@ void Player::Draw(void)
         if (vec_move_.IsNonZero() == false)
         {
             // 矢印の座標を決め打ちで決める。（今は初期状態だと右向いてるので、右方向にきめうち）
-            pos_arrow = position_ + Vector2(1,0) * kMowArrowDist2Self_;
+            pos_arrow = position_ + Vector2(1, 0) * kMowArrowDist2Self_;
             SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
             DrawRotaGraph3((int32_t)pos_arrow.x, (int32_t)pos_arrow.y, 250, 250, kMowArrowXRate_, kMowArrowYRate_, rotation_, png_arrow_, true);
             SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -175,9 +175,14 @@ void Player::Draw(void)
 
     if (state_ == State::ATTACK_SKEWER) // 串刺し攻撃中、串刺しの描画関数を呼び出す
     {
-        pos4Sword_ += vec_move_ * 5;
-        pos4SwordUp_ += vec_move_ * (6 + EnemyManager::GetInstance().GetSkewerEnemiesLength());
-        pos4SwordBottom_ -= vec_move_ * 12;
+        // ヒットストップ掛けてない時なら、座標加算して
+        if (frameCount_SkewerEndHitStop_ == 0)
+        {
+            pos4Sword_ += vec_move_ * 5;
+            pos4SwordUp_ += vec_move_ * (6 + EnemyManager::GetInstance().GetSkewerEnemiesLength());
+            pos4SwordBottom_ -= vec_move_ * 12;
+
+        }
 
         // 串
         DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rotation_, png_sword_, true);
@@ -269,8 +274,8 @@ void Player::MoveUpdate(void)
             // ↑仕様上押してからスローモーション開始になるので、最初のフレーム分カウントが +n されてしまうのを簡単に回避する方法思いつきません。
 
             // スローモーション開始
-            SceneManager::GetInstance()->StartSlowMotion();
-            isSkewerHitStop4SceneM_ = true;
+            SceneManager::GetInstance()->StartSlowMotion(5);
+            isSkewerScreenBlack4SceneM_ = true;
         }
         else
         {
@@ -287,24 +292,20 @@ void Player::MoveUpdate(void)
             }
             // 離した瞬間に初期化
             frameCount_4Skewer_ = 0;
-            isSkewerHitStop4SceneM_ = false;
+            isSkewerScreenBlack4SceneM_ = false;
 
             // スローモーション解除
             SceneManager::GetInstance()->EndSlowMotion();
         }
     }
 
-    // 串刺し終了後のヒットストップ
-    if (frameCount_SkewerEndHitStop_)
-    {
-        // フレーム加算
-        frameCount_SkewerEndHitStop_ += 5;
-        if (frameCount_SkewerEndHitStop_ >= kMaxFrameSkewerEndHitStop_) // フレームカウントが規定以上なら終了
-        {
-            SceneManager::GetInstance()->EndSlowMotion();
-            frameCount_SkewerEndHitStop_ = 0;
-        }
-    }
+    //// 串刺し終了後のヒットストップ
+    //if (frameCount_SkewerEndHitStop_)
+    //{
+    //    // フレーム加算
+    //    SceneManager::GetInstance()->EndSlowMotion();
+    //    frameCount_SkewerEndHitStop_ = 0;
+    //}
 
 #ifdef _DEBUG
     // key-SPACEでAttack_MOW状態に遷移
@@ -318,16 +319,11 @@ void Player::MoveUpdate(void)
 
 void Player::MowAttackUpdate(void)
 {
-    // 串刺し終了後のヒットストップ
-    if (frameCount_SkewerEndHitStop_)
-    {
-        // フレーム加算
-        frameCount_SkewerEndHitStop_ += 5;
-        if (frameCount_SkewerEndHitStop_ >= kMaxFrameSkewerEndHitStop_) // フレームカウントが規定以上なら終了
-        {
-            SceneManager::GetInstance()->EndSlowMotion();
-        }
-    }
+    //// 串刺し終了後のヒットストップ
+    //if (frameCount_SkewerEndHitStop_)
+    //{
+    //    SceneManager::GetInstance()->EndSlowMotion();
+    //}
 
     //プレイヤーの前方半円分にいる敵を吹き飛ばす仕様
     // 実現のため、プレイヤーの前方に長方形の当たり判定を出して、かつ円状の当たり判定にも引っかかってるやつを吹っ飛ばす
@@ -374,11 +370,10 @@ void Player::SkewerAttackUpdate(void)
         state_ = State::MOVE;
         // 判定がその場に残り続けちゃうから、絶対に引っかからない座標に転送するごり押し。 pos(-10万,-10万)
         skewer_.SetPos({ -100000.f, -100000.f });
-        // 多分、ほぼ確実に通ると思うんだけど、ここカウントしないとスローモーション1フレーム（実質5フレーム）カウントされないままになってしまうので
+        // 多分、ほぼ確実に通ると思うから規定フレーム後(ヒットストップ後）に通ると思うんで、スローモーション終了させてヒットストップも終了
         if (frameCount_SkewerEndHitStop_)
         {
-            // フレーム加算
-            frameCount_SkewerEndHitStop_ += 5;
+            SceneManager::GetInstance()->EndSlowMotion();
         }
         // 関数終了
         return;
@@ -400,8 +395,8 @@ void Player::SkewerAttackUpdate(void)
     else // 串刺し1フレーム後の座標 (+ 半径)が、ステージ外なら串刺し状態終了
     {
         skewer_.End(); // isSkewerをfalseにする。
-        SceneManager::GetInstance()->StartSlowMotion();
-        frameCount_SkewerEndHitStop_ += 5;
+        SceneManager::GetInstance()->StartSlowMotion(kMaxFrameSkewerEndHitStop_);
+        frameCount_SkewerEndHitStop_++;
     }
 
     const float eRange = EnemyManager::GetInstance().GetSkewerEnemiesLength();

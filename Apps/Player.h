@@ -31,7 +31,7 @@ public:
     const int32_t kSlowMotionFrameUntilStart_{ 0 }; // スローモーションが始まるまでのフレーム
     const float kPngScale_{ 0.07f }; // 画像の拡大
     const int32_t kMaxFrameSkewerEndHitStop_{ 20 }; // 串刺し終了後のヒットストップが何フレームかかり続けるか
-    static bool isSkewerHitStop4SceneM_;
+    static bool isSkewerScreenBlack4SceneM_;
 
     // 定義
     enum class State

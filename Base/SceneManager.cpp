@@ -80,7 +80,7 @@ void SceneManager::Update(void)
     else // スローモーションあり
     {
         // 規定値で割ったときの余りが0の時のみ、各種Update()を回す。
-        if (frameCount_slowMotion_ % kSlowFrameRatio_ == 0)
+        if (frameCount_slowMotion_ % slowFrameRatio_ == 0)
         {
             frameCount_slowMotion_++;
             CollisionManger::GetInstance()->Update();
@@ -124,7 +124,7 @@ void SceneManager::Draw(void)
     currentScene_->Draw();
     transition_.Draw();
     // スローモーション用のフレームカウンタの値が0以外 && プレイヤーのSceneM用のフラグがtrueなら
-    if (frameCount_slowMotion_ && Player::isSkewerHitStop4SceneM_)
+    if (frameCount_slowMotion_ && Player::isSkewerScreenBlack4SceneM_)
     {
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
         DrawBox(0, 0, 1280, 720, Util::Color::BLACK, true);
@@ -135,8 +135,9 @@ void SceneManager::Draw(void)
     DrawFormatString(0, 160, Util::Color::GREEN, "frameCount: %d", frameCount_debug_);
 }
 
-void SceneManager::StartSlowMotion(void)
+void SceneManager::StartSlowMotion(int32_t slowFrameRatio)
 {
+    slowFrameRatio_ = slowFrameRatio;
     frameCount_slowMotion_++;
 }
 
