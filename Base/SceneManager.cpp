@@ -120,10 +120,17 @@ void SceneManager::Update(void)
 
 void SceneManager::Draw(void)
 {
+    
     currentScene_->Draw();
+    transition_.Draw();
+    if (frameCount_slowMotion_)
+    {
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+        DrawBox(0, 0, 1280, 720, Util::Color::BLACK, true);
+        SetDrawBlendMode(DX_BLENDMODE_NOBLEND,0);
+    }
     DrawFormatString(0, 100, Util::Color::WHITE, frameCount_slowMotion_ == 0 ? "no slow" : "slow");
     DrawFormatString(0, 120, Util::Color::WHITE, "slow: %d", frameCount_slowMotion_);
-    transition_.Draw();
     DrawFormatString(0, 160, Util::Color::GREEN, "frameCount: %d", frameCount_debug_);
 }
 
