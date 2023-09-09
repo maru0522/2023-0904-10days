@@ -142,19 +142,22 @@ void Player::Draw(void)
         mow_.Draw();
         mow_support_.Draw();
 
-        Vector2 pos_arrow = position_ + vec_move_ * 70;
+        // 矢印の座標
+        Vector2 pos_arrow = position_ + vec_move_ * kMowArrowDist2Self_;
 
+        // プレイヤーの移動ベクトルが0だったら(スタート時対策）
         if (vec_move_.IsNonZero() == false)
         {
-            pos_arrow = position_ + Vector2(1,0) * 70;
+            // 矢印の座標を決め打ちで決める。（今は初期状態だと右向いてるので、右方向にきめうち）
+            pos_arrow = position_ + Vector2(1,0) * kMowArrowDist2Self_;
             SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-            DrawRotaGraph3((int32_t)pos_arrow.x, (int32_t)pos_arrow.y, 250, 250, 0.4, 0.08, rotation_, png_arrow_, true);
+            DrawRotaGraph3((int32_t)pos_arrow.x, (int32_t)pos_arrow.y, 250, 250, kMowArrowXRate_, kMowArrowYRate_, rotation_, png_arrow_, true);
             SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
         }
-        else
+        else // 移動ベクトルが0じゃなかったら。
         {
             SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-            DrawRotaGraph3((int32_t)pos_arrow.x, (int32_t)pos_arrow.y, 250, 250, 0.4, 0.08, rotation_, png_arrow_, true);
+            DrawRotaGraph3((int32_t)pos_arrow.x, (int32_t)pos_arrow.y, 250, 250, kMowArrowXRate_, kMowArrowYRate_, rotation_, png_arrow_, true);
             SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
         }
     }
