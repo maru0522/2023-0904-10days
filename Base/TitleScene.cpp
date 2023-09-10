@@ -20,8 +20,7 @@ void TitleScene::Initialize(void)
     sceneChange_SE_ = LoadSoundMem("Resources/sound/sceneChange_SE.mp3");
 
     Score::LoadScore();
-    UI::AllLoad();
-    UI::SetPos(UIType::Abutton, { 620.f,570.f });
+    UI::SetPos(UIType::Abutton, { 620.f,600.f });
     UI::SetSize(UIType::Abutton, 0.8f);
 }
 

@@ -5,6 +5,7 @@
 #include "Pad.h"
 #include "SceneManager.h"
 #include "Score.h"
+#include "UI.h"
 
 void ResultScene::Initialize(void)
 {
@@ -17,6 +18,8 @@ void ResultScene::Initialize(void)
     sceneChange_SE_ = LoadSoundMem("Resources/sound/sceneChange_SE.mp3");
 
     Score::SaveScore();
+    UI::SetPos(UIType::Abutton, { 620.f,600.f });
+    UI::SetSize(UIType::Abutton, 0.8f);
 }
 
 void ResultScene::Update(void)
@@ -51,4 +54,5 @@ void ResultScene::Draw(void)
 #endif
 
     Score::Draw();
+    UI::Draw(UIType::Abutton);
 }
