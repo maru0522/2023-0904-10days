@@ -30,6 +30,8 @@
     <ClCompile Include="Base\Particle.cpp" />
     <ClCompile Include="Base\ParticleManager.cpp" />
     <ClCompile Include="Others\Score.cpp" />
+    <ClCompile Include="Base\SceneTransition.cpp" />
+    <ClCompile Include="Others\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\CollisionManger.h" />
@@ -61,5 +63,7 @@
     <ClInclude Include="Base\Particle.h" />
     <ClInclude Include="Base\ParticleManager.h" />
     <ClInclude Include="Others\Score.h" />
+    <ClInclude Include="Base\SceneTransition.h" />
+    <ClInclude Include="Others\UI.h" />
   </ItemGroup>
 </Project>
