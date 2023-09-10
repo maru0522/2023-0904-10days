@@ -143,8 +143,12 @@ void Player::Draw(void)
     }
     else if (state_ != State::ATTACK_SKEWER) // 串刺し攻撃のために溜めてる間や、串刺し攻撃中は半円を表示しない ※それ以外の時に表示
     {
-        // 攻撃範囲とdebugの表示
-        mow_.Draw();
+        // さらに縮み処理をしてる時以外に表示
+        if (isSkewerEndShrink_ == false)
+        {
+            // 攻撃範囲とdebugの表示
+            mow_.Draw();
+        }
 
         // 矢印の座標
         Vector2 pos_arrow = position_ + vec_move_ * kMowArrowDist2Self_;
@@ -236,6 +240,12 @@ void Player::MoveUpdate(void)
         {
             isSkewerEndShrink_ = false;
             frameCount_SkewerEndShrink_ = 0;
+
+            // 過去座標位置に描画させないように
+#pragma region 薙ぎ払い攻撃の範囲を移動させてる
+            mow_.SetPos(position_);
+            mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
+#pragma endregion
         }
         else // 規定値未満なら加算
         {
