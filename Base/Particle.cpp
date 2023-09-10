@@ -58,7 +58,7 @@ void Emitter::DrawCircleParticle()
 	{
 		DrawCircleAA(
 			p.pos.x, p.pos.y,p.scale.x,100,
-			0xffffff, true);
+			p.color, true);
 	}
 }
 
