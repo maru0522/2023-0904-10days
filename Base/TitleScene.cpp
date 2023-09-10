@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "Keyboard.h"
 #include "Score.h"
+#include "UI.h"
 
 void TitleScene::Initialize(void)
 {
@@ -19,6 +20,9 @@ void TitleScene::Initialize(void)
     sceneChange_SE_ = LoadSoundMem("Resources/sound/sceneChange_SE.mp3");
 
     Score::LoadScore();
+    UI::AllLoad();
+    UI::SetPos(UIType::Abutton, { 620.f,570.f });
+    UI::SetSize(UIType::Abutton, 0.8f);
 }
 
 void TitleScene::Update(void)
@@ -58,4 +62,6 @@ void TitleScene::Draw(void)
     DrawFormatString(0, 0, Util::Color::RED, "press pad-A or key-SPACE");
     DrawFormatString(0, 20, Util::Color::RED, "key-RÇ≈padê⁄ë±çƒämîF");
     DrawFormatString(0, 40, Util::Color::WHITE, GetPadConnect() ? "pad connected" : "pad isnt connected");
+
+    UI::Draw(UIType::Abutton);
 }
