@@ -16,6 +16,9 @@ void UI::AllLoad()
 	ui_[(uint32_t)UIType::Bbutton] = LoadGraph("Resources/texture/Bbutton.png");
 	ui_[(uint32_t)UIType::Rbutton] = LoadGraph("Resources/texture/Rbutton.png");
 	ui_[(uint32_t)UIType::Lstick] = LoadGraph("Resources/texture/Lstick.png");
+	ui_[(uint32_t)UIType::Move] = LoadGraph("Resources/texture/Move.png");
+	ui_[(uint32_t)UIType::Attack] = LoadGraph("Resources/texture/Attack.png");
+	ui_[(uint32_t)UIType::Skewer] = LoadGraph("Resources/texture/Skewer.png");
 
 	//座標とサイズ初期化
 	for (uint32_t i = 0; i < (uint32_t)UIType::Max; i++)

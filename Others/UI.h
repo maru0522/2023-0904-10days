@@ -9,6 +9,9 @@ enum class UIType
 	Bbutton,	//Bボタン
 	Rbutton,	//Rボタン
 	Lstick,		//Lスティック
+	Move,		//移動
+	Attack,		//なぎ払い
+	Skewer,		//串刺し
 
 	Max			//最大数(for文とか回す用)
 };
