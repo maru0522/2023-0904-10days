@@ -45,12 +45,12 @@ void TitleScene::Update(void)
         StopSoundMem(title_BGM_);
         SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
     }
+#endif // _DEBUG
     if (KEYS::IsTrigger(KEY_INPUT_R))
     {
         PlaySoundMem(decision_SE_, DX_PLAYTYPE_NORMAL);
         CheckConnectPad();
     }
-#endif // _DEBUG
 }
 
 void TitleScene::Draw(void)
