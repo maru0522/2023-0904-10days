@@ -14,7 +14,7 @@ using namespace Util;
 const float Player::kMowDist_{ 15.f };// 薙ぎ払いで吹き飛ばす距離 こっち変更するならenemy.hの割合も弄らないと瞬間移動になっちまう
 bool Player::isSkewerScreenBlack4SceneM_{};
 
-Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), mow_support_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
+Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
 {
     // 衝突マネージャへの登録
     colMPtr->Register(this);
@@ -143,9 +143,12 @@ void Player::Draw(void)
     }
     else if (state_ != State::ATTACK_SKEWER) // 串刺し攻撃のために溜めてる間や、串刺し攻撃中は半円を表示しない ※それ以外の時に表示
     {
-        // 攻撃範囲とdebugの表示
-        mow_.Draw();
-        mow_support_.Draw();
+        // さらに縮み処理をしてる時以外に表示
+        if (isSkewerEndShrink_ == false)
+        {
+            // 攻撃範囲とdebugの表示
+            mow_.Draw();
+        }
 
         // 矢印の座標
         Vector2 pos_arrow = position_ + vec_move_ * kMowArrowDist2Self_;
@@ -237,6 +240,12 @@ void Player::MoveUpdate(void)
         {
             isSkewerEndShrink_ = false;
             frameCount_SkewerEndShrink_ = 0;
+
+            // 過去座標位置に描画させないように
+#pragma region 薙ぎ払い攻撃の範囲を移動させてる
+            mow_.SetPos(position_);
+            mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
+#pragma endregion
         }
         else // 規定値未満なら加算
         {
@@ -246,86 +255,83 @@ void Player::MoveUpdate(void)
             // フレーム加算
             frameCount_SkewerEndShrink_++;
         }
-
     }
-
-    // 入力
-    Vector2 input{};
-    input += PadStick();
+    else // 縮み処理してる間は動けない
+    {
+        // 入力
+        Vector2 input{};
+        input += PadStick();
 #ifdef _DEBUG
-    input.x += KEYS::IsDown(KEY_INPUT_D) - KEYS::IsDown(KEY_INPUT_A);
-    input.y += KEYS::IsDown(KEY_INPUT_S) - KEYS::IsDown(KEY_INPUT_W);
+        input.x += KEYS::IsDown(KEY_INPUT_D) - KEYS::IsDown(KEY_INPUT_A);
+        input.y += KEYS::IsDown(KEY_INPUT_S) - KEYS::IsDown(KEY_INPUT_W);
 #endif // _DEBUG
 
-    // 入力があった時のみ、ベクトルを記録
-    if (input.IsNonZero())
-    {
-        // 移動方向ベクトルを記録
-        vec_move_ = input.Normalize();
-    }
+        // 入力があった時のみ、ベクトルを記録
+        if (input.IsNonZero())
+        {
+            // 移動方向ベクトルを記録
+            vec_move_ = input.Normalize();
+        }
 
-    //　pad-Aを押していない時は移動できる。（串刺しの為に溜めてる時は動けない）
-    if (frameCount_4Skewer_ == 0) // 串刺しカウントが0なら（=溜めてない)
-    {
-        // 座標 += (正規化された入力値 * 速度)
-        position_ += input.Normalize() * kMoveSpeed_;
+        //　pad-Aを押していない時は移動できる。（串刺しの為に溜めてる時は動けない）
+        if (frameCount_4Skewer_ == 0) // 串刺しカウントが0なら（=溜めてない)
+        {
+            // 座標 += (正規化された入力値 * 速度)
+            position_ += input.Normalize() * kMoveSpeed_;
 
-        // 押し戻しっつーか、それ以上いかないようにってだけ
-        position_.x = Math::Function::Clamp<float>(position_.x, stagePtr_->GetLT().x + radius_.x * 2, stagePtr_->GetRB().x - radius_.x * 2);
-        position_.y = Math::Function::Clamp<float>(position_.y, stagePtr_->GetLT().y + radius_.x * 2, stagePtr_->GetRB().y - radius_.x * 2);
-    }
+            // 押し戻しっつーか、それ以上いかないようにってだけ
+            position_.x = Math::Function::Clamp<float>(position_.x, stagePtr_->GetLT().x + radius_.x * 2, stagePtr_->GetRB().x - radius_.x * 2);
+            position_.y = Math::Function::Clamp<float>(position_.y, stagePtr_->GetLT().y + radius_.x * 2, stagePtr_->GetRB().y - radius_.x * 2);
+        }
 
 #pragma region 薙ぎ払い攻撃の範囲を移動させてる
-    mow_.SetPos(position_);
-    mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
-    // サポートの矩形の中心点 = プレイヤーの座標 + 正面vec * kMowSupportCenterDist_
-    Vector2 center4MowSupport = position_ + vec_move_ * kMowSupportCenterDist_;
-    // サポートの座標設定
-    mow_support_.SetPos(center4MowSupport);
+        mow_.SetPos(position_);
+        mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
 #pragma endregion
 
-    // 無敵中じゃなければ攻撃できる
-    if (frameCount_invincible_ == 0)
-    {
-        // pad-A押してない時 && pad-R||RB でAttack_MOW状態に遷移
-        if (PadDownA() == false && PadTriggerLorR() || PadTriggerRB())
+        // 無敵中じゃなければ攻撃できる
+        if (frameCount_invincible_ == 0)
         {
-            mow_.Attack(vec_move_, position_);
-            state_ = State::ATTACK_MOW;
-        }
-
-        // pad-A長押しでATTACK_SKEWER状態に遷移
-        if (PadDownA())
-        {
-            // ATTACK_SKEWER状態に入るための溜め計測フレームを加算
-            //frameCount_4Skewer_++;
-            frameCount_4Skewer_ += 5; // スローモーション回避のため力技だけど5フレーム分ずつカウントします。
-
-            // ↑仕様上押してからスローモーション開始になるので、最初のフレーム分カウントが +n されてしまうのを簡単に回避する方法思いつきません。
-
-            // スローモーション開始
-            SceneManager::GetInstance()->StartSlowMotion(5);
-            isSkewerScreenBlack4SceneM_ = true;
-        }
-        else
-        {
-            // 規定フレーム以上触れてたら遷移
-            if (frameCount_4Skewer_ >= kChargeFrame4Skewer_)
+            // pad-A押してない時 && pad-R||RB でAttack_MOW状態に遷移
+            if (PadDownA() == false && PadTriggerLorR() || PadTriggerRB())
             {
-                // 遷移して初期化
-                skewer_.Attack();
-                state_ = State::ATTACK_SKEWER;
-                frameCount_4Skewer_ = 0;
-                pos4Sword_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
-                pos4SwordUp_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
-                pos4SwordBottom_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+                mow_.Attack(vec_move_, position_);
+                state_ = State::ATTACK_MOW;
             }
-            // 離した瞬間に初期化
-            frameCount_4Skewer_ = 0;
-            isSkewerScreenBlack4SceneM_ = false;
 
-            // スローモーション解除
-            SceneManager::GetInstance()->EndSlowMotion();
+            // pad-A長押しでATTACK_SKEWER状態に遷移
+            if (PadDownA())
+            {
+                // ATTACK_SKEWER状態に入るための溜め計測フレームを加算
+                //frameCount_4Skewer_++;
+                frameCount_4Skewer_ += 5; // スローモーション回避のため力技だけど5フレーム分ずつカウントします。
+
+                // ↑仕様上押してからスローモーション開始になるので、最初のフレーム分カウントが +n されてしまうのを簡単に回避する方法思いつきません。
+
+                // スローモーション開始
+                SceneManager::GetInstance()->StartSlowMotion(5);
+                isSkewerScreenBlack4SceneM_ = true;
+            }
+            else
+            {
+                // 規定フレーム以上触れてたら遷移
+                if (frameCount_4Skewer_ >= kChargeFrame4Skewer_)
+                {
+                    // 遷移して初期化
+                    skewer_.Attack();
+                    state_ = State::ATTACK_SKEWER;
+                    frameCount_4Skewer_ = 0;
+                    pos4Sword_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+                    pos4SwordUp_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+                    pos4SwordBottom_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+                }
+                // 離した瞬間に初期化
+                frameCount_4Skewer_ = 0;
+                isSkewerScreenBlack4SceneM_ = false;
+
+                // スローモーション解除
+                SceneManager::GetInstance()->EndSlowMotion();
+            }
         }
     }
 

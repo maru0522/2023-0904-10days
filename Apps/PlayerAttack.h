@@ -2,7 +2,6 @@
 #include "IEntity.h"
 #include "CollisionManger.h"
 #include <DxLib.h>
-#include "PlayerMowAttackSupport.h"
 
 class PlayerMowAttack :
     public IEntity
