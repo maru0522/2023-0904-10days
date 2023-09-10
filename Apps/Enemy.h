@@ -38,7 +38,7 @@ private:
 	int32_t frameCount_move_; // 移動用フレームカウント
 
 	bool isAlive_{ true }; // 生きてるか
-	bool isContactMowSupport_{}; // 薙ぎ払いの検知サポートクラスの当たり判定に触れたか
+	//bool isContactMowSupport_{}; // 薙ぎ払いの検知サポートクラスの当たり判定に触れたか
 
 	// 薙ぎ払われたか
 	bool isMowDown_ = false;
