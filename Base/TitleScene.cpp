@@ -58,10 +58,12 @@ void TitleScene::Draw(void)
     //タイトル
     DrawGraph(0, 0, titleImageHandle_,true);
 
+#ifdef DEBUG
     DrawFormatString(0, 380, Util::Color::RED, "Scene: TITLE");
     DrawFormatString(0, 0, Util::Color::RED, "press pad-A or key-SPACE");
     DrawFormatString(0, 20, Util::Color::RED, "key-Rでpad接続再確認");
     DrawFormatString(0, 40, Util::Color::WHITE, GetPadConnect() ? "pad connected" : "pad isnt connected");
+#endif
 
     UI::Draw(UIType::Abutton);
 }
