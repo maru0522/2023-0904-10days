@@ -26,6 +26,8 @@ Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), m
 
     // è’ìÀcallbackîΩâf
     onCollision_ = std::bind(&Player::OnCollision, this);
+
+    mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
 }
 
 Player::~Player(void)
