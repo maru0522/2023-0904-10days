@@ -14,7 +14,7 @@ using namespace Util;
 const float Player::kMowDist_{ 15.f };// 薙ぎ払いで吹き飛ばす距離 こっち変更するならenemy.hの割合も弄らないと瞬間移動になっちまう
 bool Player::isSkewerScreenBlack4SceneM_{};
 
-Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), mow_support_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
+Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
 {
     // 衝突マネージャへの登録
     colMPtr->Register(this);
@@ -145,7 +145,6 @@ void Player::Draw(void)
     {
         // 攻撃範囲とdebugの表示
         mow_.Draw();
-        mow_support_.Draw();
 
         // 矢印の座標
         Vector2 pos_arrow = position_ + vec_move_ * kMowArrowDist2Self_;
@@ -278,10 +277,6 @@ void Player::MoveUpdate(void)
 #pragma region 薙ぎ払い攻撃の範囲を移動させてる
         mow_.SetPos(position_);
         mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
-        // サポートの矩形の中心点 = プレイヤーの座標 + 正面vec * kMowSupportCenterDist_
-        Vector2 center4MowSupport = position_ + vec_move_ * kMowSupportCenterDist_;
-        // サポートの座標設定
-        mow_support_.SetPos(center4MowSupport);
 #pragma endregion
 
         // 無敵中じゃなければ攻撃できる

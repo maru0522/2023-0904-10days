@@ -75,7 +75,6 @@ private:
     float dist_p4su2p4sb_; // 串刺し終了時のpos4SwordUpからpos4SwordBottomまでの距離
 
     PlayerMowAttack mow_; // 薙ぎ払い用クラス
-    PlayerMowAttackSupport mow_support_; // 薙ぎ払いサポート用クラス
     PlayerSkewerAttack skewer_; // 串刺し用クラス
 
     // resources
