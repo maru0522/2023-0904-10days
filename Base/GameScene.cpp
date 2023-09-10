@@ -7,6 +7,7 @@
 #include "EnemyManager.h"
 #include "ParticleManager.h"
 #include "Score.h"
+#include "UI.h"
 
 void GameScene::Initialize(void)
 {
@@ -32,6 +33,21 @@ void GameScene::Initialize(void)
 
 	Score::Init();
     Update();
+
+	UI::SetPos(UIType::Lstick, { 30.f,30.f });
+	UI::SetSize(UIType::Lstick, 0.2f);
+	UI::SetPos(UIType::Move, { 100.f,30.f });
+	UI::SetSize(UIType::Move, 0.2f);
+
+	UI::SetPos(UIType::Rbutton, { 30.f,80.f });
+	UI::SetSize(UIType::Rbutton, 0.2f);
+	UI::SetPos(UIType::Attack, { 120.f,80.f });
+	UI::SetSize(UIType::Attack, 0.2f);
+
+	UI::SetPos(UIType::Abutton, { 30.f,130.f });
+	UI::SetSize(UIType::Abutton, 0.2f);
+	UI::SetPos(UIType::Skewer, { 110.f,130.f });
+	UI::SetSize(UIType::Skewer, 0.2f);
 }
 
 void GameScene::Update(void)
@@ -74,4 +90,11 @@ void GameScene::Draw(void)
 	//DrawPad();
 
 	Score::Draw();
+
+	UI::Draw(UIType::Lstick);
+	UI::Draw(UIType::Move);
+	UI::Draw(UIType::Rbutton);
+	UI::Draw(UIType::Attack);
+	UI::Draw(UIType::Abutton);
+	UI::Draw(UIType::Skewer);
 }
