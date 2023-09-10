@@ -396,8 +396,11 @@ void Player::SkewerAttackUpdate(void)
     else // 串刺し1フレーム後の座標 (+ 半径)が、ステージ外なら串刺し状態終了
     {
         skewer_.End(); // isSkewerをfalseにする。
-        SceneManager::GetInstance()->StartSlowMotion(kMaxFrameSkewerEndHitStop_);
-        frameCount_SkewerEndHitStop_++;
+        if (EnemyManager::GetInstance().GetSkewerEnemiesLength())
+        {
+            SceneManager::GetInstance()->StartSlowMotion(kMaxFrameSkewerEndHitStop_);
+            frameCount_SkewerEndHitStop_++;
+        }
     }
 
     const float eRange = EnemyManager::GetInstance().GetSkewerEnemiesLength();
