@@ -20,8 +20,10 @@ void Score::Add(uint32_t score)
 
 void Score::Draw()
 {
-	DrawFormatString(700, 0, 0xffffff, "SCORE:%d", nowScore_);
-	DrawFormatString(700, 20, 0xffffff, "HIGHSCORE:%d", highScore_);
+#ifdef DEBUG
+	DrawFormatString(700, 0, 0x000000, "SCORE:%d", nowScore_);
+	DrawFormatString(700, 20, 0x000000, "HIGHSCORE:%d", highScore_);
+#endif
 }
 
 void Score::HighScoreUpdate()

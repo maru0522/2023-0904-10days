@@ -45,8 +45,10 @@ void ResultScene::Draw(void)
     //ƒŠƒUƒ‹ƒg‰æ‘œ
     DrawGraph(0, 0, png_result_, true);
 
+#ifdef DEBUG
     DrawFormatString(0, 380, Util::Color::RED, "Scene: RESULT");
     DrawFormatString(0, 0, Util::Color::WHITE, "pad-A or key-R[DEBUG]‚Åtitle");
+#endif
 
     Score::Draw();
 }

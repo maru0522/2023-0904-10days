@@ -84,9 +84,11 @@ void GameScene::Draw(void)
 
 	ParticleManager::GetInstance()->Draw();
 
+#ifdef DEBUG
 	DrawFormatString(0, 380, Util::Color::RED, "Scene: GAME");
 	DrawFormatString(0, 0, Util::Color::WHITE, "[DEBUG]key-0で終了時間を10秒に変更。既に経過してる場合はGameScene終了");
 	DrawFormatString(0, 20, Util::Color::WHITE, "time: %f", timer_.GetElapsedTime());
+#endif
 	//DrawPad();
 
 	Score::Draw();
