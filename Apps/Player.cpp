@@ -26,8 +26,6 @@ Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), m
 
     // 衝突callback反映
     onCollision_ = std::bind(&Player::OnCollision, this);
-
-    mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
 }
 
 Player::~Player(void)
@@ -45,6 +43,16 @@ void Player::Update(void)
         // 無敵時間のフレームカウントを加算
         Math::Function::LoopIncrement<int32_t>(frameCount_invincible_, 0, kMaxInvincibleFrame_);
     }
+
+    // 向きから回転角を取得
+    rotation_ = std::acos(Vector2(0, -1).Dot(vec_move_));
+    //反転しないように
+    if (vec_move_.x < 0)
+    {
+        rotation_ = -rotation_;
+    }
+    // 右向き方向を取得
+    isRight_ = Vector2(0, -1).Cross(vec_move_.Normalize()) > 0.f;
 
     void (Player:: * FuncTbl[])() =
     {
@@ -80,15 +88,6 @@ void Player::Update(void)
     // デバッグライン用記録
     pos4Line_ = position_ + vec_move_ * 30;
 
-    // 向きから回転角を取得
-    rotation_ = std::acos(Vector2(0, -1).Dot(vec_move_));
-    //反転しないように
-    if (vec_move_.x < 0)
-    {
-        rotation_ = -rotation_;
-    }
-    // 右向き方向を取得
-    isRight_ = Vector2(0, -1).Cross(vec_move_.Normalize()) > 0.f;
 }
 
 void Player::Draw(void)
