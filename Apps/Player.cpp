@@ -181,7 +181,7 @@ void Player::Draw(void)
             pos4Sword_ += vec_move_ * 5;
             pos4SwordUp_ += vec_move_ * (6 + EnemyManager::GetInstance().GetSkewerEnemiesLength());
             pos4SwordBottom_ -= vec_move_ * 12;
-
+            dist_p4su2p4sb_ = EnemyManager::GetInstance().GetSkewerEnemiesLength() - 18;
         }
 
         // 串
@@ -219,6 +219,26 @@ void Player::Draw(void)
 
 void Player::MoveUpdate(void)
 {
+    // 串刺し終了後の縮みフラグオンなら
+    if (isSkewerEndShrink_)
+    {
+        // フレームカウンタが規定値以上なら終了
+        if (frameCount_SkewerEndShrink_ > kMaxFrameSkewerEndShrink_)
+        {
+            isSkewerEndShrink_ = false;
+            frameCount_SkewerEndShrink_ = 0;
+        }
+        else // 規定値未満なら加算
+        {
+            float rate = (std::min)((float)frameCount_SkewerEndShrink_ / kMaxFrameSkewerEndShrink_, 1.f);
+            position_ = position_ + vec_move_ * Math::Ease::EaseInSine(rate) * dist_p4su2p4sb_;
+
+            // フレーム加算
+            frameCount_SkewerEndShrink_++;
+        }
+
+    }
+
     // 入力
     Vector2 input{};
     input += PadStick();
@@ -375,6 +395,7 @@ void Player::SkewerAttackUpdate(void)
         {
             SceneManager::GetInstance()->EndSlowMotion();
             frameCount_SkewerEndHitStop_ = 0;
+            isSkewerEndShrink_ = true;
         }
         // 関数終了
         return;
