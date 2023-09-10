@@ -12,7 +12,7 @@ public:
     static const int32_t kMaxAttackFrame_{ 10 }; // UŒ‚”ÍˆÍ‚Ì—LŒøŠÔ(ƒtƒŒ[ƒ€)
     const float kBlewDist_{ 80.f }; // ‚«”ò‚Î‚·‹——£
     const Vector2 kRadius_{ 50,0 }; // UŒ‚”ÍˆÍ ¦Œ»İ”»’è‚ª‰~‚È‚Ì‚Åyg‚¢‚Ü‚¹‚ñ
-    const float kPngScale_{ 0.06f }; // ‰æ‘œ‚ÌŠg‘å—¦
+    const float kPngScale_{ 0.07f }; // ‰æ‘œ‚ÌŠg‘å—¦
 
     // ŠÖ”
     PlayerMowAttack(CollisionManger* colMPtr);

@@ -23,5 +23,8 @@ PlayerMowAttackSupport::~PlayerMowAttackSupport(void)
 
 void PlayerMowAttackSupport::Draw(void)
 {
+#ifdef _DEBUG
     DrawBox((int32_t)(position_.x - radius_.x), (int32_t)(position_.y - radius_.y), (int32_t)(position_.x + radius_.x), (int32_t)(position_.y + radius_.y), Util::Color::GREEN, false);
+#endif // _DEBUG
+
 }

@@ -53,10 +53,14 @@ void PlayerMowAttack::Update(void)
 void PlayerMowAttack::Draw(void)
 {
     // çUåÇîÕàÕÇâ¬éãâªÅB
+#ifdef _DEBUG
     //DrawBox((int32_t)(position_.x - radius_.x), (int32_t)(position_.y - radius_.y), (int32_t)(position_.x + radius_.x), (int32_t)(position_.y + radius_.y), Util::Color::BLUE, true);
     DrawCircle((int32_t)position_.x, (int32_t)position_.y, (int32_t)radius_.x, Util::Color::BLUE, false, 1);
     //DrawFormatString((int32_t)position_.x - 5, (int32_t)position_.y - 70, Util::Color::YELLOW, state_dir_ == Direction::RIGHT ? "âE" : "ç∂");
     DrawFormatString((int32_t)position_.x - 5, (int32_t)position_.y - 90, Util::Color::YELLOW, "%f",rotation_);
-
-    //DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_mowAttack_, true);
+#endif // _DEBUG
+    
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+    DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_mowAttack_, true);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

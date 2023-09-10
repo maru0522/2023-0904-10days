@@ -92,10 +92,12 @@ void Player::Update(void)
 void Player::Draw(void)
 {
     // 描画
+#ifdef _DEBUG
     DrawLineAA(position_.x, position_.y, pos4Line_.x, pos4Line_.y, Color::WHITE, 3);
 
     // 現在のプレイヤーの状態（数字のみ）
     DrawFormatString(0, 140, 0xffffff, "state ;%d", static_cast<int32_t>(state_));
+#endif // _DEBUG
 
     // プレイヤーの右方向を出す
     Vector3 vec3_move = { vec_move_.x,vec_move_.y,0 };
@@ -133,9 +135,10 @@ void Player::Draw(void)
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
         DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_ * 3.0f, rotation_, png_arrow_, true);
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
+#ifdef _DEBUG
         DrawFormatString(1000, 60, Util::Color::GREEN, "溜め状態");
         DrawFormatString(1000, 80, Util::Color::GREEN, "frame: %d/%d", frameCount_4Skewer_, kChargeFrame4Skewer_);
+#endif // _DEBUG
     }
     else if (state_ != State::ATTACK_SKEWER) // 串刺し攻撃のために溜めてる間や、串刺し攻撃中は半円を表示しない ※それ以外の時に表示
     {
@@ -171,7 +174,9 @@ void Player::Draw(void)
         DrawRotaGraph((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, kPngScale_, rot4Sword2_, png_sword_, true);
         //DrawCircle((int32_t)pos4Sword_.x, (int32_t)pos4Sword_.y, 1, Util::Color::BLUE, true, 1);
     }
+#ifdef _DEBUG
     DrawFormatString(1000, 120, Util::Color::GREEN, "rot4s: %f", rot4RotationSword_);
+#endif // _DEBUG
 
     if (state_ == State::ATTACK_SKEWER) // 串刺し攻撃中、串刺しの描画関数を呼び出す
     {
@@ -200,8 +205,10 @@ void Player::Draw(void)
         SetDrawBright(255, 255, 80); // 変色量カス
         DrawRotaGraph((int32_t)position_.x, (int32_t)position_.y, kPngScale_, rotation_, png_player_, true);
         SetDrawBright(255, 255, 255);
+#ifdef _DEBUG
         DrawFormatString(1000, 20, Util::Color::YELLOW, "無敵状態");
         DrawFormatString(1000, 40, Util::Color::YELLOW, "frame: %d", kMaxInvincibleFrame_ - frameCount_invincible_);
+#endif // _DEBUG
     }
     else // 無敵時間じゃないなら
     {
@@ -213,8 +220,10 @@ void Player::Draw(void)
     }
 
     // 串刺し攻撃時の判定座標
+#ifdef _DEBUG
     DrawFormatString(1000, 100, Util::Color::GREEN, "pos(%f,%f)", skewer_.GetPos().x, skewer_.GetPos().y);
     DrawFormatString(0, 500, Util::Color::WHITE, "pos(%f,%f)", position_.x, position_.y);
+#endif // _DEBUG
 }
 
 void Player::MoveUpdate(void)
@@ -267,7 +276,7 @@ void Player::MoveUpdate(void)
 
 #pragma region 薙ぎ払い攻撃の範囲を移動させてる
     mow_.SetPos(position_);
-    mow_.SetRot(rotation_);
+    mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
     // サポートの矩形の中心点 = プレイヤーの座標 + 正面vec * kMowSupportCenterDist_
     Vector2 center4MowSupport = position_ + vec_move_ * kMowSupportCenterDist_;
     // サポートの座標設定
