@@ -374,6 +374,7 @@ void Player::SkewerAttackUpdate(void)
         if (frameCount_SkewerEndHitStop_)
         {
             SceneManager::GetInstance()->EndSlowMotion();
+            frameCount_SkewerEndHitStop_ = 0;
         }
         // ŠÖ”I—¹
         return;
