@@ -20,6 +20,14 @@ void UI::AllLoad()
 	ui_[(uint32_t)UIType::Attack] = LoadGraph("Resources/texture/Attack.png");
 	ui_[(uint32_t)UIType::Skewer] = LoadGraph("Resources/texture/Skewer.png");
 
+    ui_[(uint32_t)UIType::Tutorial1] = LoadGraph("Resources/texture/tutorial_UI_01.png");
+    ui_[(uint32_t)UIType::Tutorial2] = LoadGraph("Resources/texture/tutorial_UI_02.png");
+    ui_[(uint32_t)UIType::Tutorial3] = LoadGraph("Resources/texture/tutorial_UI_03.png");
+    ui_[(uint32_t)UIType::Tutorial4] = LoadGraph("Resources/texture/tutorial_UI_04.png");
+    ui_[(uint32_t)UIType::Tutorial5] = LoadGraph("Resources/texture/tutorial_UI_05.png");
+    ui_[(uint32_t)UIType::Tutorial6] = LoadGraph("Resources/texture/tutorial_UI_06.png");
+    ui_[(uint32_t)UIType::Tutorial7] = LoadGraph("Resources/texture/tutorial_UI_07.png");
+
 	//座標とサイズ初期化
 	for (uint32_t i = 0; i < (uint32_t)UIType::Max; i++)
 	{

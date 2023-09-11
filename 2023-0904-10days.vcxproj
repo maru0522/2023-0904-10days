@@ -164,6 +164,7 @@
     <ClCompile Include="Base\SceneFactory.cpp" />
     <ClCompile Include="Base\TitleScene.cpp" />
     <ClCompile Include="Others\Pad.cpp" />
+    <ClCompile Include="TutorialPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\CollisionManger.h" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Others\UI.h" />
     <ClInclude Include="Others\Util.h" />
     <ClInclude Include="Others\Pad.h" />
+    <ClInclude Include="TutorialPlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

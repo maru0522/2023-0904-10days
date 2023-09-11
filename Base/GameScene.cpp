@@ -23,6 +23,7 @@ void GameScene::Initialize(void)
     player_->SetPos({ 300,300 });
     player_->SetRot(0);
     player_->SetRad({ 10,0 });
+    player_->SetVecMove({ 0,-1 });
 
     EnemyManager::GetInstance().Initialize(player_.get(), stage_.get());
 
@@ -32,7 +33,7 @@ void GameScene::Initialize(void)
     ParticleManager::GetInstance()->Init();
 
     Score::Init();
-    GameSceneUpdate();
+    //GameSceneUpdate();
 
     UI::SetPos(UIType::Lstick, { 30.f,30.f });
     UI::SetSize(UIType::Lstick, 0.2f);
