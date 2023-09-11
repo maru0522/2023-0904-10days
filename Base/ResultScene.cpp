@@ -24,12 +24,36 @@ void ResultScene::Initialize(void)
 
 void ResultScene::Update(void)
 {
-    if (PadTriggerA())
+    if (PadStick().y >= 0.3f)
     {
-        PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
-        //BGMストップ
-        StopSoundMem(result_BGM_);
-        SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::TITLE);
+        destination_++;
+        destination_ = (std::min)(destination_, 1);
+    }
+    else if (PadStick().y <= -0.3f)
+    {
+        destination_--;
+        destination_ = (std::max)(destination_, 0);
+    }
+
+    if (destination_ == Destination::RETRY)
+    {
+        if (PadTriggerA())
+        {
+            PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+            //BGMストップ
+            StopSoundMem(result_BGM_);
+            SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
+        }
+    }
+    else if (destination_ == Destination::TITLE)
+    {
+        if (PadTriggerA())
+        {
+            PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+            //BGMストップ
+            StopSoundMem(result_BGM_);
+            SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::TITLE);
+        }
     }
 
 #ifdef _DEBUG
@@ -55,4 +79,7 @@ void ResultScene::Draw(void)
 
     Score::Draw();
     UI::Draw(UIType::Abutton);
+
+    DrawFormatString(300, 300, 0xff0000, "dest: %d", destination_);
+    DrawFormatString(300, 320, 0xff0000, "pady: %f", PadStick().y);
 }
