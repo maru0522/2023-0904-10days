@@ -177,27 +177,27 @@ void GameScene::Update(void)
 
 void GameScene::GameSceneUpdate(void)
 {
-        stage_->Update();
+    stage_->Update();
 
-        player_->Update();
-        EnemyManager::GetInstance().Update();
+    player_->Update();
+    EnemyManager::GetInstance().Update();
 
-        if (KEYS::IsTrigger(KEY_INPUT_0))
-        {
-            timer_.SetEndTime(10.f);
-        }
+    if (KEYS::IsTrigger(KEY_INPUT_0))
+    {
+        timer_.SetEndTime(10.f);
+    }
 
-        if (timer_.GetIsEnd())
-        {
-            Score::HighScoreUpdate();
+    if (timer_.GetIsEnd())
+    {
+        Score::HighScoreUpdate();
 
-            PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
-            //BGMストップ
-            StopSoundMem(game_BGM_);
-            SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
-        }
+        PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+        //BGMストップ
+        StopSoundMem(game_BGM_);
+        SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
+    }
 
-        ParticleManager::GetInstance()->Update();
+    ParticleManager::GetInstance()->Update();
 }
 
 void GameScene::Draw(void)
@@ -230,7 +230,26 @@ void GameScene::Draw(void)
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
         DrawBox(0, 0, 1280, 720, Util::Color::BLACK, true);
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-        DrawGraph(360, 120, png_retry_, 1);
-        DrawGraph(360, 320, png_2title_, 1);
+        if (destination_ == Destination::RETRY)
+        {
+            SetDrawBright(180, 0, 0);
+            DrawGraph(360, 120, png_retry_, 1);
+            SetDrawBright(255, 255, 255);
+        }
+        else
+        {
+            DrawGraph(360, 120, png_retry_, 1);
+        }
+        
+        if (destination_ == Destination::TITLE)
+        {
+            SetDrawBright(180, 0, 0);
+            DrawGraph(360, 320, png_2title_, 1);
+            SetDrawBright(255, 255, 255);
+        }
+        else
+        {
+            DrawGraph(360, 320, png_2title_, 1);
+        }
     }
 }
