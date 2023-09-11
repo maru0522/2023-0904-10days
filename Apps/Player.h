@@ -26,7 +26,7 @@ public:
     const float kMowArrowDist2Self_{ 80.f }; // 常時表示する薙ぎ払い用の矢印とプレイヤーの距離
 
     // 串刺し
-    const int32_t kChargeFrame4Skewer_{ 60 }; // 串刺し攻撃の為に、何フレームボタンを押し続けなければならないか
+    const int32_t kChargeFrame4Skewer_{ 1 }; // 串刺し攻撃の為に、何フレームボタンを押し続けなければならないか
     const float kSkewerAttackCenterDist_{ 35.f }; // 串刺し攻撃の範囲の中心がプレイヤーの中心からどれだけ離れてるか ※仕様上、目標+5frameにする必要がある。
     const int32_t kSlowMotionFrameUntilStart_{ 0 }; // スローモーションが始まるまでのフレーム
     const float kPngScale_{ 0.07f }; // 画像の拡大
