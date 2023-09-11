@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include <DxLib.h>
 #include "Keyboard.h"
+#include "UI.h"
 
 SceneManager::~SceneManager(void)
 {
@@ -30,6 +31,8 @@ void SceneManager::RequestChangeScene(SceneFactory::Usage nextScene, int32_t wai
 
 void SceneManager::Initialize(SceneFactory::Usage firstScene)
 {
+    //UIに使う画像全部読み込み
+    UI::AllLoad();
     // 最初のシーンを生成
     currentScene_ = sceneFactory_->CreateScene(firstScene);
     currentScene_->Initialize();
