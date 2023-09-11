@@ -19,6 +19,12 @@ public:
         POST,
     };
 
+    enum Destination
+    {
+        RETRY,
+        TITLE,
+    };
+
     // 定数
     float kMaxGameTimer_{ 60.f };
     const int32_t kMaxFrame_preGame_{ 180 }; // ゲーム前イベントが何フレームか
@@ -31,8 +37,11 @@ public:
     void Finalize(void) override {};
 
 private:
+    // resource
     uint32_t game_BGM_ = 0;
     uint32_t sceneChange_SE_ = 0;   //シーン遷移音
+    int32_t png_retry_ = LoadGraph("Resources/texture/retry.png");
+    int32_t png_2title_ = LoadGraph("Resources/texture/toTitle.png");
 
     // 変数
     std::unique_ptr<Stage> stage_{ std::make_unique<Stage>() };
@@ -42,5 +51,8 @@ private:
 
     Progress progress_;
     int32_t frameCount_preGame_; // ゲーム前イベント用のフレームカウンタ。
+
+    bool isMenu_;
+    int32_t destination_;
 };
 

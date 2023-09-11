@@ -24,12 +24,12 @@ void ResultScene::Initialize(void)
 
 void ResultScene::Update(void)
 {
-    if (PadStick().y >= 0.3f)
+    if (PadStick().x >= 0.3f)
     {
         destination_++;
         destination_ = (std::min)(destination_, 1);
     }
-    else if (PadStick().y <= -0.3f)
+    else if (PadStick().x <= -0.3f)
     {
         destination_--;
         destination_ = (std::max)(destination_, 0);

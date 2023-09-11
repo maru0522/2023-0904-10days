@@ -86,6 +86,16 @@ bool PadLongLorLB(void)
     return pad.Buttons[4] == push && oldpad.Buttons[4] == push;
 }
 
+bool PadDownMenu(void)
+{
+    return pad.Buttons[7] == push;
+}
+
+bool PadTriggerMenu(void)
+{
+    return pad.Buttons[7] == push && oldpad.Buttons[7] == 0;
+}
+
 bool PadRight() // スティック右倒す
 {
 	return pad.X >= down && oldpad.X >= down;

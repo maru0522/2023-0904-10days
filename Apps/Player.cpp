@@ -353,6 +353,16 @@ void Player::MoveUpdate(void)
 #endif // _DEBUG
 }
 
+void Player::ResetSkewerInfo4Pause(void)
+{
+    // 離した瞬間に初期化
+    frameCount_4Skewer_ = 0;
+    isSkewerScreenBlack4SceneM_ = false;
+
+    // スローモーション解除
+    SceneManager::GetInstance()->EndSlowMotion();
+}
+
 void Player::MowAttackUpdate(void)
 {
     //// 串刺し終了後のヒットストップ

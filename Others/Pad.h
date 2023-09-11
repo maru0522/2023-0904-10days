@@ -20,6 +20,9 @@ bool PadDownLB(void);
 bool PadTriggerLB(void);
 bool PadLongLorLB(void);
 
+bool PadDownMenu(void);
+bool PadTriggerMenu(void);
+
 bool PadRight(); // スティック右倒す → true
 bool PadLeft(); // スティック左倒す → true
 
