@@ -52,102 +52,152 @@ void GameScene::Initialize(void)
 
 void GameScene::Update(void)
 {
-    switch (progress_)
+    if (PadTriggerMenu())
     {
-    case GameScene::Progress::PRE:
-        // フレームカウントが規定値超えたら遷移
-        if (frameCount_preGame_ > kMaxFrame_preGame_)
+        if (isMenu_)
         {
-            // 進行値をGAMEに
-            progress_ = Progress::GAME;
+            isMenu_ = false;
         }
-
-        break;
-    case GameScene::Progress::GAME:
-        break;
-    case GameScene::Progress::POST:
-        break;
-    default:
-        break;
+        else
+        {
+            isMenu_ = true;
+            player_->ResetSkewerInfo4Pause();
+        }
     }
 
-    if (progress_ == Progress::PRE)
+    if (isMenu_ == false)
     {
-        frameCount_preGame_++;
+        switch (progress_)
+        {
+        case GameScene::Progress::PRE:
+            // フレームカウントが規定値超えたら遷移
+            if (frameCount_preGame_ > kMaxFrame_preGame_)
+            {
+                // 進行値をGAMEに
+                progress_ = Progress::GAME;
+            }
+
+            break;
+        case GameScene::Progress::GAME:
+            break;
+        case GameScene::Progress::POST:
+            break;
+        default:
+            break;
+        }
+
+        if (progress_ == Progress::PRE)
+        {
+            frameCount_preGame_++;
+        }
+        else if (progress_ == Progress::GAME)
+        {
+            stage_->Update();
+
+            player_->Update();
+            EnemyManager::GetInstance().Update();
+
+            if (KEYS::IsTrigger(KEY_INPUT_0))
+            {
+                timer_.SetEndTime(10.f);
+            }
+
+            if (timer_.GetIsEnd())
+            {
+                Score::HighScoreUpdate();
+
+                PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+                //BGMストップ
+                StopSoundMem(game_BGM_);
+                SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
+            }
+
+            ParticleManager::GetInstance()->Update();
+        }
+        else if (progress_ == Progress::POST)
+        {
+            stage_->Update();
+
+            player_->Update();
+            EnemyManager::GetInstance().Update();
+
+            if (KEYS::IsTrigger(KEY_INPUT_0))
+            {
+                timer_.SetEndTime(10.f);
+            }
+
+            if (timer_.GetIsEnd())
+            {
+                Score::HighScoreUpdate();
+
+                PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+                //BGMストップ
+                StopSoundMem(game_BGM_);
+                SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
+            }
+
+            ParticleManager::GetInstance()->Update();
+        }
     }
-    else if (progress_ == Progress::GAME)
+    else
     {
-        stage_->Update();
-
-        player_->Update();
-        EnemyManager::GetInstance().Update();
-
-        if (KEYS::IsTrigger(KEY_INPUT_0))
+        if (PadStick().y >= 0.3f)
         {
-            timer_.SetEndTime(10.f);
+            destination_++;
+            destination_ = (std::min)(destination_, 1);
+        }
+        else if (PadStick().y <= -0.3f)
+        {
+            destination_--;
+            destination_ = (std::max)(destination_, 0);
         }
 
-        if (timer_.GetIsEnd())
+        if (destination_ == Destination::RETRY)
         {
-            Score::HighScoreUpdate();
-
-            PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
-            //BGMストップ
-            StopSoundMem(game_BGM_);
-            SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
+            if (PadTriggerA())
+            {
+                PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+                //BGMストップ
+                StopSoundMem(game_BGM_);
+                SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
+            }
         }
-
-        ParticleManager::GetInstance()->Update();
-    }
-    else if (progress_ == Progress::POST)
-    {
-        stage_->Update();
-
-        player_->Update();
-        EnemyManager::GetInstance().Update();
-
-        if (KEYS::IsTrigger(KEY_INPUT_0))
+        else if (destination_ == Destination::TITLE)
         {
-            timer_.SetEndTime(10.f);
+            if (PadTriggerA())
+            {
+                PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+                //BGMストップ
+                StopSoundMem(game_BGM_);
+                SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::TITLE);
+            }
         }
-
-        if (timer_.GetIsEnd())
-        {
-            Score::HighScoreUpdate();
-
-            PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
-            //BGMストップ
-            StopSoundMem(game_BGM_);
-            SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
-        }
-
-        ParticleManager::GetInstance()->Update();
     }
 }
 
 void GameScene::GameSceneUpdate(void)
 {
-    stage_->Update();
+        stage_->Update();
 
-    player_->Update();
-    EnemyManager::GetInstance().Update();
+        player_->Update();
+        EnemyManager::GetInstance().Update();
 
-    if (KEYS::IsTrigger(KEY_INPUT_0))
-    {
-        timer_.SetEndTime(10.f);
-    }
+        if (KEYS::IsTrigger(KEY_INPUT_0))
+        {
+            timer_.SetEndTime(10.f);
+        }
 
-    if (timer_.GetIsEnd())
-    {
-        Score::HighScoreUpdate();
+        if (timer_.GetIsEnd())
+        {
+            Score::HighScoreUpdate();
 
-        PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
-        //BGMストップ
-        StopSoundMem(game_BGM_);
-        SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
-    }
+            PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+            //BGMストップ
+            StopSoundMem(game_BGM_);
+            SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
+        }
 
-    ParticleManager::GetInstance()->Update();
+        ParticleManager::GetInstance()->Update();
 }
 
 void GameScene::Draw(void)
@@ -174,4 +224,7 @@ void GameScene::Draw(void)
     UI::Draw(UIType::Attack);
     UI::Draw(UIType::Abutton);
     UI::Draw(UIType::Skewer);
+
+    if(isMenu_) 
+        DrawFormatString(0, 380, Util::Color::RED, "MENU");
 }

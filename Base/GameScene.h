@@ -19,6 +19,12 @@ public:
         POST,
     };
 
+    enum Destination
+    {
+        RETRY,
+        TITLE,
+    };
+
     // 定数
     float kMaxGameTimer_{ 60.f };
     const int32_t kMaxFrame_preGame_{ 180 }; // ゲーム前イベントが何フレームか
@@ -42,5 +48,8 @@ private:
 
     Progress progress_;
     int32_t frameCount_preGame_; // ゲーム前イベント用のフレームカウンタ。
+
+    bool isMenu_;
+    int32_t destination_;
 };
 
