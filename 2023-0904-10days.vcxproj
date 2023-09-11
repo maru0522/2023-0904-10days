@@ -151,6 +151,7 @@
     <ClCompile Include="Base\SceneManager.cpp" />
     <ClCompile Include="Base\DemoScene.cpp" />
     <ClCompile Include="Base\SceneTransition.cpp" />
+    <ClCompile Include="Base\TutorialScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Easing.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Base\SceneManager.h" />
     <ClInclude Include="Base\SceneTransition.h" />
     <ClInclude Include="Base\TitleScene.h" />
+    <ClInclude Include="Base\TutorialScene.h" />
     <ClInclude Include="Math\Easing.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Vector2.h" />

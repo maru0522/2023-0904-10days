@@ -31,6 +31,7 @@
     <ClCompile Include="Others\Score.cpp" />
     <ClCompile Include="Base\SceneTransition.cpp" />
     <ClCompile Include="Others\UI.cpp" />
+    <ClCompile Include="Base\TutorialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\CollisionManger.h" />
@@ -63,5 +64,6 @@
     <ClInclude Include="Others\Score.h" />
     <ClInclude Include="Base\SceneTransition.h" />
     <ClInclude Include="Others\UI.h" />
+    <ClInclude Include="Base\TutorialScene.h" />
   </ItemGroup>
 </Project>

@@ -32,7 +32,7 @@ void TitleScene::Update(void)
         PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
         //BGMストップ
         StopSoundMem(title_BGM_);
-        SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
+        SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::TUTORIAL);
     }
 
     // debag用key-Rで切替
@@ -42,7 +42,7 @@ void TitleScene::Update(void)
         PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
         //BGMストップ
         StopSoundMem(title_BGM_);
-        SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::GAME);
+        SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::TUTORIAL);
     }
 #endif // _DEBUG
     if (KEYS::IsTrigger(KEY_INPUT_R))
