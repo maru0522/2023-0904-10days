@@ -37,8 +37,11 @@ public:
     void Finalize(void) override {};
 
 private:
+    // resource
     uint32_t game_BGM_ = 0;
     uint32_t sceneChange_SE_ = 0;   //ƒV[ƒ“‘JˆÚ‰¹
+    int32_t png_retry_ = LoadGraph("Resources/texture/retry.png");
+    int32_t png_2title_ = LoadGraph("Resources/texture/toTitle.png");
 
     // •Ï”
     std::unique_ptr<Stage> stage_{ std::make_unique<Stage>() };

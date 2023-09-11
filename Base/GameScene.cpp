@@ -225,6 +225,12 @@ void GameScene::Draw(void)
     UI::Draw(UIType::Abutton);
     UI::Draw(UIType::Skewer);
 
-    if(isMenu_) 
-        DrawFormatString(0, 380, Util::Color::RED, "MENU");
+    if (isMenu_)
+    {
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+        DrawBox(0, 0, 1280, 720, Util::Color::BLACK, true);
+        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+        DrawGraph(360, 120, png_retry_, 1);
+        DrawGraph(360, 320, png_2title_, 1);
+    }
 }
