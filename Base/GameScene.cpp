@@ -33,7 +33,7 @@ void GameScene::Initialize(void)
     ParticleManager::GetInstance()->Init();
 
     Score::Init();
-    //GameSceneUpdate();
+    GameSceneUpdate();
 
     UI::SetPos(UIType::Lstick, { 30.f,30.f });
     UI::SetSize(UIType::Lstick, 0.2f);
