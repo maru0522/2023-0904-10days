@@ -56,6 +56,21 @@ bool PadLongLorR() // RƒgƒŠƒK[ (’·‰Ÿ‚µ)
 		(pad.Z <= -down2 && oldpad.Z <= -down2);
 }
 
+bool PadDownB()
+{
+    return pad.Buttons[1] == push;
+}
+
+bool PadTriggerB()
+{
+    return pad.Buttons[1] == push && oldpad.Buttons[1] == 0;
+}
+
+bool PadLongB()
+{
+    return pad.Buttons[1] == push && oldpad.Buttons[1] == push;
+}
+
 bool PadDownRB(void)
 {
     return pad.Buttons[5] == push;

@@ -12,6 +12,10 @@ bool PadDownLorR(); // Rトリガー押す → true
 bool PadTriggerLorR(); // Rトリガー押す(瞬間) → true
 bool PadLongLorR(); // Rトリガー長押し → true
 
+bool PadDownB(); // Bボタン押す → true
+bool PadTriggerB(); // Bボタン押す(瞬間) → true
+bool PadLongB(); // Bボタン長押し → true
+
 bool PadDownRB(void);
 bool PadTriggerRB(void);
 bool PadLongLorRB(void);
