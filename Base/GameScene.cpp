@@ -32,7 +32,7 @@ void GameScene::Initialize(void)
     ParticleManager::GetInstance()->Init();
 
     Score::Init();
-    Update();
+    GameSceneUpdate();
 
     UI::SetPos(UIType::Lstick, { 30.f,30.f });
     UI::SetSize(UIType::Lstick, 0.2f);
@@ -101,8 +101,53 @@ void GameScene::Update(void)
     }
     else if (progress_ == Progress::POST)
     {
+        stage_->Update();
 
+        player_->Update();
+        EnemyManager::GetInstance().Update();
+
+        if (KEYS::IsTrigger(KEY_INPUT_0))
+        {
+            timer_.SetEndTime(10.f);
+        }
+
+        if (timer_.GetIsEnd())
+        {
+            Score::HighScoreUpdate();
+
+            PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+            //BGMストップ
+            StopSoundMem(game_BGM_);
+            SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
+        }
+
+        ParticleManager::GetInstance()->Update();
     }
+}
+
+void GameScene::GameSceneUpdate(void)
+{
+    stage_->Update();
+
+    player_->Update();
+    EnemyManager::GetInstance().Update();
+
+    if (KEYS::IsTrigger(KEY_INPUT_0))
+    {
+        timer_.SetEndTime(10.f);
+    }
+
+    if (timer_.GetIsEnd())
+    {
+        Score::HighScoreUpdate();
+
+        PlaySoundMem(sceneChange_SE_, DX_PLAYTYPE_NORMAL);
+        //BGMストップ
+        StopSoundMem(game_BGM_);
+        SceneManager::GetInstance()->RequestChangeScene(SceneFactory::Usage::RESULT);
+    }
+
+    ParticleManager::GetInstance()->Update();
 }
 
 void GameScene::Draw(void)

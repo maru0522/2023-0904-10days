@@ -26,6 +26,7 @@ public:
     // ä÷êî
     void Initialize(void) override;
     void Update(void) override;
+    void GameSceneUpdate(void);
     void Draw(void) override;
     void Finalize(void) override {};
 
