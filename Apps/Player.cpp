@@ -146,6 +146,12 @@ void Player::Draw(void)
         // ‚³‚ç‚Ék‚İˆ—‚ğ‚µ‚Ä‚éˆÈŠO‚É•\¦
         if (isSkewerEndShrink_ == false)
         {
+            // ‰ß‹À•WˆÊ’u‚É•`‰æ‚³‚¹‚È‚¢‚æ‚¤‚É
+#pragma region “ã‚¬•¥‚¢UŒ‚‚Ì”ÍˆÍ‚ğˆÚ“®‚³‚¹‚Ä‚é
+            mow_.SetPos(position_);
+            mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
+#pragma endregion
+
             // UŒ‚”ÍˆÍ‚Ædebug‚Ì•\¦
             mow_.Draw();
         }
@@ -240,12 +246,6 @@ void Player::MoveUpdate(void)
         {
             isSkewerEndShrink_ = false;
             frameCount_SkewerEndShrink_ = 0;
-
-            // ‰ß‹À•WˆÊ’u‚É•`‰æ‚³‚¹‚È‚¢‚æ‚¤‚É
-#pragma region “ã‚¬•¥‚¢UŒ‚‚Ì”ÍˆÍ‚ğˆÚ“®‚³‚¹‚Ä‚é
-            mow_.SetPos(position_);
-            mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
-#pragma endregion
         }
         else // ‹K’è’l–¢–‚È‚ç‰ÁZ
         {
@@ -283,11 +283,6 @@ void Player::MoveUpdate(void)
             position_.x = Math::Function::Clamp<float>(position_.x, stagePtr_->GetLT().x + radius_.x * 2, stagePtr_->GetRB().x - radius_.x * 2);
             position_.y = Math::Function::Clamp<float>(position_.y, stagePtr_->GetLT().y + radius_.x * 2, stagePtr_->GetRB().y - radius_.x * 2);
         }
-
-#pragma region “ã‚¬•¥‚¢UŒ‚‚Ì”ÍˆÍ‚ğˆÚ“®‚³‚¹‚Ä‚é
-        mow_.SetPos(position_);
-        mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
-#pragma endregion
 
         // –³“G’†‚¶‚á‚È‚¯‚ê‚ÎUŒ‚‚Å‚«‚é
         if (frameCount_invincible_ == 0)
