@@ -1,6 +1,7 @@
 #include "EnemyManager.h"
 #include "Keyboard.h"
 #include "MathUtil.h"
+#include "Score.h"
 #include <memory>
 
 
@@ -433,6 +434,7 @@ void EnemyManager::Update()
 			//“|‚³‚ê‚½“G‚Ì”—p
 			defeatedEnemiesNum_ = itr->get()->GetEnemiesNum();
 			isDefeatedEnemies_ = true;
+            Score::Add(defeatedEnemiesNum_);
 
 			combinedEnemiesArray_.erase(itr);
 

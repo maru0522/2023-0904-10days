@@ -133,7 +133,7 @@ void SceneManager::Draw(void)
         DrawBox(0, 0, 1280, 720, Util::Color::BLACK, true);
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND,0);
     }
-#ifdef DEBUG
+#ifdef _DEBUG
     DrawFormatString(0, 100, Util::Color::WHITE, frameCount_slowMotion_ == 0 ? "no slow" : "slow");
     DrawFormatString(0, 120, Util::Color::WHITE, "slow: %d", frameCount_slowMotion_);
     DrawFormatString(0, 160, Util::Color::GREEN, "frameCount: %d", frameCount_debug_);

@@ -7,7 +7,7 @@ public:
 	//初期化
 	static void Init();
 	//スコア追加
-	static void Add(uint32_t score);
+	static void Add(uint32_t enemyNum);
 	//スコア描画
 	static void Draw();
 

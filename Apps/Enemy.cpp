@@ -295,7 +295,6 @@ void Enemy::Dead()
     if (isAlive_)
     {
         ParticleManager::GetInstance()->BossHitEnemyEffect(position_);
-        Score::Add(500);
     }
     isAlive_ = false;
 }
