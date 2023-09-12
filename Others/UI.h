@@ -13,6 +13,14 @@ enum class UIType
 	Attack,		//‚È‚¬•¥‚¢
 	Skewer,		//‹øh‚µ
 
+    Tutorial1,
+    Tutorial2,
+    Tutorial3,
+    Tutorial4,
+    Tutorial5,
+    Tutorial6,
+    Tutorial7,
+
 	Max			//Å‘å”(for•¶‚Æ‚©‰ñ‚·—p)
 };
 

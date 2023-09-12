@@ -50,6 +50,10 @@ bool PadLongA() // Aボタン (長押し)
 {
 	return pad.Buttons[0] == push && oldpad.Buttons[0] == push;
 }
+bool PadReleaseA()
+{
+    return pad.Buttons[0] == 0 && oldpad.Buttons[0] == push;
+}
 bool PadLongLorR() // Rトリガー (長押し)
 {
 	return	(pad.Z >= down2 && oldpad.Z >= down2) ||

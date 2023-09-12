@@ -7,6 +7,7 @@ bool GetPadConnect(); // パッドが接続されているかを返す
 bool PadDownA(); // Aボタン押す → true
 bool PadTriggerA(); // Aボタン押す(瞬間) → true
 bool PadLongA(); // Aボタン長押し → true
+bool PadReleaseA();
 
 bool PadDownLorR(); // Rトリガー押す → true
 bool PadTriggerLorR(); // Rトリガー押す(瞬間) → true

@@ -5,7 +5,7 @@
 #include "PlayerSkewerAttack.h"
 #include <DxLib.h>
 
-class Player final : public IEntity
+class TutorialPlayer final : public IEntity
 {
 public:
     // íËêî
@@ -43,8 +43,8 @@ public:
     };
 
     // ä÷êî
-    Player(CollisionManger* colMPtr, Stage* stagePtr);
-    ~Player(void) override;
+    TutorialPlayer(CollisionManger* colMPtr, Stage* stagePtr);
+    ~TutorialPlayer(void) override;
 
     void Update(void) override;
     void Draw(void) override;

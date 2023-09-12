@@ -23,6 +23,7 @@ void GameScene::Initialize(void)
     player_->SetPos({ 300,300 });
     player_->SetRot(0);
     player_->SetRad({ 10,0 });
+    player_->SetVecMove({ 0,-1 });
 
     EnemyManager::GetInstance().Initialize(player_.get(), stage_.get());
 
