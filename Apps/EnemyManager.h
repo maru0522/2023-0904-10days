@@ -22,6 +22,10 @@ private://•Ï”
 	//“G‚ÌãŒÀ
 	const uint32_t ENEMIES_MAX_ = 5;
 
+	//“|‚³‚ê‚½“G‚Ì”—p
+	bool isDefeatedEnemies_ = false;
+	uint32_t defeatedEnemiesNum_ = 0;
+
 private://ŠÖ”
 	EnemyManager() { ; }
 	~EnemyManager() { ; }
@@ -91,6 +95,8 @@ private:
 
 public:
 	void AddEnemy(std::unique_ptr<Enemy>enemy);
+	//“|‚µ‚½“G‚Ì”(“|‚³‚ê‚½“G‚ª‚¢‚½‚çtrue)
+	bool GetDefeatedEnemiesNum(uint32_t& enemiesNum);
 
 public:
 	//“Ëi‚³‚ê‚Ä‚é“G‚Ì‰ò‚Ì”¼Œa

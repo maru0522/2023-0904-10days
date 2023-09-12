@@ -406,6 +406,10 @@ void EnemyManager::Update()
 
 		if (!itr->get()->GetIsAlive())
 		{
+			//“|‚³‚ê‚½“G‚Ì”—p
+			defeatedEnemiesNum_ = itr->get()->GetEnemiesNum();
+			isDefeatedEnemies_ = true;
+
 			combinedEnemiesArray_.erase(itr);
 
 			if (combinedEnemiesArray_.size())
@@ -460,6 +464,19 @@ void EnemyManager::AddEnemy(std::unique_ptr<Enemy> enemy)
 	cEs->Initialize(player_, stage_, player_->GetDirectionVec());
 
 	combinedEnemiesArray_.push_back(std::move(cEs));
+}
+
+bool EnemyManager::GetDefeatedEnemiesNum(uint32_t& enemiesNum)
+{
+	if (isDefeatedEnemies_)
+	{
+		enemiesNum = defeatedEnemiesNum_;
+		isDefeatedEnemies_ = false;
+
+		return true;
+	}
+
+	return false;
 }
 
 float EnemyManager::GetSkewerEnemiesLength()
