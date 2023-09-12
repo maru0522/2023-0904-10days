@@ -7,10 +7,15 @@ bool GetPadConnect(); // パッドが接続されているかを返す
 bool PadDownA(); // Aボタン押す → true
 bool PadTriggerA(); // Aボタン押す(瞬間) → true
 bool PadLongA(); // Aボタン長押し → true
+bool PadReleaseA();
 
 bool PadDownLorR(); // Rトリガー押す → true
 bool PadTriggerLorR(); // Rトリガー押す(瞬間) → true
 bool PadLongLorR(); // Rトリガー長押し → true
+
+bool PadDownB(); // Bボタン押す → true
+bool PadTriggerB(); // Bボタン押す(瞬間) → true
+bool PadLongB(); // Bボタン長押し → true
 
 bool PadDownRB(void);
 bool PadTriggerRB(void);
@@ -19,6 +24,9 @@ bool PadLongLorRB(void);
 bool PadDownLB(void);
 bool PadTriggerLB(void);
 bool PadLongLorLB(void);
+
+bool PadDownMenu(void);
+bool PadTriggerMenu(void);
 
 bool PadRight(); // スティック右倒す → true
 bool PadLeft(); // スティック左倒す → true

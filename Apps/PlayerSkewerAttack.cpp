@@ -37,7 +37,9 @@ void PlayerSkewerAttack::Update(void)
 void PlayerSkewerAttack::Draw(void)
 {
     // UŒ‚”ÍˆÍ‚ğ‰Â‹‰»B
+#ifdef _DEBUG
     DrawBox((int32_t)(position_.x - radius_.x), (int32_t)(position_.y - radius_.y), (int32_t)(position_.x + radius_.x), (int32_t)(position_.y + radius_.y), Util::Color::BLUE, false);
+#endif // _DEBUG
 }
 
 void PlayerSkewerAttack::End(void)

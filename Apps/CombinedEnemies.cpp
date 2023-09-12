@@ -291,12 +291,12 @@ void CombinedEnemies::EnemiesPosUpdate()
 	{
 		centorPos_ = enemies_[0]->GetPos();
 		//ステージ内に収める
-		SetInStageEnemiesPos();
+		//SetInStageEnemiesPos();
 		return;
 	}
 
 	//ステージ内に収める
-	SetInStageEnemiesPos();
+	//SetInStageEnemiesPos();
 
 	//中央のインデックス
 	float centorIndex = (float)enemiesNum_ / 2.0f - 0.5f;

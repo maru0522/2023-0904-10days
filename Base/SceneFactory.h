@@ -8,6 +8,7 @@
 #include "TitleScene.h"
 #include "GameScene.h"
 #include "ResultScene.h"
+#include "TutorialScene.h"
 
 class SceneFactory final
 {
@@ -19,6 +20,7 @@ public:
         TITLE,
         GAME,
         RESULT,
+        TUTORIAL,
     };
 
     // ä÷êî

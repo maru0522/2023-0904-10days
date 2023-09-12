@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include <DxLib.h>
 #include "Keyboard.h"
+#include "UI.h"
 
 SceneManager::~SceneManager(void)
 {
@@ -30,6 +31,8 @@ void SceneManager::RequestChangeScene(SceneFactory::Usage nextScene, int32_t wai
 
 void SceneManager::Initialize(SceneFactory::Usage firstScene)
 {
+    //UIに使う画像全部読み込み
+    UI::AllLoad();
     // 最初のシーンを生成
     currentScene_ = sceneFactory_->CreateScene(firstScene);
     currentScene_->Initialize();
@@ -130,9 +133,11 @@ void SceneManager::Draw(void)
         DrawBox(0, 0, 1280, 720, Util::Color::BLACK, true);
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND,0);
     }
+#ifdef DEBUG
     DrawFormatString(0, 100, Util::Color::WHITE, frameCount_slowMotion_ == 0 ? "no slow" : "slow");
     DrawFormatString(0, 120, Util::Color::WHITE, "slow: %d", frameCount_slowMotion_);
     DrawFormatString(0, 160, Util::Color::GREEN, "frameCount: %d", frameCount_debug_);
+#endif
 }
 
 void SceneManager::StartSlowMotion(int32_t slowFrameRatio)

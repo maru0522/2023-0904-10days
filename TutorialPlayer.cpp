@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "TutorialPlayer.h"
 #include "DxLib.h"
 #include "Util.h"
 #include "Keyboard.h"
@@ -11,10 +11,10 @@
 
 using namespace Util;
 
-const float Player::kMowDist_{ 15.f };// “ã‚¬•¥‚¢‚Å‚«”ò‚Î‚·‹——£ ‚±‚Á‚¿•ÏX‚·‚é‚È‚çenemy.h‚ÌŠ„‡‚à˜M‚ç‚È‚¢‚ÆuŠÔˆÚ“®‚É‚È‚Á‚¿‚Ü‚¤
-bool Player::isSkewerScreenBlack4SceneM_{};
+const float TutorialPlayer::kMowDist_{ 15.f };// “ã‚¬•¥‚¢‚Å‚«”ò‚Î‚·‹——£ ‚±‚Á‚¿•ÏX‚·‚é‚È‚çenemy.h‚ÌŠ„‡‚à˜M‚ç‚È‚¢‚ÆuŠÔˆÚ“®‚É‚È‚Á‚¿‚Ü‚¤
+bool TutorialPlayer::isSkewerScreenBlack4SceneM_{};
 
-Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
+TutorialPlayer::TutorialPlayer(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), mow_(colMPtr), skewer_(colMPtr), colMPtr_(colMPtr)
 {
     // Õ“Ëƒ}ƒl[ƒWƒƒ‚Ö‚Ì“o˜^
     colMPtr->Register(this);
@@ -25,17 +25,17 @@ Player::Player(CollisionManger* colMPtr, Stage* stagePtr) : IEntity(stagePtr), m
     id_ = "player";
 
     // Õ“Ëcallback”½‰f
-    onCollision_ = std::bind(&Player::OnCollision, this);
+    onCollision_ = std::bind(&TutorialPlayer::OnCollision, this);
 }
 
-Player::~Player(void)
+TutorialPlayer::~TutorialPlayer(void)
 {
     // “o˜^‚Ì–•Á
     onCollision_ = nullptr;
     colMPtr_->UnRegister(this);
 }
 
-void Player::Update(void)
+void TutorialPlayer::Update(void)
 {
     // –³“GŠÔ’†‚È‚ç
     if (frameCount_invincible_ != 0)
@@ -54,11 +54,11 @@ void Player::Update(void)
     // ‰EŒü‚«•ûŒü‚ğæ“¾
     isRight_ = Vector2(0, -1).Cross(vec_move_.Normalize()) > 0.f;
 
-    void (Player:: * FuncTbl[])() =
+    void (TutorialPlayer:: * FuncTbl[])() =
     {
-        &Player::MoveUpdate,
-        &Player::MowAttackUpdate,
-        &Player::SkewerAttackUpdate,
+        &TutorialPlayer::MoveUpdate,
+        &TutorialPlayer::MowAttackUpdate,
+        &TutorialPlayer::SkewerAttackUpdate,
     };
 
     (this->*FuncTbl[(size_t)state_])();
@@ -70,7 +70,7 @@ void Player::Update(void)
         float rate = (std::min)((float)frameCount_knockback_ / kMaxKnockbackFrame_, 1.f);
 
         // ‚«”ò‚Î‚³‚ê‚é‘¬‚³ ‚ğ ƒC[ƒWƒ“ƒO‚Å’²®
-        const float mowSpeed = (1 - Math::Ease::EaseInSine(rate)) * Player::kKnockbackDist_;
+        const float mowSpeed = (1 - Math::Ease::EaseInSine(rate)) * TutorialPlayer::kKnockbackDist_;
         // À•W‚É‰ÁZ
         position_ += vec_contactE2P_ * mowSpeed;
 
@@ -90,7 +90,7 @@ void Player::Update(void)
 
 }
 
-void Player::Draw(void)
+void TutorialPlayer::Draw(void)
 {
     // •`‰æ
 #ifdef _DEBUG
@@ -146,12 +146,6 @@ void Player::Draw(void)
         // ‚³‚ç‚Ék‚İˆ—‚ğ‚µ‚Ä‚éˆÈŠO‚É•\¦
         if (isSkewerEndShrink_ == false)
         {
-            // ‰ß‹À•WˆÊ’u‚É•`‰æ‚³‚¹‚È‚¢‚æ‚¤‚É
-#pragma region “ã‚¬•¥‚¢UŒ‚‚Ì”ÍˆÍ‚ğˆÚ“®‚³‚¹‚Ä‚é
-            mow_.SetPos(position_);
-            mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
-#pragma endregion
-
             // UŒ‚”ÍˆÍ‚Ædebug‚Ì•\¦
             mow_.Draw();
         }
@@ -236,7 +230,7 @@ void Player::Draw(void)
 #endif // _DEBUG
 }
 
-void Player::MoveUpdate(void)
+void TutorialPlayer::MoveUpdate(void)
 {
     // ‹øh‚µI—¹Œã‚Ìk‚İƒtƒ‰ƒOƒIƒ“‚È‚ç
     if (isSkewerEndShrink_)
@@ -246,6 +240,12 @@ void Player::MoveUpdate(void)
         {
             isSkewerEndShrink_ = false;
             frameCount_SkewerEndShrink_ = 0;
+
+            // ‰ß‹À•WˆÊ’u‚É•`‰æ‚³‚¹‚È‚¢‚æ‚¤‚É
+#pragma region “ã‚¬•¥‚¢UŒ‚‚Ì”ÍˆÍ‚ğˆÚ“®‚³‚¹‚Ä‚é
+            mow_.SetPos(position_);
+            mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
+#pragma endregion
         }
         else // ‹K’è’l–¢–‚È‚ç‰ÁZ
         {
@@ -284,6 +284,11 @@ void Player::MoveUpdate(void)
             position_.y = Math::Function::Clamp<float>(position_.y, stagePtr_->GetLT().y + radius_.x * 2, stagePtr_->GetRB().y - radius_.x * 2);
         }
 
+#pragma region “ã‚¬•¥‚¢UŒ‚‚Ì”ÍˆÍ‚ğˆÚ“®‚³‚¹‚Ä‚é
+        mow_.SetPos(position_);
+        mow_.SetRot(rotation_ - Math::Function::ToRadian(90));
+#pragma endregion
+
         // –³“G’†‚¶‚á‚È‚¯‚ê‚ÎUŒ‚‚Å‚«‚é
         if (frameCount_invincible_ == 0)
         {
@@ -316,9 +321,9 @@ void Player::MoveUpdate(void)
                     skewer_.Attack();
                     state_ = State::ATTACK_SKEWER;
                     frameCount_4Skewer_ = 0;
-                    pos4Sword_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
-                    pos4SwordUp_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
-                    pos4SwordBottom_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+                    pos4Sword_ = position_ + vec_move_ * TutorialPlayer::kMowSwordCenterDist_;
+                    pos4SwordUp_ = position_ + vec_move_ * TutorialPlayer::kMowSwordCenterDist_;
+                    pos4SwordBottom_ = position_ + vec_move_ * TutorialPlayer::kMowSwordCenterDist_;
                 }
                 // —£‚µ‚½uŠÔ‚É‰Šú‰»
                 frameCount_4Skewer_ = 0;
@@ -348,7 +353,7 @@ void Player::MoveUpdate(void)
 #endif // _DEBUG
 }
 
-void Player::ResetSkewerInfo4Pause(void)
+void TutorialPlayer::ResetSkewerInfo4Pause(void)
 {
     // —£‚µ‚½uŠÔ‚É‰Šú‰»
     frameCount_4Skewer_ = 0;
@@ -358,7 +363,7 @@ void Player::ResetSkewerInfo4Pause(void)
     SceneManager::GetInstance()->EndSlowMotion();
 }
 
-void Player::MowAttackUpdate(void)
+void TutorialPlayer::MowAttackUpdate(void)
 {
     //// ‹øh‚µI—¹Œã‚ÌƒqƒbƒgƒXƒgƒbƒv
     //if (frameCount_SkewerEndHitStop_)
@@ -403,7 +408,7 @@ void Player::MowAttackUpdate(void)
     mow_.Update();
 }
 
-void Player::SkewerAttackUpdate(void)
+void TutorialPlayer::SkewerAttackUpdate(void)
 {
     // isSkewer‚ªfalse‚È‚çMOVEó‘Ô‚Ö‘JˆÚ
     if (skewer_.GetIsSkewer() == false)
@@ -451,12 +456,12 @@ void Player::SkewerAttackUpdate(void)
     skewer_.SetPos(skewered_pos + vec_move_ * (kSkewerAttackCenterDist_ + eRange));
     skewer_.Update();
     // ‹øh‚µŠG‚ÌÀ•W = ƒvƒŒƒCƒ„[‚ÌÀ•W + ³‹K‰»‚³‚ê‚½ƒvƒŒƒCƒ„[‚ÌŒü‚« * ‹K’è‹——£)
-    pos4Sword_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
-    pos4SwordUp_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
-    pos4SwordBottom_ = position_ + vec_move_ * Player::kMowSwordCenterDist_;
+    pos4Sword_ = position_ + vec_move_ * TutorialPlayer::kMowSwordCenterDist_;
+    pos4SwordUp_ = position_ + vec_move_ * TutorialPlayer::kMowSwordCenterDist_;
+    pos4SwordBottom_ = position_ + vec_move_ * TutorialPlayer::kMowSwordCenterDist_;
 }
 
-void Player::OnCollision(void)
+void TutorialPlayer::OnCollision(void)
 {
     // ÚG‘ÎÛ‚Ì–¼Ì‚ª enemy
     if (other_->GetId() == "enemy")

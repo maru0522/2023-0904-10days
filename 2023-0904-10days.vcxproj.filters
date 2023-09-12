@@ -9,7 +9,6 @@
     <ClCompile Include="Apps\IEntity.cpp" />
     <ClCompile Include="Apps\Player.cpp" />
     <ClCompile Include="Apps\PlayerAttack.cpp" />
-    <ClCompile Include="Apps\PlayerMowAttackSupport.cpp" />
     <ClCompile Include="Apps\PlayerSkewerAttack.cpp" />
     <ClCompile Include="Apps\Stage.cpp" />
     <ClCompile Include="Base\GameScene.cpp" />
@@ -30,6 +29,10 @@
     <ClCompile Include="Base\Particle.cpp" />
     <ClCompile Include="Base\ParticleManager.cpp" />
     <ClCompile Include="Others\Score.cpp" />
+    <ClCompile Include="Base\SceneTransition.cpp" />
+    <ClCompile Include="Others\UI.cpp" />
+    <ClCompile Include="Base\TutorialScene.cpp" />
+    <ClCompile Include="TutorialPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\CollisionManger.h" />
@@ -40,7 +43,6 @@
     <ClInclude Include="Apps\IEntity.h" />
     <ClInclude Include="Apps\Player.h" />
     <ClInclude Include="Apps\PlayerAttack.h" />
-    <ClInclude Include="Apps\PlayerMowAttackSupport.h" />
     <ClInclude Include="Apps\PlayerSkewerAttack.h" />
     <ClInclude Include="Apps\Stage.h" />
     <ClInclude Include="Base\DemoScene.h" />
@@ -61,5 +63,9 @@
     <ClInclude Include="Base\Particle.h" />
     <ClInclude Include="Base\ParticleManager.h" />
     <ClInclude Include="Others\Score.h" />
+    <ClInclude Include="Base\SceneTransition.h" />
+    <ClInclude Include="Others\UI.h" />
+    <ClInclude Include="Base\TutorialScene.h" />
+    <ClInclude Include="TutorialPlayer.h" />
   </ItemGroup>
 </Project>

@@ -141,7 +141,6 @@
     <ClCompile Include="Apps\IEntity.cpp" />
     <ClCompile Include="Apps\Player.cpp" />
     <ClCompile Include="Apps\PlayerAttack.cpp" />
-    <ClCompile Include="Apps\PlayerMowAttackSupport.cpp" />
     <ClCompile Include="Apps\PlayerSkewerAttack.cpp" />
     <ClCompile Include="Apps\Stage.cpp" />
     <ClCompile Include="Base\GameScene.cpp" />
@@ -152,6 +151,7 @@
     <ClCompile Include="Base\SceneManager.cpp" />
     <ClCompile Include="Base\DemoScene.cpp" />
     <ClCompile Include="Base\SceneTransition.cpp" />
+    <ClCompile Include="Base\TutorialScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Easing.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
@@ -159,10 +159,12 @@
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Others\Keyboard.cpp" />
     <ClCompile Include="Others\Score.cpp" />
+    <ClCompile Include="Others\UI.cpp" />
     <ClCompile Include="Others\Util.cpp" />
     <ClCompile Include="Base\SceneFactory.cpp" />
     <ClCompile Include="Base\TitleScene.cpp" />
     <ClCompile Include="Others\Pad.cpp" />
+    <ClCompile Include="TutorialPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apps\CollisionManger.h" />
@@ -173,7 +175,6 @@
     <ClInclude Include="Apps\IEntity.h" />
     <ClInclude Include="Apps\Player.h" />
     <ClInclude Include="Apps\PlayerAttack.h" />
-    <ClInclude Include="Apps\PlayerMowAttackSupport.h" />
     <ClInclude Include="Apps\PlayerSkewerAttack.h" />
     <ClInclude Include="Apps\Stage.h" />
     <ClInclude Include="Base\DemoScene.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Base\SceneManager.h" />
     <ClInclude Include="Base\SceneTransition.h" />
     <ClInclude Include="Base\TitleScene.h" />
+    <ClInclude Include="Base\TutorialScene.h" />
     <ClInclude Include="Math\Easing.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Vector2.h" />
@@ -193,8 +195,10 @@
     <ClInclude Include="Others\FileSystem.h" />
     <ClInclude Include="Others\Keyboard.h" />
     <ClInclude Include="Others\Score.h" />
+    <ClInclude Include="Others\UI.h" />
     <ClInclude Include="Others\Util.h" />
     <ClInclude Include="Others\Pad.h" />
+    <ClInclude Include="TutorialPlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

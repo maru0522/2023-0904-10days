@@ -57,6 +57,9 @@ private:
 	//“ã‚¬•¥‚í‚ê‚½uŠÔ‚ğI‚í‚ç‚¹‚é
 	void MowDownTriggerEnd();
 
+    // ‚Å‚©‚¾‚ñ‚²
+    void GenerateDekaUpdate(void);
+
 private:
 	//“G‚Ì”‚ğæ“¾
 	int32_t GetEnemiesCount();

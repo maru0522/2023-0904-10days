@@ -50,10 +50,29 @@ bool PadLongA() // Aボタン (長押し)
 {
 	return pad.Buttons[0] == push && oldpad.Buttons[0] == push;
 }
+bool PadReleaseA()
+{
+    return pad.Buttons[0] == 0 && oldpad.Buttons[0] == push;
+}
 bool PadLongLorR() // Rトリガー (長押し)
 {
 	return	(pad.Z >= down2 && oldpad.Z >= down2) ||
 		(pad.Z <= -down2 && oldpad.Z <= -down2);
+}
+
+bool PadDownB()
+{
+    return pad.Buttons[1] == push;
+}
+
+bool PadTriggerB()
+{
+    return pad.Buttons[1] == push && oldpad.Buttons[1] == 0;
+}
+
+bool PadLongB()
+{
+    return pad.Buttons[1] == push && oldpad.Buttons[1] == push;
 }
 
 bool PadDownRB(void)
@@ -84,6 +103,16 @@ bool PadTriggerLB(void)
 bool PadLongLorLB(void)
 {
     return pad.Buttons[4] == push && oldpad.Buttons[4] == push;
+}
+
+bool PadDownMenu(void)
+{
+    return pad.Buttons[7] == push;
+}
+
+bool PadTriggerMenu(void)
+{
+    return pad.Buttons[7] == push && oldpad.Buttons[7] == 0;
 }
 
 bool PadRight() // スティック右倒す

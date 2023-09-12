@@ -26,6 +26,7 @@ void DemoScene::Draw(void)
     //player_->Draw();
     //enemy_->Draw();
 
-
+#ifdef DEBUG
     DrawFormatString(0, 380, Util::Color::RED, "Scene: DEMO");
+#endif // DEBUG
 }
